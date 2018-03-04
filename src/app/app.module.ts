@@ -7,6 +7,10 @@ import { AppRoutingModule } from './/app-routing.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginComponent } from './login/login.component';
 
+import { AuthService } from "./services/auth.service";
+import { AuthenticateGuard } from "./guards/authenticate.guard";
+
+import { CookieService } from 'ngx-cookie-service';
 
 @NgModule({
   declarations: [
@@ -18,7 +22,7 @@ import { LoginComponent } from './login/login.component';
     BrowserModule,
     AppRoutingModule
   ],
-  providers: [],
+  providers: [AuthService, AuthenticateGuard, CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

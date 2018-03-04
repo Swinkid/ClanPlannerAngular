@@ -33,10 +33,10 @@ router.get('/discord/callback', function (req, res, next) {
 			roles: rolesData
 		};
 
-		var token = jwt.sign(tokenData, config.auth.token.secret);
+		var token = jwt.sign(tokenData, config.auth.token.secret, { expiresIn: '1h' });
 
 		//TODO: Set cookie secure
-		res.cookie(config.auth.cookie.name, token);
+		res.cookie(config.auth.cookie.name, token, { secure: true });
 		res.redirect('/dashboard');
 
 	})(req, res, next);
