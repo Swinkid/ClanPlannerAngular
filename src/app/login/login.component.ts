@@ -5,7 +5,7 @@ import { Component, OnInit } from '@angular/core';
   selector: 'app-login',
   template: `
     <p>
-      login works!
+      <a href="/auth/discord">Login With Discord</a>
     </p>
   `,
   styles: []

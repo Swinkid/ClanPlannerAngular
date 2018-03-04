@@ -11,6 +11,7 @@ import { AuthService } from "./services/auth.service";
 import { AuthenticateGuard } from "./guards/authenticate.guard";
 
 import { CookieService } from 'ngx-cookie-service';
+import { UserService } from "./services/user.service";
 
 @NgModule({
   declarations: [
@@ -22,7 +23,7 @@ import { CookieService } from 'ngx-cookie-service';
     BrowserModule,
     AppRoutingModule
   ],
-  providers: [AuthService, AuthenticateGuard, CookieService],
+  providers: [AuthService, AuthenticateGuard, CookieService, UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
