@@ -7,6 +7,7 @@ import { AppRoutingModule } from './/app-routing.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginComponent } from './login/login.component';
 
+
 import { AuthService } from "./services/auth.service";
 import { AuthenticateGuard } from "./guards/authenticate.guard";
 
@@ -17,19 +18,19 @@ import { ApiService } from "./services/api.service";
 import { DashboardLogoutComponent } from './dashboard/dashboard-logout.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    DashboardComponent,
-    LoginComponent,
-    DashboardRegisterComponent,
-    DashboardLogoutComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule
-  ],
-  providers: [AuthService, AuthenticateGuard, CookieService, UserService, ApiService],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        DashboardComponent,
+        LoginComponent,
+        DashboardRegisterComponent,
+        DashboardLogoutComponent
+    ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule
+    ],
+    providers: [AuthService, AuthenticateGuard, CookieService, UserService, ApiService],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }
