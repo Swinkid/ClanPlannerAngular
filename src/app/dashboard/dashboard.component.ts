@@ -6,7 +6,7 @@ import { UserService } from "../services/user.service";
   selector: 'app-dashboard',
   template: `
     <p>
-      dashboard works! {{username}}
+      dashboard works! {{username}} <a [routerLink]="['/logout']">Logout</a>
     </p>
   `,
   styles: []

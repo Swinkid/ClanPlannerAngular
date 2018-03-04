@@ -20,4 +20,16 @@ export class UserService {
         return jwt_decode(this.authService.getToken()).user.discord.email;
     }
 
+    public getDiscordUserId(){
+        return jwt_decode(this.authService.getToken()).user.discord.id;
+    }
+
+    public getAvatarHash() : String {
+        return jwt_decode(this.authService.getToken()).user.discord.avatar;
+    }
+
+    public getAvatarUrl() : String {
+        return "https://cdn.discordapp.com/avatars/" + this.getDiscordUserId() + "/" + this.getAvatarHash() + ".jpg"
+    }
+
 }

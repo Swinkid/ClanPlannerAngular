@@ -9,15 +9,14 @@ export const TOKEN_NAME: string = 'jwt_token';
 @Injectable()
 export class AuthService {
 
-    public redirectUrl: string;
-
-    constructor(private cookieService: CookieService) {
-
-    }
-
+    constructor(private cookieService: CookieService) {}
 
     getToken(){
         return this.cookieService.get(TOKEN_NAME);
+    }
+
+    deleteToken(){
+        return this.cookieService.delete(TOKEN_NAME);
     }
 
     getTokenExpirationDate(token: string): Date {
