@@ -1,33 +1,35 @@
 var config = {
 	development: {
-		//url to be used in link generation
-		url: 'http://localhost',
-		//mongodb connection settings
-		database: {
-			host:   '127.0.0.1',
-			port:   '27017',
-			db:     'site_dev'
+
+		site: {
+
 		},
-		//server details
-		server: {
-			host: '127.0.0.1',
-			port: '3422'
+		database: {
+			host:   'mongodb://localhost',
+			db:     '/clanplanner',
+			getCredentials: function () {
+				return this.host + this.db;
+			}
+		},
+		auth: {
+			discord:{
+				scopes: ['identify', 'email'],
+				clientID: '',
+				clientSecret: '',
+				callbackURL: 'http://localhost:3000/auth/discord/callback'
+			},
+			token: {
+				secret: '',
+				expiresInMinutes: 10,
+				issuer: 'dev.local'
+			},
+			cookie: {
+				name: 'auth'
+			}
 		}
 	},
 	production: {
-		//url to be used in link generation
-		url: 'http://my.site.com',
-		//mongodb connection settings
-		database: {
-			host: '127.0.0.1',
-			port: '27017',
-			db:     'site'
-		},
-		//server details
-		server: {
-			host:   '127.0.0.1',
-			port:   '3421'
-		}
+
 	}
 };
 module.exports = config;
