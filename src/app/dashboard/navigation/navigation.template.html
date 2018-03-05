@@ -1,8 +1,8 @@
-<ul class="nav flex-column">
+<ul class="nav nav-tabs">
     <li class="nav-item">
-        <a routerLink="/dashboard" routerLinkActive="active">Home</a>
+        <a class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" routerLink="/dashboard">Home</a>
     </li>
     <li class="nav-item">
-        <a routerLink="/dashboard/register" routerLinkActive="active">Events</a>
+        <a class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" routerLink="/dashboard/register">Events</a>
     </li>
 </ul>
