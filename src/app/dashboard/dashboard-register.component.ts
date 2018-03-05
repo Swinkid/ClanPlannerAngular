@@ -8,7 +8,7 @@ import { ApiService } from "../services/api.service";
     selector: 'app-dashboard-register',
     template: `
         <p>
-            dashboard-register works!
+            dashboard-register works! {{ events }}
         </p>
     `,
     styles: []
@@ -29,7 +29,7 @@ export class DashboardRegisterComponent implements OnInit {
     getEvents(){
         console.log("Sending?");
         this.apiService.getEvents().subscribe(
-            data => {this.events = data},
+            data => {this.events = data[0].name },
             err => console.log(err),
             () => console.log(this.events)
         );

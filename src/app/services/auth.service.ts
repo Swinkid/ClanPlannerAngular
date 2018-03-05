@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import * as jwt_decode from 'jwt-decode';
+
+import {default as decode} from 'jwt-decode';
 
 import { CookieService } from 'ngx-cookie-service';
 
@@ -20,7 +21,7 @@ export class AuthService {
     }
 
     getTokenExpirationDate(token: string): Date {
-        const decoded = jwt_decode(token);
+        const decoded = decode(token);
 
         if (decoded.exp === undefined) return null;
 

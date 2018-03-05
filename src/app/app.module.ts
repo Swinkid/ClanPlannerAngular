@@ -3,8 +3,7 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
-import { AppRoutingModule } from './/app-routing.module';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { AppRoutingModule } from './app-routing.module';
 import { LoginComponent } from './login/login.component';
 
 
@@ -13,24 +12,29 @@ import { AuthenticateGuard } from "./guards/authenticate.guard";
 
 import { CookieService } from 'ngx-cookie-service';
 import { UserService } from "./services/user.service";
-import { DashboardRegisterComponent } from './dashboard/dashboard-register.component';
+
 import { ApiService } from "./services/api.service";
-import { DashboardLogoutComponent } from './dashboard/dashboard-logout.component';
+import {LogoutComponent} from "./logout.component";
+
 
 @NgModule({
     declarations: [
         AppComponent,
-        DashboardComponent,
         LoginComponent,
-        DashboardRegisterComponent,
-        DashboardLogoutComponent
+        LogoutComponent
     ],
     imports: [
         BrowserModule,
         AppRoutingModule,
-        HttpClientModule
+        HttpClientModule,
     ],
-    providers: [AuthService, AuthenticateGuard, CookieService, UserService, ApiService],
+    providers: [
+        AuthService,
+        AuthenticateGuard,
+        CookieService,
+        UserService,
+        ApiService
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

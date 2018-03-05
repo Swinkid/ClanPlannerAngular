@@ -7,7 +7,7 @@ import { UserService } from "../services/user.service";
   selector: 'app-dashboard',
   template: `
     <p>
-      dashboard works! {{username}} <a [routerLink]="['/logout']">Logout</a>
+      dashboard works! {{username}} 
         <i class="fas fa-address-card"></i>
     </p>
   `,
