@@ -35,9 +35,7 @@ module.exports = function(passport) {
 						}
 					});
 
-				}
-
-				if(user){
+				} else {
 					//TODO: Update after X time
 					return done(null, user);
 				}

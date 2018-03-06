@@ -36,8 +36,7 @@ router.get('/discord/callback', function (req, res, next) {
 		var token = jwt.sign(tokenData, config.auth.token.secret, { expiresIn: '1h' });
 
 		//TODO: Set cookie secure
-		res.cookie(config.auth.cookie.name, token, { });
-		res.redirect('/dashboard');
+		return res.cookie(config.auth.cookie.name, token, { }).redirect('/dashboard');
 
 	})(req, res, next);
 
