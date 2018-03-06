@@ -11,10 +11,11 @@ import {UserService} from "../services/user.service";
 import {ApiService} from "../services/api.service";
 
 import { NavigationComponent } from './navigation/navigation.component';
-import { RegisterComponent } from './register/register.component';
-import {DashboardRegisterComponent} from "./dashboard-register.component";
-import {DashboardComponent} from "./dashboard.component";
+import { RegisterComponent} from "./register/register.component";
+import { DashboardComponent} from "./dashboard.component";
 import { HomeComponent } from './home/home.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 
 const routes: Routes = [
     {
@@ -22,7 +23,7 @@ const routes: Routes = [
         component: DashboardComponent,
         children: [
             {path :'', component: HomeComponent},
-            {path: 'register', component: DashboardRegisterComponent},
+            {path: 'register', component: RegisterComponent},
         ]
     }
 
@@ -31,14 +32,16 @@ const routes: Routes = [
 @NgModule({
     imports: [
         CommonModule,
+        NgbModule.forRoot(),
         RouterModule.forChild(routes)
     ],
     declarations: [
-        DashboardRegisterComponent,
+        RegisterComponent,
         DashboardComponent,
         NavigationComponent,
         RegisterComponent,
-        HomeComponent
+        HomeComponent,
+        NavbarComponent
     ],
     providers: [
         AuthService,

@@ -6,13 +6,14 @@ import { UserService } from "../services/user.service";
 @Component({
     selector: 'app-dashboard',
     templateUrl: 'dashboard.template.html',
-    styles: []
+    //TODO: Refactor CSS into their own respective css files
+    styleUrls: ['dashboard.styles.css']
 })
 export class DashboardComponent implements OnInit {
 
-    username: String = this.userService.getUsername();
 
-    constructor(private userService : UserService) { }
+
+    constructor() { }
 
     ngOnInit() {
     }

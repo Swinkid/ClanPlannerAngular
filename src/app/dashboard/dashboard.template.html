@@ -1,7 +1,13 @@
-<dashboard-navigation></dashboard-navigation>
-<p>
-    dashboard works! {{username}}
-    <i class="fas fa-address-card"></i>
+<dashboard-navbar></dashboard-navbar>
 
-</p>
-<router-outlet></router-outlet>
+<div class="container-fluid">
+    <div class="row">
+
+        <dashboard-navigation></dashboard-navigation>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+            <router-outlet></router-outlet>
+        </main>
+
+    </div>
+</div>
