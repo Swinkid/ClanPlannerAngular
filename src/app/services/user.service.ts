@@ -16,6 +16,14 @@ export class UserService {
         return jwt_decode(this.authService.getToken()).user.discord.username;
     }
 
+    public getDiscriminator(){
+        return jwt_decode(this.authService.getToken()).user.discord.discriminator;
+    }
+
+    public getFullUsername() : String {
+        return this.getUsername() + "#" + this.getDiscriminator();
+    }
+
     public getEmail(){
         return jwt_decode(this.authService.getToken()).user.discord.email;
     }

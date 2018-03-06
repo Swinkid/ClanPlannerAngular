@@ -2,7 +2,21 @@
     <h1 class="h2">Event Register</h1>
 </div>
 
-<p>
-    dashboard-register works! {{ events }}
-    <i class="fas fa-address-card"></i>
-</p>
+<table class="table">
+    <thead>
+    <tr>
+        <th>Event</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let event of events">
+        <td>{{ event.name }}</td>
+        <td>{{ event.fromDate }}</td>
+        <td>{{ event.toDate }}</td>
+        <td></td>
+    </tr>
+    </tbody>
+</table>

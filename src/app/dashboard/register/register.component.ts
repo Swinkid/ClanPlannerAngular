@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { AuthService } from "../../services/auth.service";
@@ -11,7 +11,7 @@ import { ApiService } from "../../services/api.service";
 })
 export class RegisterComponent implements OnInit {
 
-    events: Object;
+    public events: Object;
 
     constructor(public authService : AuthService, private apiService : ApiService ) {
 
@@ -21,13 +21,10 @@ export class RegisterComponent implements OnInit {
         this.getEvents();
     }
 
-
     getEvents(){
-        console.log("Sending?");
         this.apiService.getEvents().subscribe(
-            data => {this.events = data[0].name },
-            err => console.log(err),
-            () => console.log(this.events)
+            data => {this.events = data },
+            err => function () {}
         );
     }
 
