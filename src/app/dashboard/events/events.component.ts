@@ -6,10 +6,10 @@ import { ApiService } from "../../services/api.service";
 
 @Component({
     selector: 'dashboard-register',
-    templateUrl: 'register.template.html',
+    templateUrl: 'events.template.html',
     styles: []
 })
-export class RegisterComponent implements OnInit {
+export class EventsComponent implements OnInit {
 
     public events: Object;
 

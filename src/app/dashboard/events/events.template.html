@@ -13,9 +13,9 @@
     </thead>
     <tbody>
     <tr *ngFor="let event of events">
-        <td>{{ event.name }}</td>
-        <td>{{ event.fromDate }}</td>
-        <td>{{ event.toDate }}</td>
+        <td><a [routerLink]="['/dashboard/events', event._id]">{{ event.name }}</a></td>
+        <td>{{ event.fromDate | date }}</td>
+        <td>{{ event.toDate | date }}</td>
         <td></td>
     </tr>
     </tbody>

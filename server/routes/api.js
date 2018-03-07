@@ -16,7 +16,7 @@ router.get('/', function (req, res) {
 
 //TODO: Split endpoints?
 
-router.get('/users', authenticate, function (req, res) {
+router.get('/users', function (req, res) {
 
 	//TODO: Joi to validate
 
@@ -30,18 +30,24 @@ router.get('/users', authenticate, function (req, res) {
 		query = {};
 	}
 
-	User.find(query, function (error, user) {
+	if(filteredId == ""){
 
-		if(error){
-			return res.status(500).json({error: 'Internal Server Error'});
-		}
+		return res.status(200).json([]);
 
-		if(!user){
-			return res.status(204).json({error: 'User not found'});
-		}
+	} else {
+		User.find(query, function (error, user) {
 
-		return res.status(200).json(user);
-	});
+			if(error){
+				return res.status(500).json({error: 'Internal Server Error'});
+			}
+
+			if(!user){
+				return res.status(204).json({error: 'User not found'});
+			}
+
+			return res.status(200).json(user);
+		});
+	}
 
 });
 
@@ -81,9 +87,19 @@ router.delete('/users/:id', authenticate, function (req, res) {
 router.get('/events', authenticate, function (req, res) {
 
 	//TODO: Joi to validate
-	//TODO: XSS validate?
 
-	Event.find({}, function (error, events) {
+	var filteredId = xss(req.query.id);
+	var events = filteredId.split(",");
+
+	var query;
+	if(req.query.id){
+		query = {_id: events};
+	} else {
+		query = {};
+	}
+
+
+	Event.find(query, function (error, events) {
 
 		if(error){
 			return res.status(500).json({error: 'Internal Server Error'});
@@ -96,7 +112,20 @@ router.get('/events', authenticate, function (req, res) {
 
 router.get('/events/:id', authenticate, function (req, res) {
 
-    return res.status(501).json({error: "Not Implemented"});
+	var filteredId = xss(req.params.id);
+
+	Event.findOne({_id: filteredId}, function (error, user) {
+
+		if(error){
+			return res.status(500).json({error: 'Internal Server Error'});
+		}
+
+		if(!user){
+			return res.status(204).json({error: 'Event not found'});
+		}
+
+		return res.status(200).json(user);
+	});
 
 });
 

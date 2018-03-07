@@ -11,19 +11,21 @@ import {UserService} from "../services/user.service";
 import {ApiService} from "../services/api.service";
 
 import { NavigationComponent } from './navigation/navigation.component';
-import { RegisterComponent} from "./register/register.component";
+import {EventsComponent} from "./events/events.component";
 import { DashboardComponent} from "./dashboard.component";
 import { HomeComponent } from './home/home.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import { EventComponent } from './events/event/event.component';
 
 const routes: Routes = [
     {
         path: '',
         component: DashboardComponent,
         children: [
-            {path :'', component: HomeComponent},
-            {path: 'register', component: RegisterComponent},
+            { path :'', component: HomeComponent },
+            { path: 'events', component: EventsComponent },
+            { path: 'events/:id', component: EventComponent }
         ]
     }
 
@@ -36,12 +38,12 @@ const routes: Routes = [
         RouterModule.forChild(routes)
     ],
     declarations: [
-        RegisterComponent,
         DashboardComponent,
         NavigationComponent,
-        RegisterComponent,
+        EventsComponent,
         HomeComponent,
-        NavbarComponent
+        NavbarComponent,
+        EventComponent
     ],
     providers: [
         AuthService,
