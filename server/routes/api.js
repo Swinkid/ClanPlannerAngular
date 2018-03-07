@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
-var xss = require("xss");
+const xss = require("xss");
 
 var env = process.env.NODE_ENV || 'development';
 var config = require('../../config')[env];
