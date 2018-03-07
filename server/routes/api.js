@@ -64,6 +64,18 @@ router.get('/users/:id', middleware, function (req, res) {
 
 });
 
+router.patch('/users/:id', middleware, function (req, res) {
+
+    return res.status(501).json({error: "Not Implemented"});
+
+});
+
+router.delete('/users/:id', middleware, function (req, res) {
+
+    return res.status(501).json({error: "Not Implemented"});
+
+});
+
 router.get('/events', middleware, function (req, res) {
 
 	//TODO: Joi to validate
@@ -77,6 +89,30 @@ router.get('/events', middleware, function (req, res) {
 
 		return res.status(200).json(events);
 	});
+
+});
+
+router.get('/events/:id', middleware, function (req, res) {
+
+    return res.status(501).json({error: "Not Implemented"});
+
+});
+
+router.post('/events', middleware, function (req, res) {
+
+    return res.status(501).json({error: "Not Implemented"});
+
+});
+
+router.patch('/events/:id', middleware, function (req, res) {
+
+    return res.status(501).json({error: "Not Implemented"});
+
+});
+
+router.delete('/events/:id', middleware, function (req, res) {
+
+    return res.status(501).json({error: "Not Implemented"});
 
 });
 
