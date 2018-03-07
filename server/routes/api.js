@@ -14,6 +14,8 @@ router.get('/', function (req, res) {
 	res.send('api works');
 });
 
+//TODO: Split endpoints?
+
 router.get('/users', authenticate, function (req, res) {
 
 	//TODO: Joi to validate
