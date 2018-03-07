@@ -14,7 +14,7 @@ router.get('/', function (req, res) {
 	res.send('api works');
 });
 
-router.get('/users', function (req, res) {
+router.get('/users', authenticate, function (req, res) {
 
 	//TODO: Joi to validate
 
@@ -43,7 +43,7 @@ router.get('/users', function (req, res) {
 
 });
 
-router.get('/users/:id', middleware, function (req, res) {
+router.get('/users/:id', authenticate, function (req, res) {
 
 	//TODO: Joi to validate
 
@@ -64,19 +64,19 @@ router.get('/users/:id', middleware, function (req, res) {
 
 });
 
-router.patch('/users/:id', middleware, function (req, res) {
+router.patch('/users/:id', authenticate, function (req, res) {
 
     return res.status(501).json({error: "Not Implemented"});
 
 });
 
-router.delete('/users/:id', middleware, function (req, res) {
+router.delete('/users/:id', authenticate, function (req, res) {
 
     return res.status(501).json({error: "Not Implemented"});
 
 });
 
-router.get('/events', middleware, function (req, res) {
+router.get('/events', authenticate, function (req, res) {
 
 	//TODO: Joi to validate
 	//TODO: XSS validate?
@@ -92,31 +92,97 @@ router.get('/events', middleware, function (req, res) {
 
 });
 
-router.get('/events/:id', middleware, function (req, res) {
+router.get('/events/:id', authenticate, function (req, res) {
 
     return res.status(501).json({error: "Not Implemented"});
 
 });
 
-router.post('/events', middleware, function (req, res) {
+router.post('/events', authenticate, function (req, res) {
 
     return res.status(501).json({error: "Not Implemented"});
 
 });
 
-router.patch('/events/:id', middleware, function (req, res) {
+router.patch('/events/:id', authenticate, function (req, res) {
 
     return res.status(501).json({error: "Not Implemented"});
 
 });
 
-router.delete('/events/:id', middleware, function (req, res) {
+router.delete('/events/:id', authenticate, function (req, res) {
 
     return res.status(501).json({error: "Not Implemented"});
 
 });
 
-function middleware(req, res, next) {
+router.get('/activities/:id', authenticate, function (req, res) {
+
+    return res.status(501).json({error: "Not Implemented"});
+
+});
+
+router.get('/activities', authenticate, function (req, res) {
+
+    return res.status(501).json({error: "Not Implemented"});
+
+});
+
+router.post('/activities', authenticate, function (req, res) {
+
+    return res.status(501).json({error: "Not Implemented"});
+
+});
+
+router.patch('/activities/:id', authenticate, function (req, res) {
+
+    return res.status(501).json({error: "Not Implemented"});
+
+});
+
+router.delete('/activities/:id', authenticate, function (req, res) {
+
+    return res.status(501).json({error: "Not Implemented"});
+
+});
+
+router.get('/activities/type', authenticate, function (req, res) {
+
+    return res.status(501).json({error: "Not Implemented"});
+
+});
+
+router.get('/activities/type/:id', authenticate, function (req, res) {
+
+    return res.status(501).json({error: "Not Implemented"});
+
+});
+
+router.post('/activities/type', authenticate, function (req, res) {
+
+    return res.status(501).json({error: "Not Implemented"});
+
+});
+
+router.get('/activities/type/:id', authenticate, function (req, res) {
+
+    return res.status(501).json({error: "Not Implemented"});
+
+});
+
+router.patch('/activities/type/:id', authenticate, function (req, res) {
+
+    return res.status(501).json({error: "Not Implemented"});
+
+});
+
+router.delete('/activities/type/:id', authenticate, function (req, res) {
+
+    return res.status(501).json({error: "Not Implemented"});
+
+});
+
+function authenticate(req, res, next) {
 	var token = req.headers['x-access-token'];
 
 	if(token){
