@@ -6,7 +6,8 @@ import {AuthService} from "../../../services/auth.service";
 
 import {User} from "../../../interfaces/user";
 import {Event} from "../../../interfaces/event";
-
+import * as _ from 'lodash';
+import {UserService} from "../../../services/user.service";
 
 @Component({
     selector: 'dashboard-event',
@@ -18,7 +19,7 @@ export class EventComponent implements OnInit {
     public event : Event;
     public users : User[];
 
-    constructor(public authService : AuthService, private apiService : ApiService, private route: ActivatedRoute) { }
+    constructor(public authService : AuthService, private apiService : ApiService, private route: ActivatedRoute, public userService : UserService) { }
 
     ngOnInit() {
 
@@ -33,6 +34,20 @@ export class EventComponent implements OnInit {
             });
 
         });
+
+    }
+
+    isUserAttending(event: Event, user : String) {
+
+        let foundUser = _.find(event.users, function (u) {
+            if(u.userId === user){
+                return true;
+            } else {
+                return false;
+            }
+        });
+
+        return foundUser !== undefined;
 
     }
 

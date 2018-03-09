@@ -38,7 +38,7 @@
     </div>
 </div>
 
-<div class="card">
+<div class="card" *ngIf="isUserAttending(event, userService.getUserId())">
     <div class="card-header">
         Attendance Settings
     </div>
