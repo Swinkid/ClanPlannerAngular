@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const xss = require("xss");
+const _ = require('lodash');
 
 var env = process.env.NODE_ENV || 'development';
 var config = require('../../config')[env];
@@ -126,6 +127,68 @@ router.get('/events/:id', authenticate, function (req, res) {
 
 		return res.status(200).json(user);
 	});
+
+});
+
+router.post('/events/register/:id', authenticate, function (req, res) {
+
+	var filteredId = xss(req.params.id);
+	var filteredToggle = xss(req.body.attendance);
+
+
+	if(filteredToggle === "true"){
+
+		Event.findOne({'_id': filteredId}, function (error, fetchedEvent) {
+
+			if(error){
+				return res.status(500).json({error: 'Internal Server Error'});
+			}
+
+			if(!fetchedEvent){
+				return res.status(204).json({error: 'Event not found'});
+			}
+
+			if(fetchedEvent.users.indexOf(req.principal.user._id) > -1){
+				return res.status(204).json({error: 'User already attending'});
+			} else {
+
+				Event.update({'_id': filteredId}, { $push: { 'users': req.principal.user._id}}, function (error, updatedEvent) {
+					if(error){
+						return res.status(500).json({error: 'Internal Server Error'});
+					}
+
+					if(!updatedEvent){
+						return res.status(204).json({error: 'Event not found'});
+					}
+
+					if(updatedEvent){
+						return res.status(200).json({error: 'Done'});
+					}
+				});
+
+			}
+
+		});
+
+	}
+
+	if(filteredToggle === "false"){
+
+		Event.update({'_id': filteredId}, { $pull: { 'users': req.principal.user._id}}, function (error, updatedEvent) {
+			if(error){
+				return res.status(500).json({error: 'Internal Server Error'});
+			}
+
+			if(!updatedEvent){
+				return res.status(204).json({error: 'Event not found'});
+			}
+
+			if(updatedEvent){
+				return res.status(200).json({error: 'Done'});
+			}
+		});
+
+	}
 
 });
 

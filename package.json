@@ -31,6 +31,7 @@
     "express": "^4.16.2",
     "jsonwebtoken": "^8.2.0",
     "jwt-decode": "^2.2.0",
+    "lodash": "^4.17.5",
     "moment": "^2.21.0",
     "mongoose": "^5.0.8",
     "ngx-cookie-service": "^1.0.10",

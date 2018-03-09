@@ -4,6 +4,10 @@ import { HttpClient } from '@angular/common/http';
 import { AuthService } from "../../services/auth.service";
 import { ApiService } from "../../services/api.service";
 
+import {Event} from "../../interfaces/event";
+import {User} from "../../interfaces/user";
+import {UserService} from "../../services/user.service";
+
 @Component({
     selector: 'dashboard-register',
     templateUrl: 'events.template.html',
@@ -12,13 +16,15 @@ import { ApiService } from "../../services/api.service";
 export class EventsComponent implements OnInit {
 
     public events: Object;
+    public userId: String;
 
-    constructor(public authService : AuthService, private apiService : ApiService ) {
+    constructor(public authService : AuthService, private apiService : ApiService, public userService : UserService ) {
 
     }
 
     ngOnInit() {
         this.getEvents();
+        this.userId = this.userService.getUserId();
     }
 
     getEvents(){
@@ -26,6 +32,31 @@ export class EventsComponent implements OnInit {
             data => {this.events = data },
             err => function () {}
         );
+    }
+
+    registerAttendance(event : String, attending: String){
+        this.apiService.registerAttendance(event, attending).subscribe(
+            data => {},
+            error => {},
+            () =>{
+                this.getEvents();
+            }
+        );
+
+    }
+
+    isUserAttending(event: Event, user : String){
+
+        if(event.users.indexOf(user) > -1){
+
+            return true;
+
+        } else {
+
+            return false;
+
+        }
+
     }
 
 

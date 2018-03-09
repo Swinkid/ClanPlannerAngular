@@ -8,7 +8,7 @@
         <th>Event</th>
         <th>Start Date</th>
         <th>End Date</th>
-        <th></th>
+        <th>Attendance</th>
     </tr>
     </thead>
     <tbody>
@@ -16,7 +16,13 @@
         <td><a [routerLink]="['/dashboard/events', event._id]">{{ event.name }}</a></td>
         <td>{{ event.fromDate | date }}</td>
         <td>{{ event.toDate | date }}</td>
-        <td></td>
+        <td>
+
+            <button *ngIf="isUserAttending(event, userId) === true" type="button" class="btn btn-danger" (click)="registerAttendance(event._id,'false')">Unattend</button>
+            <button *ngIf="isUserAttending(event, userId) === false" type="button" class="btn btn-success" (click)="registerAttendance(event._id,'true')">Attend</button>
+
+
+        </td>
     </tr>
     </tbody>
 </table>

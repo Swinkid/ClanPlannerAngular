@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {AuthService} from "./auth.service";
+import {UserService} from "./user.service";
 
 import {Event} from "../interfaces/event";
 import {User} from "../interfaces/user";
@@ -21,6 +22,10 @@ export class ApiService {
 
     public getUsers(users : String[]){
         return this._http.get<User[]>('/api/users?id=' + users.join(), { headers: {'x-access-token': this.authService.getToken()} });
+    }
+
+    public registerAttendance(event : String, attending : String){
+        return this._http.post('/api/events/register/' + event, { attendance: attending }, { headers: {'x-access-token': this.authService.getToken()} });
     }
 
 }
