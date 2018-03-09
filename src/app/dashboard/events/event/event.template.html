@@ -3,35 +3,147 @@
 </div>
 
 
-<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3">
-    <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
-        <div class="card-body">
-            <h5 class="card-title">Attendees</h5>
-            <p class="card-text">{{ users?.length }}</p>
+<div class="row">
+    <div class="col-3">
+        <div class="card text-white bg-primary mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Attendees</h5>
+                <p class="card-text">{{ users?.length }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-3">
+        <div class="card text-white bg-primary">
+            <div class="card-body">
+                <h5 class="card-title">Days to go</h5>
+                <p class="card-text">42</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-3">
+        <div class="card text-white bg-primary">
+            <div class="card-body">
+                <h5 class="card-title">Some Random Stat</h5>
+                <p class="card-text">69</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-3">
+        <div class="card text-white bg-success">
+            <div class="card-body">
+                <h5 class="card-title">Blaze It</h5>
+                <p class="card-text">420</p>
+            </div>
         </div>
     </div>
 </div>
 
-<table class="table">
-    <thead>
-    <tr>
-        <th></th>
-        <th>Name</th>
-        <th></th>
-        <th></th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let user of users">
+<div class="card">
+    <div class="card-header">
+        Attendance Settings
+    </div>
+    <div class="card-block">
+        <div class="form-group row">
+            <label for="realName" class="col-1 col-form-label">Real Name</label>
+            <div class="col-2">
+                <input class="form-control" type="text" id="realName">
+            </div>
+            <label class="col-1 col-form-label" for="ticketPurchasedSelect">Ticket Purchased</label>
+            <div class="col-2">
+                <select class="custom-select" id="ticketPurchasedSelect">
+                    <option value="1">Yes</option>
+                    <option value="2">No</option>
+                </select>
+            </div>
 
-        <td>
-            <img class="img-thumbnail" width="100" height="100" *ngIf="user.discord.avatar !== null" src="{{ 'http://cdn.discordapp.com/avatars/' + user.discord.id + '/' + user.discord.avatar }}">
-            <img class="img-thumbnail" width="100" height="100" *ngIf="user.discord.avatar === null" src="http://placehold.it/100x100">
-        </td>
-        <td>{{ user.discord.username }}</td>
-        <td></td>
-        <td></td>
-    </tr>
-    </tbody>
-</table>
+            <label class="col-1 col-form-label" for="seatPickerSelect">On Seat Picker</label>
+            <div class="col-2">
+                <select class="custom-select" id="seatPickerSelect">
+                    <option value="1">Yes</option>
+                    <option value="2">No</option>
+                </select>
+            </div>
 
+            <label class="col-1 col-form-label" for="inFacebookChat">In Facebook Chat</label>
+            <div class="col-2">
+                <select class="custom-select" id="inFacebookChat">
+                    <option value="1">Yes</option>
+                    <option value="2">No</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="arrivalDate" class="col-1 col-form-label">Arrival Date</label>
+            <div class="col-2">
+                <input class="form-control" type="date" id="arrivalDate">
+            </div>
+            <label class="col-1 col-form-label" for="accommodationSelect">Accommodation</label>
+            <div class="col-2">
+                <select class="custom-select" id="accommodationSelect">
+                    <option value="1">Hotel</option>
+                    <option value="2">Camping</option>
+                    <option value="3">Nearby</option>
+                </select>
+            </div>
+            <label class="col-1 col-form-label" for="transportSelect">Transport</label>
+            <div class="col-2">
+                <select class="custom-select" id="transportSelect">
+                    <option value="1">Driving</option>
+                    <option value="2">Lift</option>
+                    <option value="3">Train</option>
+                    <option value="4">Plane</option>
+                    <option value="5">Nearby</option>
+                    <option value="6">Other</option>
+                </select>
+            </div>
+            <label class="col-1 col-form-label" for="location">Location</label>
+            <div class="col-2">
+                <input class="form-control" type="text" id="location">
+            </div>
+        </div>
+    </div>
+</div>
+
+<br />
+
+<div class="card">
+    <div class="card-header">
+        Attendee's
+    </div>
+    <div class="card-block">
+        <table class="table">
+            <thead>
+            <tr>
+                <th></th>
+                <th>Discord Name</th>
+                <th>Real Name</th>
+                <th>Brought Ticket</th>
+                <th>On Seat Picker</th>
+                <th>Arrival Date</th>
+                <th>Accommodation</th>
+                <th>Transport</th>
+                <th>Location</th>
+                <th>In Facebook Chat</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let user of users">
+
+                <td>
+                    <img class="img-thumbnail rounded-circle" width="100" height="100" *ngIf="user.discord.avatar !== null" src="{{ 'http://cdn.discordapp.com/avatars/' + user.discord.id + '/' + user.discord.avatar }}">
+                    <img class="img-thumbnail rounded-circle" width="100" height="100" *ngIf="user.discord.avatar === null" src="http://placehold.it/100x100">
+                </td>
+                <td>{{ user.discord.username + '#' + user.discord.discriminator }}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

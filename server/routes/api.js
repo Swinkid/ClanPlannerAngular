@@ -9,6 +9,7 @@ var config = require('../../config')[env];
 
 const Event = require('../models/event');
 const User = require('../models/user');
+const Attendance = require('../models/attendance');
 
 /* GET api listing. */
 router.get('/', function (req, res) {
@@ -130,6 +131,13 @@ router.get('/events/:id', authenticate, function (req, res) {
 
 });
 
+
+
+	//TODO: In hindsight, this is a jankey way of doing it.......
+	//http://mongoosejs.com/docs/subdocs.html#altsyntax
+	//Leverage above instead
+
+
 router.post('/events/register/:id', authenticate, function (req, res) {
 
 	var filteredId = xss(req.params.id);
@@ -152,7 +160,23 @@ router.post('/events/register/:id', authenticate, function (req, res) {
 				return res.status(204).json({error: 'User already attending'});
 			} else {
 
-				Event.update({'_id': filteredId}, { $push: { 'users': req.principal.user._id}}, function (error, updatedEvent) {
+				var attendance = new Attendance({
+
+					userId : req.principal.user._id,
+					eventId : filteredId,
+					discord : req.principal.user.discord,
+					realName: "",
+					broughtTicket: false,
+					onSeatPicker: false,
+					dateArriving: new Date(0),
+					accommodation: "",
+					transportPlans: "",
+					location: "",
+					inFacebookChat: false
+
+				});
+
+				Event.update({'_id': filteredId}, { $push: { 'users': attendance}}, function (error, updatedEvent) {
 					if(error){
 						return res.status(500).json({error: 'Internal Server Error'});
 					}
@@ -174,7 +198,7 @@ router.post('/events/register/:id', authenticate, function (req, res) {
 
 	if(filteredToggle === "false"){
 
-		Event.update({'_id': filteredId}, { $pull: { 'users': req.principal.user._id}}, function (error, updatedEvent) {
+		Event.update({'_id': filteredId}, { $pull: { 'users': {'userId': req.principal.user._id}}}, function (error, updatedEvent) {
 			if(error){
 				return res.status(500).json({error: 'Internal Server Error'});
 			}

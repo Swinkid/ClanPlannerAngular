@@ -1,12 +1,13 @@
 import {Component, Input, OnInit} from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import * as _ from 'lodash';
 
 import { AuthService } from "../../services/auth.service";
 import { ApiService } from "../../services/api.service";
 
 import {Event} from "../../interfaces/event";
-import {User} from "../../interfaces/user";
 import {UserService} from "../../services/user.service";
+
+
 
 @Component({
     selector: 'dashboard-register',
@@ -15,7 +16,7 @@ import {UserService} from "../../services/user.service";
 })
 export class EventsComponent implements OnInit {
 
-    public events: Object;
+    public events: Event[];
     public userId: String;
 
     constructor(public authService : AuthService, private apiService : ApiService, public userService : UserService ) {
@@ -30,7 +31,8 @@ export class EventsComponent implements OnInit {
     getEvents(){
         this.apiService.getEvents().subscribe(
             data => {this.events = data },
-            err => function () {}
+            err => function () {},
+            () => {}
         );
     }
 
@@ -42,23 +44,19 @@ export class EventsComponent implements OnInit {
                 this.getEvents();
             }
         );
-
     }
 
-    isUserAttending(event: Event, user : String){
+    isUserAttending(event: Event, user : String) {
 
-        if(event.users.indexOf(user) > -1){
+        let foundUser = _.find(event.users, function (u) {
+            if(u.userId === user){
+                return true;
+            } else {
+                return false;
+            }
+        });
 
-            return true;
-
-        } else {
-
-            return false;
-
-        }
+        return foundUser !== undefined;
 
     }
-
-
-
 }
