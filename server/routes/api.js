@@ -76,13 +76,13 @@ router.get('/users/:id', authenticate, function (req, res) {
 
 router.patch('/users/:id', authenticate, function (req, res) {
 
-    return res.status(501).json({error: "Not Implemented"});
+	return res.status(501).json({error: "Not Implemented"});
 
 });
 
 router.delete('/users/:id', authenticate, function (req, res) {
 
-    return res.status(501).json({error: "Not Implemented"});
+	return res.status(501).json({error: "Not Implemented"});
 
 });
 
@@ -133,9 +133,9 @@ router.get('/events/:id', authenticate, function (req, res) {
 
 
 
-	//TODO: In hindsight, this is a jankey way of doing it.......
-	//http://mongoosejs.com/docs/subdocs.html#altsyntax
-	//Leverage above instead
+//TODO: In hindsight, this is a jankey way of doing it.......
+//http://mongoosejs.com/docs/subdocs.html#altsyntax
+//Leverage above instead
 
 
 router.post('/events/register/:id', authenticate, function (req, res) {
@@ -215,87 +215,153 @@ router.post('/events/register/:id', authenticate, function (req, res) {
 
 });
 
+router.post('/events/attendance/:event', authenticate, function (req, res) {
+
+	//TODO XSS and validate
+
+	var attendance = new Attendance({
+
+		userId : req.principal.user._id,
+		eventId : req.params.event,
+		discord : req.principal.user.discord,
+		realName: req.body.formValue.realName,
+		broughtTicket: req.body.formValue.ticketPurchasedSelect,
+		onSeatPicker: req.body.formValue.seatPickerSelect,
+		accommodation: req.body.formValue.accommodationSelect,
+		transportPlans: req.body.formValue.transportSelect,
+		dateArriving: new Date(req.body.formValue.arrivalDate),
+		location: req.body.formValue.location,
+		inFacebookChat: req.body.formValue.inFacebookChat
+
+	});
+
+	Event.update({'_id': req.params.event}, { $pull: { 'users': {'userId': req.principal.user._id}}}, function (error, updatedEvent) {
+		if(error){
+			return res.status(500).json({error: 'Internal Server Error'});
+		}
+
+		if(!updatedEvent){
+			return res.status(204).json({error: 'Event not found'});
+		}
+
+		if(updatedEvent){
+
+			Event.update({'_id': req.params.event}, { $push: { 'users': attendance}}, function (error, addedAttendance) {
+				if(error){
+					return res.status(500).json({error: 'Internal Server Error'});
+				}
+
+				if(!updatedEvent){
+					return res.status(204).json({error: 'Event not found'});
+				}
+
+				if(updatedEvent){
+					return res.status(200).json({error: 'Done'});
+				}
+			});
+
+
+		}
+	});
+
+
+
+	/*Event.update({_id: req.params.event, 'users.userId': req.principal.user._id}, {'$set': {
+			'users.$.realName': req.body.formValue.realName,
+			'users.$.broughtTicket': req.body.formValue.broughtTicket,
+			'users.$.onSeatPicker': req.body.formValue.onSeatPicker,
+			'users.$.dateArriving': new Date(req.body.formValue.dateArriving),
+			'users.$.accommodation': req.body.formValue.accommodation,
+			'users.$.transportPlans': req.body.formValue.transportPlans,
+			'users.%.location': req.body.formValue.location,
+			'users.$.inFacebookChat' : req.body.formValue.inFacebookChat
+		}},function (err, event) {
+		return res.json(event);
+	});*/
+
+});
+
 router.post('/events', authenticate, function (req, res) {
 
-    return res.status(501).json({error: "Not Implemented"});
+	return res.status(501).json({error: "Not Implemented"});
 
 });
 
 router.patch('/events/:id', authenticate, function (req, res) {
 
-    return res.status(501).json({error: "Not Implemented"});
+	return res.status(501).json({error: "Not Implemented"});
 
 });
 
 router.delete('/events/:id', authenticate, function (req, res) {
 
-    return res.status(501).json({error: "Not Implemented"});
+	return res.status(501).json({error: "Not Implemented"});
 
 });
 
 router.get('/activities/:id', authenticate, function (req, res) {
 
-    return res.status(501).json({error: "Not Implemented"});
+	return res.status(501).json({error: "Not Implemented"});
 
 });
 
 router.get('/activities', authenticate, function (req, res) {
 
-    return res.status(501).json({error: "Not Implemented"});
+	return res.status(501).json({error: "Not Implemented"});
 
 });
 
 router.post('/activities', authenticate, function (req, res) {
 
-    return res.status(501).json({error: "Not Implemented"});
+	return res.status(501).json({error: "Not Implemented"});
 
 });
 
 router.patch('/activities/:id', authenticate, function (req, res) {
 
-    return res.status(501).json({error: "Not Implemented"});
+	return res.status(501).json({error: "Not Implemented"});
 
 });
 
 router.delete('/activities/:id', authenticate, function (req, res) {
 
-    return res.status(501).json({error: "Not Implemented"});
+	return res.status(501).json({error: "Not Implemented"});
 
 });
 
 router.get('/activities/type', authenticate, function (req, res) {
 
-    return res.status(501).json({error: "Not Implemented"});
+	return res.status(501).json({error: "Not Implemented"});
 
 });
 
 router.get('/activities/type/:id', authenticate, function (req, res) {
 
-    return res.status(501).json({error: "Not Implemented"});
+	return res.status(501).json({error: "Not Implemented"});
 
 });
 
 router.post('/activities/type', authenticate, function (req, res) {
 
-    return res.status(501).json({error: "Not Implemented"});
+	return res.status(501).json({error: "Not Implemented"});
 
 });
 
 router.get('/activities/type/:id', authenticate, function (req, res) {
 
-    return res.status(501).json({error: "Not Implemented"});
+	return res.status(501).json({error: "Not Implemented"});
 
 });
 
 router.patch('/activities/type/:id', authenticate, function (req, res) {
 
-    return res.status(501).json({error: "Not Implemented"});
+	return res.status(501).json({error: "Not Implemented"});
 
 });
 
 router.delete('/activities/type/:id', authenticate, function (req, res) {
 
-    return res.status(501).json({error: "Not Implemented"});
+	return res.status(501).json({error: "Not Implemented"});
 
 });
 

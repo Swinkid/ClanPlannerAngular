@@ -21,6 +21,7 @@ export class EventComponent implements OnInit {
     public attendees        : Attendance[];
     public attendee         : Attendance;
     public attendeeForm     : FormGroup;
+    public submitted        : Boolean = false;
 
 
     public transport = [
@@ -73,7 +74,11 @@ export class EventComponent implements OnInit {
 
                 this.setAttendees(this.event);
                 this.setAttendee(this.userService.getUserId(), this.event);
-                this.setForm(this.attendee);
+
+                if(this.attendee){
+                    this.setForm(this.attendee);
+                }
+
 
             }
         );
@@ -139,6 +144,20 @@ export class EventComponent implements OnInit {
 
     submitForm(){
 
+        if(this.attendeeForm.status === "VALID"){
+            this.apiService.updateAttendance(this.event._id, this.attendeeForm.value).subscribe(
+                event => {
+
+                },
+                err => {
+
+                },
+                () =>{
+                    this.setEvent();
+                    this.submitted = true;
+                }
+            );
+        }
     }
 
 
