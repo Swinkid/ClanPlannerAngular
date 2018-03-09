@@ -23,10 +23,10 @@ export class ApiService {
 
     public getUsers(users : Attendance[]){
         var queryId = users.map(function (u) {
-            return u.userId;
+            return u._id;
         }).join(',');
 
-        return this._http.get<User[]>('/api/users?id=' + queryId, { headers: {'x-access-token': this.authService.getToken()} });
+        return this._http.get<Attendance[]>('/api/users?id=' + queryId, { headers: {'x-access-token': this.authService.getToken()} });
     }
 
     public registerAttendance(event : String, attending : String){

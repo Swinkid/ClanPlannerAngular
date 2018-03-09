@@ -17,6 +17,7 @@ import { HomeComponent } from './home/home.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import { EventComponent } from './events/event/event.component';
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 const routes: Routes = [
     {
@@ -35,7 +36,9 @@ const routes: Routes = [
     imports: [
         CommonModule,
         NgbModule.forRoot(),
-        RouterModule.forChild(routes)
+        RouterModule.forChild(routes),
+        FormsModule,
+        ReactiveFormsModule
     ],
     declarations: [
         DashboardComponent,

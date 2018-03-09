@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
+import * as _ from 'lodash';
 
 import {ApiService} from "../../../services/api.service";
 import {AuthService} from "../../../services/auth.service";
-
-import {User} from "../../../interfaces/user";
-import {Event} from "../../../interfaces/event";
-import * as _ from 'lodash';
 import {UserService} from "../../../services/user.service";
+
+import {Event} from "../../../interfaces/event";
+import {Attendance} from "../../../interfaces/attendance";
 
 @Component({
     selector: 'dashboard-event',
@@ -16,29 +17,103 @@ import {UserService} from "../../../services/user.service";
 })
 export class EventComponent implements OnInit {
 
-    public event : Event;
-    public users : User[];
+    public event            : Event;
+    public attendees        : Attendance[];
+    public attendee         : Attendance;
+    public attendeeForm     : FormGroup;
 
-    constructor(public authService : AuthService, private apiService : ApiService, private route: ActivatedRoute, public userService : UserService) { }
 
-    ngOnInit() {
+    public transport = [
+        'Driving',
+        'Lift',
+        'Train',
+        'Plane',
+        'Nearby',
+        'Other'
+    ];
 
-        this.apiService.getEvent(this.route.snapshot.params['id']).subscribe(event => {
+    public tickets = [
+        true,
+        false
+    ];
 
-            this.event = event;
+    public seatPicker = [
+        true,
+        false
+    ];
 
-            this.apiService.getUsers(event.users).subscribe(users => {
+    public facebookChat = [
+        true,
+        false
+    ];
 
-                this.users = users;
+    public accomodation = [
+        'Hotel',
+        'Camping',
+        'Nearby'
+    ];
 
-            });
 
-        });
+    constructor(public authService : AuthService, private apiService : ApiService, private route: ActivatedRoute, public userService : UserService) {
 
     }
 
-    isUserAttending(event: Event, user : String) {
+    ngOnInit() {
+        this.setEvent();
+    }
 
+    setEvent(){
+
+        this.apiService.getEvent(this.route.snapshot.params['id']).subscribe(
+            event => {
+                this.event = event;
+            },
+            err => {},
+            () => {
+
+                this.setAttendees(this.event);
+                this.setAttendee(this.userService.getUserId(), this.event);
+                this.setForm(this.attendee);
+
+            }
+        );
+
+    }
+
+    setForm(attendee : Attendance){
+        this.attendeeForm = new FormGroup({
+            realName: new FormControl(attendee.realName,[
+                Validators.required
+            ]),
+            ticketPurchasedSelect: new FormControl(attendee.broughtTicket, [
+                Validators.required
+            ]),
+            seatPickerSelect: new FormControl(attendee.onSeatPicker, [
+                Validators.required
+            ]),
+            inFacebookChat: new FormControl(attendee.inFacebookChat, [
+                Validators.required
+            ]),
+            arrivalDate: new FormControl(this.formatDate(attendee.dateArriving), [
+                Validators.required
+            ]),
+            accommodationSelect: new FormControl(attendee.accommodation, [
+                Validators.required
+            ]),
+            transportSelect: new FormControl(attendee.transportPlans, [
+                Validators.required
+            ]),
+            location: new FormControl(attendee.location, [
+                Validators.required
+            ]),
+        });
+    }
+
+    setAttendees(event : Event){
+        this.attendees = event.users;
+    }
+
+    setAttendee(user : String, event : Event){
         let foundUser = _.find(event.users, function (u) {
             if(u.userId === user){
                 return true;
@@ -47,8 +122,35 @@ export class EventComponent implements OnInit {
             }
         });
 
+        this.attendee = foundUser;
+    }
+
+    isUserAttending(user : String, event : Attendance[]){
+        let foundUser = _.find(event, function (u) {
+            if(u.userId === user){
+                return true;
+            } else {
+                return false;
+            }
+        });
+
         return foundUser !== undefined;
+    }
+
+    submitForm(){
 
     }
 
+
+    formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+
+        return [year, month, day].join('-');
+    }
 }

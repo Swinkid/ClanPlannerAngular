@@ -8,7 +8,7 @@
         <div class="card text-white bg-primary mb-3">
             <div class="card-body">
                 <h5 class="card-title">Attendees</h5>
-                <p class="card-text">{{ users?.length }}</p>
+                <p class="card-text">{{ attendees?.length }}</p>
             </div>
         </div>
     </div>
@@ -38,69 +38,82 @@
     </div>
 </div>
 
-<div class="card" *ngIf="isUserAttending(event, userService.getUserId())">
+<div class="card" *ngIf="isUserAttending(attendee?.userId, attendees)">
     <div class="card-header">
         Attendance Settings
     </div>
     <div class="card-block">
-        <div class="form-group row">
-            <label for="realName" class="col-1 col-form-label">Real Name</label>
-            <div class="col-2">
-                <input class="form-control" type="text" id="realName">
-            </div>
-            <label class="col-1 col-form-label" for="ticketPurchasedSelect">Ticket Purchased</label>
-            <div class="col-2">
-                <select class="custom-select" id="ticketPurchasedSelect">
-                    <option value="1">Yes</option>
-                    <option value="2">No</option>
-                </select>
-            </div>
 
-            <label class="col-1 col-form-label" for="seatPickerSelect">On Seat Picker</label>
-            <div class="col-2">
-                <select class="custom-select" id="seatPickerSelect">
-                    <option value="1">Yes</option>
-                    <option value="2">No</option>
-                </select>
-            </div>
+        <form [formGroup]="attendeeForm">
+            <div class="form-group row">
+                <label for="realName" class="col-1 col-form-label">Real Name</label>
+                <div class="col-2">
+                    <input class="form-control" type="text" id="realName" formControlName="realName">
+                </div>
+                <label class="col-1 col-form-label" for="ticketPurchasedSelect">Ticket Purchased</label>
+                <div class="col-2">
+                    <select class="custom-select" id="ticketPurchasedSelect" formControlName="ticketPurchasedSelect">
+                        <option *ngFor="let b of tickets" [ngValue]="b">
+                            {{ b ? 'Yes' : 'No'}}
+                        </option>
+                    </select>
+                </div>
 
-            <label class="col-1 col-form-label" for="inFacebookChat">In Facebook Chat</label>
-            <div class="col-2">
-                <select class="custom-select" id="inFacebookChat">
-                    <option value="1">Yes</option>
-                    <option value="2">No</option>
-                </select>
+                <label class="col-1 col-form-label" for="seatPickerSelect">On Seat Picker</label>
+                <div class="col-2">
+                    <select class="custom-select" id="seatPickerSelect" formControlName="seatPickerSelect">
+                        <option *ngFor="let b of seatPicker" [ngValue]="b">
+                            {{ b ? 'Yes' : 'No'}}
+                        </option>
+                    </select>
+                </div>
+
+                <label class="col-1 col-form-label" for="inFacebookChat">In Facebook Chat</label>
+                <div class="col-2">
+                    <select class="custom-select" id="inFacebookChat" formControlName="inFacebookChat">
+                        <option *ngFor="let b of facebookChat" [ngValue]="b">
+                            {{ b ? 'Yes' : 'No'}}
+                        </option>
+                    </select>
+                </div>
             </div>
-        </div>
-        <div class="form-group row">
-            <label for="arrivalDate" class="col-1 col-form-label">Arrival Date</label>
-            <div class="col-2">
-                <input class="form-control" type="date" id="arrivalDate">
+            <div class="form-group row">
+                <label for="arrivalDate" class="col-1 col-form-label">Arrival Date</label>
+                <div class="col-2">
+                    <input class="form-control" type="date" id="arrivalDate" formControlName="arrivalDate">
+
+
+
+
+
+                </div>
+                <label class="col-1 col-form-label" for="accommodationSelect">Accommodation</label>
+                <div class="col-2">
+                    <select class="custom-select" id="accommodationSelect" formControlName="accommodationSelect">
+                        <option value="" disabled>Select</option>
+                        <option *ngFor="let a of accomodation" [ngValue]="a">
+                            {{ a }}
+                        </option>
+                    </select>
+                </div>
+                <label class="col-1 col-form-label" for="transportSelect">Transport</label>
+                <div class="col-2">
+                    <select class="custom-select" id="transportSelect" formControlName="transportSelect">
+                        <option value="" disabled>Select</option>
+                        <option *ngFor="let t of transport" [ngValue]="t">
+                            {{ t }}
+                        </option>
+                    </select>
+                </div>
+                <label class="col-1 col-form-label" for="location">Location</label>
+                <div class="col-2">
+                    <input class="form-control" type="text" id="location" formControlName="location">
+                </div>
             </div>
-            <label class="col-1 col-form-label" for="accommodationSelect">Accommodation</label>
-            <div class="col-2">
-                <select class="custom-select" id="accommodationSelect">
-                    <option value="1">Hotel</option>
-                    <option value="2">Camping</option>
-                    <option value="3">Nearby</option>
-                </select>
+            <div class="form-group row">
+                <button type="submit" class="btn btn-primary">Submit</button>
             </div>
-            <label class="col-1 col-form-label" for="transportSelect">Transport</label>
-            <div class="col-2">
-                <select class="custom-select" id="transportSelect">
-                    <option value="1">Driving</option>
-                    <option value="2">Lift</option>
-                    <option value="3">Train</option>
-                    <option value="4">Plane</option>
-                    <option value="5">Nearby</option>
-                    <option value="6">Other</option>
-                </select>
-            </div>
-            <label class="col-1 col-form-label" for="location">Location</label>
-            <div class="col-2">
-                <input class="form-control" type="text" id="location">
-            </div>
-        </div>
+        </form>
     </div>
 </div>
 
@@ -127,21 +140,21 @@
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let user of users">
+            <tr *ngFor="let attendee of attendees">
 
                 <td>
-                    <img class="img-thumbnail rounded-circle" width="100" height="100" *ngIf="user.discord.avatar !== null" src="{{ 'http://cdn.discordapp.com/avatars/' + user.discord.id + '/' + user.discord.avatar }}">
-                    <img class="img-thumbnail rounded-circle" width="100" height="100" *ngIf="user.discord.avatar === null" src="http://placehold.it/100x100">
+                    <img class="img-thumbnail rounded-circle" width="100" height="100" *ngIf="attendee.discord.avatar !== null" src="{{ 'http://cdn.discordapp.com/avatars/' + attendee.discord.id + '/' + attendee.discord.avatar }}">
+                    <img class="img-thumbnail rounded-circle" width="100" height="100" *ngIf="attendee.discord.avatar === null" src="http://placehold.it/100x100">
                 </td>
-                <td>{{ user.discord.username + '#' + user.discord.discriminator }}</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>{{ attendee.discord.username + '#' + attendee.discord.discriminator }}</td>
+                <td>{{ attendee.realName }}</td>
+                <td>{{ attendee.broughtTicket ? 'Yes' : 'No' }}</td>
+                <td>{{ attendee.onSeatPicker ? 'Yes' : 'No' }}</td>
+                <td>{{ attendee?.dateArriving | date: 'dd/MM/yyyy'}}</td>
+                <td>{{ attendee.accommodation }}</td>
+                <td>{{ attendee.transportPlans }}</td>
+                <td>{{ attendee.location }}</td>
+                <td>{{ attendee.inFacebookChat ? 'Yes' : 'No' }}</td>
             </tr>
             </tbody>
         </table>

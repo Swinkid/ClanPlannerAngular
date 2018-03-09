@@ -168,7 +168,6 @@ router.post('/events/register/:id', authenticate, function (req, res) {
 					realName: "",
 					broughtTicket: false,
 					onSeatPicker: false,
-					dateArriving: new Date(0),
 					accommodation: "",
 					transportPlans: "",
 					location: "",
