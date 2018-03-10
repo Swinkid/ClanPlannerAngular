@@ -83,6 +83,7 @@
                             <th>Transport</th>
                             <th>Location</th>
                             <th>In Facebook Chat</th>
+                            <th>Modify</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -101,6 +102,7 @@
                             <td>{{ attendee?.transportPlans }}</td>
                             <td>{{ attendee?.location }}</td>
                             <td>{{ attendee?.inFacebookChat ? 'Yes' : 'No' }}</td>
+                            <th><button type="button" class="btn btn-primary" routerLink="{{'/dashboard/edit/event/attendee/' + this.event._id + '/' + this.attendee.userId }}">Edit</button></th>
                         </tr>
                         </tbody>
                     </table>

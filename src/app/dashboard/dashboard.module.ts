@@ -1,25 +1,26 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { Routes, RouterModule } from "@angular/router";
 
-import {Routes, RouterModule} from "@angular/router";
+import { AuthenticateGuard } from "../guards/authenticate.guard";
 
-import {AuthenticateGuard} from "../guards/authenticate.guard";
-
-import {CookieService} from "ngx-cookie-service";
-import {AuthService} from "../services/auth.service";
-import {UserService} from "../services/user.service";
-import {ApiService} from "../services/api.service";
+import { CookieService } from "ngx-cookie-service";
+import { AuthService } from "../services/auth.service";
+import { UserService } from "../services/user.service";
+import { ApiService } from "../services/api.service";
 
 import { NavigationComponent } from './navigation/navigation.component';
-import {EventsComponent} from "./events/events.component";
+import { EventsComponent} from "./events/events.component";
 import { DashboardComponent} from "./dashboard.component";
 import { HomeComponent } from './home/home.component';
 import { NavbarComponent } from './navbar/navbar.component';
-import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import { EventComponent } from './events/event/event.component';
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { EditComponent } from './events/edit/edit.component';
 import { NewComponent } from './events/new/new.component';
+import { AttendeeComponent } from "./events/edit/attendee/attendee.component";
+
 
 
 const routes: Routes = [
@@ -31,7 +32,8 @@ const routes: Routes = [
             { path: 'events', component: EventsComponent },
             { path: 'events/:id', component: EventComponent },
             { path: 'edit/event/:id', component: EditComponent},
-            { path: 'new/event', component: NewComponent}
+            { path: 'new/event', component: NewComponent},
+            { path: 'edit/event/attendee/:id/:attendee', component: AttendeeComponent}
         ]
     }
 
@@ -53,7 +55,8 @@ const routes: Routes = [
         NavbarComponent,
         EventComponent,
         EditComponent,
-        NewComponent
+        NewComponent,
+        AttendeeComponent
     ],
     providers: [
         AuthService,

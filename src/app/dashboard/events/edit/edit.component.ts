@@ -60,7 +60,6 @@ export class EditComponent implements OnInit {
             },
             err => {},
             () => {
-                console.log(this.event);
                 this.setAttendees(this.event);
                 this.setForm(this.event);
             }

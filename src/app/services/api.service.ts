@@ -35,13 +35,18 @@ export class ApiService {
 
     //public updateAttendance(eventId : String, realName : String, broughtTicket : Boolean, onSeatPicker : Boolean, dateArriving : String, accommodation : String, transportPlans : String, location : String, inFacebookChat : Boolean){
     public updateAttendance(eventId : String, formValue){
-
-        console.log(formValue);
-
         return this._http.post('/api/events/attendance/' + eventId,
             {
                 formValue
             }, { headers: {'x-access-token': this.authService.getToken()} });
+    }
+
+    public updateAttendee(eventId, userId, formValue){
+        return this._http.post('/api/events/attendee/' + eventId + '/' + userId,
+            {
+                formValue
+            }, { headers: {'x-access-token': this.authService.getToken()} });
+
     }
 
     public updateEvent(eventId, formValue){

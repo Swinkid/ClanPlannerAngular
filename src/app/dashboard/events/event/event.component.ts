@@ -23,6 +23,7 @@ export class EventComponent implements OnInit {
     public attendeeForm     : FormGroup;
     public submitted        : Boolean = false;
     public ticketsPurchased : Number = 0;
+    public seatsSelected    : Number = 0;
 
 
     public transport = [
@@ -79,10 +80,8 @@ export class EventComponent implements OnInit {
                 if(this.attendee){
                     this.setForm(this.attendee);
                     this.ticketsPurchased = this.calcPurchasedTicket(this.event);
-                    console.log(this.attendee);
+                    this.seatsSelected = this.calcSelectedSeats(this.event);
                 }
-
-
             }
         );
 
@@ -117,8 +116,6 @@ export class EventComponent implements OnInit {
                 Validators.maxLength(20)
             ]),
         });
-
-        console.log(this.attendeeForm);
     }
 
     setAttendees(event : Event){
@@ -177,6 +174,18 @@ export class EventComponent implements OnInit {
         });
 
         return purchased;
+    }
+
+    calcSelectedSeats(event : Event){
+        let selected = 0;
+
+        event.users.forEach(function (attendee) {
+           if(attendee.onSeatPicker){
+               selected++;
+           }
+        });
+
+        return selected;
     }
 
 

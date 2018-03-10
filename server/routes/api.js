@@ -137,6 +137,58 @@ router.get('/events/:id', authenticate, function (req, res) {
 //http://mongoosejs.com/docs/subdocs.html#altsyntax
 //Leverage above instead
 
+router.post('/events/attendee/:id/:user', authenticate, function (req, res) {
+
+	var filteredId = xss(req.params.id);
+	var filteredUserId = xss(req.params.user);
+
+	var attendance = new Attendance({
+
+		userId : filteredUserId,
+		eventId : filteredId,
+		discord : req.principal.user.discord,
+		realName:  xss(req.body.formValue.realName),
+		broughtTicket:  xss(req.body.formValue.ticketPurchasedSelect),
+		onSeatPicker:  xss(req.body.formValue.seatPickerSelect),
+		accommodation:  xss(req.body.formValue.accommodationSelect),
+		transportPlans:  xss(req.body.formValue.transportSelect),
+		dateArriving: new Date(xss(req.body.formValue.arrivalDate)),
+		location:  xss(req.body.formValue.location),
+		inFacebookChat:  xss(req.body.formValue.inFacebookChat)
+
+	});
+
+	Event.update({'_id': filteredId}, { $pull: { 'users': {'userId': filteredUserId}}}, function (error, updatedEvent) {
+		if(error){
+			return res.status(500).json({error: 'Internal Server Error'});
+		}
+
+		if(!updatedEvent){
+			return res.status(204).json({error: 'Event not found'});
+		}
+
+		if(updatedEvent){
+
+			Event.update({'_id': filteredId}, { $push: { 'users': attendance}}, function (error, addedAttendance) {
+				if(error){
+					return res.status(500).json({error: 'Internal Server Error'});
+				}
+
+				if(!updatedEvent){
+					return res.status(204).json({error: 'Event not found'});
+				}
+
+				if(updatedEvent){
+					return res.status(200).json({error: 'Done'});
+				}
+			});
+
+
+		}
+	});
+
+});
+
 
 router.post('/events/register/:id', authenticate, function (req, res) {
 
@@ -222,7 +274,7 @@ router.post('/events/register/:id', authenticate, function (req, res) {
 
 router.post('/events/attendance/:event', authenticate, function (req, res) {
 
-	//TODO XSS and validate
+	//TODO validate
 
 	var attendance = new Attendance({
 
