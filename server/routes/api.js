@@ -142,34 +142,39 @@ router.post('/events/attendee/:id/:user', authenticate, function (req, res) {
 	var filteredId = xss(req.params.id);
 	var filteredUserId = xss(req.params.user);
 
-	var attendance = new Attendance({
 
-		userId : filteredUserId,
-		eventId : filteredId,
-		discord : req.principal.user.discord,
-		realName:  xss(req.body.formValue.realName),
-		broughtTicket:  xss(req.body.formValue.ticketPurchasedSelect),
-		onSeatPicker:  xss(req.body.formValue.seatPickerSelect),
-		accommodation:  xss(req.body.formValue.accommodationSelect),
-		transportPlans:  xss(req.body.formValue.transportSelect),
-		dateArriving: new Date(xss(req.body.formValue.arrivalDate)),
-		location:  xss(req.body.formValue.location),
-		inFacebookChat:  xss(req.body.formValue.inFacebookChat)
+	Event.findOne({'_id': filteredId}, function (error, e) {
 
-	});
-
-	Event.update({'_id': filteredId}, { $pull: { 'users': {'userId': filteredUserId}}}, function (error, updatedEvent) {
 		if(error){
 			return res.status(500).json({error: 'Internal Server Error'});
 		}
 
-		if(!updatedEvent){
-			return res.status(204).json({error: 'Event not found'});
+		if(!e){
+			return res.status(500).json({error: 'Internal Server Error'});
 		}
 
-		if(updatedEvent){
+		if(e){
+			var user = e.users.find(function (value) {
+				return value.userId = filteredUserId;
+			});
 
-			Event.update({'_id': filteredId}, { $push: { 'users': attendance}}, function (error, addedAttendance) {
+			var attendance = new Attendance({
+
+				userId : filteredUserId,
+				eventId : filteredId,
+				discord : user.discord,
+				realName:  xss(req.body.formValue.realName),
+				broughtTicket:  xss(req.body.formValue.ticketPurchasedSelect),
+				onSeatPicker:  xss(req.body.formValue.seatPickerSelect),
+				accommodation:  xss(req.body.formValue.accommodationSelect),
+				transportPlans:  xss(req.body.formValue.transportSelect),
+				dateArriving: new Date(xss(req.body.formValue.arrivalDate)),
+				location:  xss(req.body.formValue.location),
+				inFacebookChat:  xss(req.body.formValue.inFacebookChat)
+
+			});
+
+			Event.update({'_id': filteredId}, { $pull: { 'users': {'userId': filteredUserId}}}, function (error, updatedEvent) {
 				if(error){
 					return res.status(500).json({error: 'Internal Server Error'});
 				}
@@ -179,14 +184,24 @@ router.post('/events/attendee/:id/:user', authenticate, function (req, res) {
 				}
 
 				if(updatedEvent){
-					return res.status(200).json({error: 'Done'});
+
+					Event.update({'_id': filteredId}, { $push: { 'users': attendance}}, function (error, addedAttendance) {
+						if(error){
+							return res.status(500).json({error: 'Internal Server Error'});
+						}
+
+						if(!updatedEvent){
+							return res.status(204).json({error: 'Event not found'});
+						}
+
+						if(updatedEvent){
+							return res.status(200).json({error: 'Done'});
+						}
+					});
 				}
 			});
-
-
 		}
 	});
-
 });
 
 
