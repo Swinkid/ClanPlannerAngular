@@ -18,6 +18,8 @@ import { NavbarComponent } from './navbar/navbar.component';
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import { EventComponent } from './events/event/event.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import { EditComponent } from './events/edit/edit.component';
+
 
 const routes: Routes = [
     {
@@ -26,7 +28,8 @@ const routes: Routes = [
         children: [
             { path :'', component: HomeComponent },
             { path: 'events', component: EventsComponent },
-            { path: 'events/:id', component: EventComponent }
+            { path: 'events/:id', component: EventComponent },
+            { path: 'edit/event/:id', component: EditComponent}
         ]
     }
 
@@ -46,7 +49,8 @@ const routes: Routes = [
         EventsComponent,
         HomeComponent,
         NavbarComponent,
-        EventComponent
+        EventComponent,
+        EditComponent
     ],
     providers: [
         AuthService,

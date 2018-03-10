@@ -52,7 +52,7 @@
                 </div>
                 <label class="col-1 col-form-label" for="ticketPurchasedSelect">Ticket Purchased</label>
                 <div class="col-2">
-                    <select class="custom-select" id="ticketPurchasedSelect" formControlName="ticketPurchasedSelect">
+                    <select class="custom-select" id="ticketPurchasedSelect" formControlName="ticketPurchasedSelect" required>
                         <option *ngFor="let b of tickets" [ngValue]="b">
                             {{ b ? 'Yes' : 'No'}}
                         </option>
@@ -61,7 +61,7 @@
 
                 <label class="col-1 col-form-label" for="seatPickerSelect">On Seat Picker</label>
                 <div class="col-2">
-                    <select class="custom-select" id="seatPickerSelect" formControlName="seatPickerSelect">
+                    <select class="custom-select" id="seatPickerSelect" formControlName="seatPickerSelect" required>
                         <option *ngFor="let b of seatPicker" [ngValue]="b">
                             {{ b ? 'Yes' : 'No'}}
                         </option>
@@ -70,7 +70,7 @@
 
                 <label class="col-1 col-form-label" for="inFacebookChat">In Facebook Chat</label>
                 <div class="col-2">
-                    <select class="custom-select" id="inFacebookChat" formControlName="inFacebookChat">
+                    <select class="custom-select" id="inFacebookChat" formControlName="inFacebookChat" required>
                         <option *ngFor="let b of facebookChat" [ngValue]="b">
                             {{ b ? 'Yes' : 'No'}}
                         </option>
@@ -80,16 +80,11 @@
             <div class="form-group row">
                 <label for="arrivalDate" class="col-1 col-form-label">Arrival Date</label>
                 <div class="col-2">
-                    <input class="form-control" type="date" id="arrivalDate" formControlName="arrivalDate">
-
-
-
-
-
+                    <input class="form-control" type="date" id="arrivalDate" formControlName="arrivalDate" required>
                 </div>
                 <label class="col-1 col-form-label" for="accommodationSelect">Accommodation</label>
                 <div class="col-2">
-                    <select class="custom-select" id="accommodationSelect" formControlName="accommodationSelect">
+                    <select class="custom-select" id="accommodationSelect" formControlName="accommodationSelect" required>
                         <option value="" disabled>Select</option>
                         <option *ngFor="let a of accomodation" [ngValue]="a">
                             {{ a }}
@@ -98,7 +93,7 @@
                 </div>
                 <label class="col-1 col-form-label" for="transportSelect">Transport</label>
                 <div class="col-2">
-                    <select class="custom-select" id="transportSelect" formControlName="transportSelect">
+                    <select class="custom-select" id="transportSelect" formControlName="transportSelect" required>
                         <option value="" disabled>Select</option>
                         <option *ngFor="let t of transport" [ngValue]="t">
                             {{ t }}
@@ -107,7 +102,7 @@
                 </div>
                 <label class="col-1 col-form-label" for="location">Location</label>
                 <div class="col-2">
-                    <input class="form-control" type="text" id="location" formControlName="location">
+                    <input class="form-control" type="text" id="location" formControlName="location" required>
                 </div>
             </div>
             <div class="form-group row">

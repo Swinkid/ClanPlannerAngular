@@ -7,7 +7,9 @@ var eventSchema = mongoose.Schema({
 	"toDate" : Date,
 	"users" : [],
 	"competitions" : [],
-	"activities" : []
+	"activities" : [],
+	"seatPickerUrl" : String,
+	"eventLocation" : String
 
 });
 

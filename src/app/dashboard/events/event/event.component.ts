@@ -88,7 +88,8 @@ export class EventComponent implements OnInit {
     setForm(attendee : Attendance){
         this.attendeeForm = new FormGroup({
             realName: new FormControl(attendee.realName,[
-                Validators.required
+                Validators.required,
+                Validators.maxLength(20)
             ]),
             ticketPurchasedSelect: new FormControl(attendee.broughtTicket, [
                 Validators.required
@@ -109,7 +110,8 @@ export class EventComponent implements OnInit {
                 Validators.required
             ]),
             location: new FormControl(attendee.location, [
-                Validators.required
+                Validators.required,
+                Validators.maxLength(20)
             ]),
         });
     }

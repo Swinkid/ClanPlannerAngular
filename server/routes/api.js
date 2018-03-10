@@ -160,6 +160,11 @@ router.post('/events/register/:id', authenticate, function (req, res) {
 				return res.status(204).json({error: 'User already attending'});
 			} else {
 
+				//TODO : Need to rework how users are stored in db
+				delete req.principal.user.discord.accessToken;
+				delete req.principal.user.discord.email;
+				delete req.principal.user.discord.fetchedAt;
+
 				var attendance = new Attendance({
 
 					userId : req.principal.user._id,
@@ -222,16 +227,16 @@ router.post('/events/attendance/:event', authenticate, function (req, res) {
 	var attendance = new Attendance({
 
 		userId : req.principal.user._id,
-		eventId : req.params.event,
+		eventId : xss(req.params.event),
 		discord : req.principal.user.discord,
-		realName: req.body.formValue.realName,
-		broughtTicket: req.body.formValue.ticketPurchasedSelect,
-		onSeatPicker: req.body.formValue.seatPickerSelect,
-		accommodation: req.body.formValue.accommodationSelect,
-		transportPlans: req.body.formValue.transportSelect,
-		dateArriving: new Date(req.body.formValue.arrivalDate),
-		location: req.body.formValue.location,
-		inFacebookChat: req.body.formValue.inFacebookChat
+		realName:  xss(req.body.formValue.realName),
+		broughtTicket:  xss(req.body.formValue.ticketPurchasedSelect),
+		onSeatPicker:  xss(req.body.formValue.seatPickerSelect),
+		accommodation:  xss(req.body.formValue.accommodationSelect),
+		transportPlans:  xss(req.body.formValue.transportSelect),
+		dateArriving: new Date(xss(req.body.formValue.arrivalDate)),
+		location:  xss(req.body.formValue.location),
+		inFacebookChat:  xss(req.body.formValue.inFacebookChat)
 
 	});
 

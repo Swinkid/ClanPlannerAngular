@@ -9,6 +9,7 @@
         <th>Start Date</th>
         <th>End Date</th>
         <th>Attendance</th>
+        <th>Modify</th>
     </tr>
     </thead>
     <tbody>
@@ -21,7 +22,9 @@
             <button *ngIf="isUserAttending(event, userId) === true" type="button" class="btn btn-danger" (click)="registerAttendance(event._id,'false')">Unattend</button>
             <button *ngIf="isUserAttending(event, userId) === false" type="button" class="btn btn-success" (click)="registerAttendance(event._id,'true')">Attend</button>
 
-
+        </td>
+        <td>
+            <a [routerLink]="['/dashboard/edit/event/', event._id]">Edit</a>
         </td>
     </tr>
     </tbody>
