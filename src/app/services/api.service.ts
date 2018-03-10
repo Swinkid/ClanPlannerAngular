@@ -40,8 +40,27 @@ export class ApiService {
             {
                 formValue
             }, { headers: {'x-access-token': this.authService.getToken()} });
+    }
 
+    public updateEvent(eventId, formValue){
+        return this._http.post('/api/events/' + eventId,
+            {
+                formValue
+            }, { headers: {'x-access-token': this.authService.getToken()} });
+    }
 
+    public deleteEvent(eventId){
+        return this._http.delete('/api/events/' + eventId, {
+            headers: {
+                'x-access-token': this.authService.getToken()
+            }});
+    }
+
+    public addEvent(formValue){
+        return this._http.post('/api/events',
+            {
+                formValue
+            }, { headers: {'x-access-token': this.authService.getToken()} });
     }
 
 }

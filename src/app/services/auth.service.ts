@@ -16,6 +16,10 @@ export class AuthService {
         return this.cookieService.get(TOKEN_NAME);
     }
 
+    getCSRF(){
+        return this.cookieService.get('_csrf');
+    }
+
     deleteToken(){
         return this.cookieService.delete(TOKEN_NAME);
     }

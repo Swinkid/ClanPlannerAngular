@@ -269,38 +269,73 @@ router.post('/events/attendance/:event', authenticate, function (req, res) {
 		}
 	});
 
-
-
-	/*Event.update({_id: req.params.event, 'users.userId': req.principal.user._id}, {'$set': {
-			'users.$.realName': req.body.formValue.realName,
-			'users.$.broughtTicket': req.body.formValue.broughtTicket,
-			'users.$.onSeatPicker': req.body.formValue.onSeatPicker,
-			'users.$.dateArriving': new Date(req.body.formValue.dateArriving),
-			'users.$.accommodation': req.body.formValue.accommodation,
-			'users.$.transportPlans': req.body.formValue.transportPlans,
-			'users.%.location': req.body.formValue.location,
-			'users.$.inFacebookChat' : req.body.formValue.inFacebookChat
-		}},function (err, event) {
-		return res.json(event);
-	});*/
-
 });
 
 router.post('/events', authenticate, function (req, res) {
 
-	return res.status(501).json({error: "Not Implemented"});
+	var filteredName = xss(req.body.formValue.name);
+	var filteredFromDate = xss(req.body.formValue.fromDate);
+	var filteredToDate = xss(req.body.formValue.toDate);
+	var filteredSeatPickerUrl = xss(req.body.formValue.seatPickerUrl);
+	var filteredEventLocation = xss(req.body.formValue.eventLocation);
+
+	var newEvent = new Event({
+		name: filteredName,
+		fromDate: filteredFromDate,
+		toDate: filteredToDate,
+		seatPickerUrl: filteredSeatPickerUrl,
+		eventLocation: filteredEventLocation
+	});
+
+	newEvent.save(function (error, event) {
+		if(error){
+			return res.status(500).json({error: 'Internal Server Error'});
+		}
+
+		if(!event){
+			return res.status(500).json({error: 'Internal Server Error'});
+		}
+
+		if(event){
+			return res.status(200).json({error: 'Done'});
+		}
+	});
 
 });
 
-router.patch('/events/:id', authenticate, function (req, res) {
+router.post('/events/:id', authenticate, function (req, res) {
 
-	return res.status(501).json({error: "Not Implemented"});
+	var filteredEventId = xss(req.params.id);
+	var filteredName = xss(req.body.formValue.name);
+	var filteredFromDate = xss(req.body.formValue.fromDate);
+	var filteredToDate = xss(req.body.formValue.toDate);
+	var filteredSeatPickerUrl = xss(req.body.formValue.seatPickerUrl);
+	var filteredEventLocation = xss(req.body.formValue.eventLocation);
+
+	Event.update({_id: filteredEventId}, {$set: { name: filteredName, fromDate: filteredFromDate, toDate: filteredToDate, seatPickerUrl: filteredSeatPickerUrl, eventLocation: filteredEventLocation }}, function (error) {
+
+		if(error){
+
+			return res.status(500).json({error: 'Internal Server Error'});
+
+		} else {
+
+			return res.status(200).json({error: 'Done'});
+
+		}
+	});
 
 });
 
 router.delete('/events/:id', authenticate, function (req, res) {
 
-	return res.status(501).json({error: "Not Implemented"});
+	Event.remove({_id: xss(req.params.id)}, function (error) {
+		if(error){
+			return res.status(500).json({error: 'Internal Server Error'});
+		} else {
+			return res.status(200).json({error: 'Done'});
+		}
+	})
 
 });
 

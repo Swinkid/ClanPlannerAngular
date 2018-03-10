@@ -1,0 +1,52 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+    <h1 class="h2">New Event</h1>
+</div>
+
+<div class="card" *ngIf="eventForm !== undefined">
+    <div class="card-header">
+        Event Settings
+    </div>
+    <div class="card-block">
+
+        <form [formGroup]="eventForm" (ngSubmit)="this.submitForm()" >
+            <div class="form-group row">
+                <label for="name" class="col-2 col-form-label">Event Name</label>
+                <div class="col-10">
+                    <input class="form-control" type="text" id="name" formControlName="name">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="fromDate" class="col-2 col-form-label">From Date</label>
+                <div class="col-4">
+                    <input class="form-control" type="date" id="fromDate" formControlName="fromDate" required>
+                </div>
+
+
+                <label for="toDate" class="col-2 col-form-label">To Date</label>
+                <div class="col-4">
+                    <input class="form-control" type="date" id="toDate" formControlName="toDate" required>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="seatPickerUrl" class="col-2 col-form-label">Seat Picker URL</label>
+                <div class="col-4">
+                    <input class="form-control" type="text" id="seatPickerUrl" formControlName="seatPickerUrl">
+                </div>
+
+                <label for="eventLocation" class="col-2 col-form-label">Event Location</label>
+                <div class="col-4">
+                    <input class="form-control" type="text" id="eventLocation" formControlName="eventLocation">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <button type="submit" class="btn btn-primary col-4">Submit</button>
+                <div class="col-8">
+                    <span *ngIf="submitted">Saved</span>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -19,6 +19,7 @@ import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import { EventComponent } from './events/event/event.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { EditComponent } from './events/edit/edit.component';
+import { NewComponent } from './events/new/new.component';
 
 
 const routes: Routes = [
@@ -29,7 +30,8 @@ const routes: Routes = [
             { path :'', component: HomeComponent },
             { path: 'events', component: EventsComponent },
             { path: 'events/:id', component: EventComponent },
-            { path: 'edit/event/:id', component: EditComponent}
+            { path: 'edit/event/:id', component: EditComponent},
+            { path: 'new/event', component: NewComponent}
         ]
     }
 
@@ -50,7 +52,8 @@ const routes: Routes = [
         HomeComponent,
         NavbarComponent,
         EventComponent,
-        EditComponent
+        EditComponent,
+        NewComponent
     ],
     providers: [
         AuthService,

@@ -10,5 +10,7 @@ export interface Event {
     fromDate: String,
     toDate: String,
     attendance: Object[],
+    seatPickerUrl : String,
+    eventLocation : String
 
 }
