@@ -15,8 +15,8 @@
     <div class="col-3">
         <div class="card text-white bg-primary">
             <div class="card-body">
-                <h5 class="card-title">Days to go</h5>
-                <p class="card-text">42</p>
+                <h5 class="card-title">Tickets Purchased</h5>
+                <p class="card-text">{{ this.ticketsPurchased }} / {{ this.attendees?.length }}</p>
             </div>
         </div>
     </div>
@@ -53,8 +53,10 @@
                 <label class="col-1 col-form-label" for="ticketPurchasedSelect">Ticket Purchased</label>
                 <div class="col-2">
                     <select class="custom-select" id="ticketPurchasedSelect" formControlName="ticketPurchasedSelect" required>
-                        <option *ngFor="let b of tickets" [ngValue]="b">
-                            {{ b ? 'Yes' : 'No'}}
+                        <option *ngFor="let t of tickets" [ngValue]="t">
+
+                            {{ t ? 'Yes' : 'No'}}
+
                         </option>
                     </select>
                 </div>
@@ -62,8 +64,8 @@
                 <label class="col-1 col-form-label" for="seatPickerSelect">On Seat Picker</label>
                 <div class="col-2">
                     <select class="custom-select" id="seatPickerSelect" formControlName="seatPickerSelect" required>
-                        <option *ngFor="let b of seatPicker" [ngValue]="b">
-                            {{ b ? 'Yes' : 'No'}}
+                        <option *ngFor="let s of seatPicker" [ngValue]="s">
+                            {{ s ? 'Yes' : 'No'}}
                         </option>
                     </select>
                 </div>
@@ -71,8 +73,8 @@
                 <label class="col-1 col-form-label" for="inFacebookChat">In Facebook Chat</label>
                 <div class="col-2">
                     <select class="custom-select" id="inFacebookChat" formControlName="inFacebookChat" required>
-                        <option *ngFor="let b of facebookChat" [ngValue]="b">
-                            {{ b ? 'Yes' : 'No'}}
+                        <option *ngFor="let f of facebookChat" [ngValue]="f">
+                            {{ f ? 'Yes' : 'No'}}
                         </option>
                     </select>
                 </div>

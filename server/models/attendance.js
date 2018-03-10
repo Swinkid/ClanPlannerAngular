@@ -6,13 +6,22 @@ var attendanceSchema = mongoose.Schema({
 	eventId : String,
 	discord : {},
 	realName: String,
-	broughtTicket: Boolean,
-	onSeatPicker: Boolean,
+	broughtTicket: {
+		type: Boolean,
+		default: false
+	},
+	onSeatPicker: {
+		type: Boolean,
+		default: false
+	},
 	dateArriving: Date,
 	accommodation: String,
 	transportPlans: String,
 	location: String,
-	inFacebookChat: Boolean
+	inFacebookChat: {
+		type: Boolean,
+		default: false
+	}
 
 });
 

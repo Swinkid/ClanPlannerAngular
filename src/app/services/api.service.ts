@@ -36,6 +36,8 @@ export class ApiService {
     //public updateAttendance(eventId : String, realName : String, broughtTicket : Boolean, onSeatPicker : Boolean, dateArriving : String, accommodation : String, transportPlans : String, location : String, inFacebookChat : Boolean){
     public updateAttendance(eventId : String, formValue){
 
+        console.log(formValue);
+
         return this._http.post('/api/events/attendance/' + eventId,
             {
                 formValue
