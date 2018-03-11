@@ -70,4 +70,11 @@ export class ApiService {
             }, { headers: {'x-access-token': this.authService.getToken()} });
     }
 
+    public addBooking(event, formValue){
+        return this._http.post('/api/booking', {
+            event,
+            booking: formValue
+        }, { headers: {'x-access-token': this.authService.getToken()}});
+    }
+
 }

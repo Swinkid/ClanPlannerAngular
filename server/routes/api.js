@@ -10,6 +10,7 @@ var config = require('../../config')[env];
 const Event = require('../models/event');
 const User = require('../models/user');
 const Attendance = require('../models/attendance');
+const Booking = require('../models/booking');
 
 /* GET api listing. */
 router.get('/', function (req, res) {
@@ -406,71 +407,47 @@ router.delete('/events/:id', authenticate, function (req, res) {
 
 });
 
-router.get('/activities/:id', authenticate, function (req, res) {
+router.post('/booking', function (req, res) {
 
-	return res.status(501).json({error: "Not Implemented"});
+	var filteredRooms = [];
 
-});
+	req.body.booking.rooms.forEach(function (room) {
 
-router.get('/activities', authenticate, function (req, res) {
+		var r = {
+			roomOccupants: []
+		};
 
-	return res.status(501).json({error: "Not Implemented"});
+		room.roomOccupants.forEach(function (occupants) {
+			r.roomOccupants.push(xss(occupants.occupant));
+		});
 
-});
+		filteredRooms.push(r);
+	});
 
-router.post('/activities', authenticate, function (req, res) {
+	var booking = new Booking({
+		event: xss(req.body.event),
+		booking: {
+			bookedBy : xss(req.body.booking.bookedBy),
+			totalCost : xss(req.body.booking.totalCost),
+			rooms : filteredRooms
+		}
+	});
 
-	return res.status(501).json({error: "Not Implemented"});
+	booking.save(function (error, savedBooking) {
 
-});
+		if(error || !savedBooking){
+			return res.status(500).json({error: 'Internal Server Error'});
+		}
 
-router.patch('/activities/:id', authenticate, function (req, res) {
+		if(savedBooking){
+			return res.status(200).json({error: 'Done'});
+		}
 
-	return res.status(501).json({error: "Not Implemented"});
-
-});
-
-router.delete('/activities/:id', authenticate, function (req, res) {
-
-	return res.status(501).json({error: "Not Implemented"});
-
-});
-
-router.get('/activities/type', authenticate, function (req, res) {
-
-	return res.status(501).json({error: "Not Implemented"});
-
-});
-
-router.get('/activities/type/:id', authenticate, function (req, res) {
-
-	return res.status(501).json({error: "Not Implemented"});
+	});
 
 });
 
-router.post('/activities/type', authenticate, function (req, res) {
 
-	return res.status(501).json({error: "Not Implemented"});
-
-});
-
-router.get('/activities/type/:id', authenticate, function (req, res) {
-
-	return res.status(501).json({error: "Not Implemented"});
-
-});
-
-router.patch('/activities/type/:id', authenticate, function (req, res) {
-
-	return res.status(501).json({error: "Not Implemented"});
-
-});
-
-router.delete('/activities/type/:id', authenticate, function (req, res) {
-
-	return res.status(501).json({error: "Not Implemented"});
-
-});
 
 function authenticate(req, res, next) {
 	var token = req.headers['x-access-token'];

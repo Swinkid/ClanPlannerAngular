@@ -1,4 +1,4 @@
-<form [formGroup]="bookingForm" novalidate>
+<form [formGroup]="bookingForm" (ngSubmit)="onSubmit(bookingForm)" novalidate>
 
     <br />
 
@@ -9,7 +9,12 @@
 
         <div class="form-group">
             <label>Booked By</label>
-            <input type="text" class="form-control" formControlName="bookedBy">
+            <select class="form-control" name="bookedBy" formControlName="bookedBy">
+                <option value="" disabled>Select</option>
+                <option *ngFor="let a of attendees" [ngValue]="a.userId">
+                    {{ a.discord?.username }}
+                </option>
+            </select>
         </div>
 
         <div class="form-group">
@@ -76,9 +81,12 @@
 
         <div class="form-group row">
 
-            <button class="btn btn-success" (click)="addRoom()">
+            <button class="btn btn-success col-sm-1" (click)="addRoom()">
                 Add Room
             </button>
+
+            <button type="submit" class="btn btn-primary col-sm-1">Submit</button>
+
 
         </div>
 

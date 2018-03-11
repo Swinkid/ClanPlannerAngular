@@ -1,10 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import {Form, FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {Component, OnInit} from '@angular/core';
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute} from "@angular/router";
 import {Attendance} from "../../../../interfaces/attendance";
 import {ApiService} from "../../../../services/api.service";
-
-import {Booking} from "../../../../interfaces/hotel/booking";
 import {Event} from "../../../../interfaces/event";
 
 
@@ -29,8 +27,12 @@ export class BookingFormComponent implements OnInit {
 
         this.bookingForm = new FormGroup({
 
-            bookedBy: new FormControl(),
-            totalCost: new FormControl(),
+            bookedBy: new FormControl('', [
+                Validators.required,
+            ]),
+            totalCost: new FormControl(0.00,[
+                    Validators.required,
+            ]),
             rooms: this._fb.array([
                 this.initRooms()
             ])
@@ -47,7 +49,7 @@ export class BookingFormComponent implements OnInit {
     setAttendance(){
         this.apiService.getEvent(this.route.snapshot.params['id']).subscribe(
             event => {
-                    this.event = event;
+                this.event = event;
             },
             err => {
 
@@ -75,8 +77,8 @@ export class BookingFormComponent implements OnInit {
     }
 
     addRoom(){
-       const control = <FormArray>this.bookingForm.get('rooms');
-       control.push(this.initRooms());
+        const control = <FormArray>this.bookingForm.get('rooms');
+        control.push(this.initRooms());
     }
 
     removeRoom(r: number){
@@ -100,6 +102,23 @@ export class BookingFormComponent implements OnInit {
     removeOccupant(r, o){
         const control = <FormArray>this.bookingForm.get('rooms')['controls'][r].controls.roomOccupants;
         control.removeAt(o);
+    }
+
+    onSubmit(form){
+
+        if(form.valid){
+
+            this.apiService.addBooking(this.event._id, form.value).subscribe(
+                booking => {},
+                error => { console.log(error); },
+                () => {
+                    console.log('SAVED');
+                }
+            );
+
+
+        }
+
     }
 
 }
