@@ -87,6 +87,34 @@ router.delete('/users/:id', authenticate, function (req, res) {
 
 });
 
+router.get('/user/:id', authenticate, function (req, res) {
+
+	User.findOne({_id: xss(req.params.id)}, function (error, user) {
+
+		if(error){
+			return res.status(500).json({error: 'Internal Server Error'});
+		}
+
+		if(!user){
+			return res.status(204).json({error: 'User not found'});
+
+		}
+
+		if(user) {
+			var returnUser = user;
+
+			delete returnUser.discord.accessToken;
+			delete returnUser.discord.fetchedAt;
+			delete returnUser.discord.email;
+
+			return res.status(200).json(returnUser);
+		}
+
+	});
+
+
+});
+
 router.get('/events', authenticate, function (req, res) {
 
 	//TODO: Joi to validate
@@ -308,7 +336,7 @@ router.post('/events/attendance/:event', authenticate, function (req, res) {
 
 	});
 
-	Event.update({'_id': req.params.event}, { $pull: { 'users': {'userId': req.principal.user._id}}}, function (error, updatedEvent) {
+	Event.update({'_id': xss(req.params.event)}, { $pull: { 'users': {'userId': req.principal.user._id}}}, function (error, updatedEvent) {
 		if(error){
 			return res.status(500).json({error: 'Internal Server Error'});
 		}
@@ -447,6 +475,27 @@ router.post('/booking', function (req, res) {
 
 });
 
+router.get('/booking/:id', function (req, res) {
+
+	var filteredId = req.params.id;
+
+	Booking.find({event: filteredId}, function (error, bookings) {
+
+		if(error){
+			return res.status(500).json({error: 'Internal Server Error'});
+		}
+
+		if(!bookings){
+			return res.status(500).json({error: 'Internal Server Error'});
+		}
+
+		if(bookings){
+			return res.status(200).json(bookings);
+		}
+
+	});
+
+});
 
 
 function authenticate(req, res, next) {

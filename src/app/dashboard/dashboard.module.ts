@@ -22,6 +22,7 @@ import { NewComponent } from './events/new/new.component';
 import { AttendeeComponent } from "./events/edit/attendee/attendee.component";
 import { HotelComponent } from "./events/edit/hotel/hotel.component";
 import { BookingFormComponent } from './events/edit/hotel/booking-form.component';
+import { DisplayBookingsComponent } from './events/edit/hotel/display-bookings.component';
 
 
 
@@ -35,7 +36,8 @@ const routes: Routes = [
             { path: 'events/:id', component: EventComponent },
             { path: 'edit/event/:id', component: EditComponent},
             { path: 'new/event', component: NewComponent},
-            { path: 'edit/event/attendee/:id/:attendee', component: AttendeeComponent}
+            { path: 'edit/event/attendee/:id/:attendee', component: AttendeeComponent},
+            { path: 'new/booking/:id', component: BookingFormComponent}
         ]
     }
 
@@ -60,7 +62,8 @@ const routes: Routes = [
         NewComponent,
         AttendeeComponent,
         HotelComponent,
-        BookingFormComponent
+        BookingFormComponent,
+        DisplayBookingsComponent
     ],
     providers: [
         AuthService,

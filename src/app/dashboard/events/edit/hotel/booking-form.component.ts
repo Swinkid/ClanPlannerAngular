@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {Attendance} from "../../../../interfaces/attendance";
 import {ApiService} from "../../../../services/api.service";
 import {Event} from "../../../../interfaces/event";
@@ -17,33 +17,41 @@ export class BookingFormComponent implements OnInit {
     public bookingForm  : FormGroup;
     public attendees    : Attendance[];
 
-    roomType: String[] = [
+    public roomType: String[] = [
         'Single',
         'Twin',
         'Family'
     ];
 
-    constructor(private _fb : FormBuilder, private route : ActivatedRoute, public apiService : ApiService) {
+    constructor(private _fb : FormBuilder, private route : ActivatedRoute, public apiService : ApiService, public router : Router) {
 
-        this.bookingForm = new FormGroup({
 
-            bookedBy: new FormControl('', [
-                Validators.required,
-            ]),
-            totalCost: new FormControl(0.00,[
-                    Validators.required,
-            ]),
-            rooms: this._fb.array([
-                this.initRooms()
-            ])
-
-        });
-
-        console.log(this.bookingForm);
-        this.setAttendance();
     }
 
     ngOnInit() {
+        if(this.route.snapshot.params['id']){
+            this.bookingForm = new FormGroup({
+
+                bookedBy: new FormControl('', [
+                    Validators.required,
+                ]),
+                bookedRoomType: new FormControl('', [
+                   Validators.required
+                ]),
+                totalCost: new FormControl(0.00,[
+                    Validators.required,
+                ]),
+                rooms: this._fb.array([
+                    this.initRooms()
+                ])
+
+            });
+
+            this.setAttendance();
+        } else {
+            this.router.navigate(['/dashboard']);
+        }
+
     }
 
     setAttendance(){
@@ -112,7 +120,7 @@ export class BookingFormComponent implements OnInit {
                 booking => {},
                 error => { console.log(error); },
                 () => {
-                    console.log('SAVED');
+                    this.router.navigate(['/dashboard']);
                 }
             );
 

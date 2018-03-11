@@ -6,6 +6,7 @@ import {UserService} from "./user.service";
 import {Event} from "../interfaces/event";
 import {User} from "../interfaces/user";
 import {Attendance} from "../interfaces/attendance";
+import {Booking} from "../interfaces/hotel/booking";
 
 
 @Injectable()
@@ -75,6 +76,14 @@ export class ApiService {
             event,
             booking: formValue
         }, { headers: {'x-access-token': this.authService.getToken()}});
+    }
+
+    public getBooking(event){
+        return this._http.get<Booking[]>('/api/booking/' + event._id, { headers: {'x-access-token': this.authService.getToken()} });
+    }
+
+    public getUser(userId){
+        return this._http.get<User>('/api/user/' + userId, { headers: {'x-access-token': this.authService.getToken()} })
     }
 
 }

@@ -113,7 +113,12 @@
     </ngb-tab>
     <ngb-tab title="Hotel">
         <ng-template ngbTabContent>
-            <booking-form></booking-form>
+
+            <br />
+
+            <app-display-bookings></app-display-bookings>
+            <button class="btn btn-success" [routerLink]="['/dashboard/new/booking/', event._id]">New Booking</button>
+
         </ng-template>
     </ngb-tab>
 </ngb-tabset>
