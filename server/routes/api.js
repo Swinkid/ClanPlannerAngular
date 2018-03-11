@@ -155,7 +155,7 @@ router.post('/events/attendee/:id/:user', authenticate, function (req, res) {
 
 		if(e){
 			var user = e.users.find(function (value) {
-				return value.userId = filteredUserId;
+				return value.userId === filteredUserId;
 			});
 
 			var attendance = new Attendance({

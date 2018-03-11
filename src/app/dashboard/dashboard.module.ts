@@ -20,6 +20,8 @@ import { EventComponent } from './events/event/event.component';
 import { EditComponent } from './events/edit/edit.component';
 import { NewComponent } from './events/new/new.component';
 import { AttendeeComponent } from "./events/edit/attendee/attendee.component";
+import { HotelComponent } from "./events/edit/hotel/hotel.component";
+import { BookingFormComponent } from './events/edit/hotel/booking-form.component';
 
 
 
@@ -56,7 +58,9 @@ const routes: Routes = [
         EventComponent,
         EditComponent,
         NewComponent,
-        AttendeeComponent
+        AttendeeComponent,
+        HotelComponent,
+        BookingFormComponent
     ],
     providers: [
         AuthService,

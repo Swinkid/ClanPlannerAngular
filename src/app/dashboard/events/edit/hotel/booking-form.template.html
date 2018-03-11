@@ -1,0 +1,93 @@
+<form [formGroup]="bookingForm" novalidate>
+
+    <br />
+
+    <div class="card">
+        <div class="card-header">
+            Booking Details
+        </div>
+
+        <div class="form-group">
+            <label>Booked By</label>
+            <input type="text" class="form-control" formControlName="bookedBy">
+        </div>
+
+        <div class="form-group">
+            <label>Total Cost</label>
+            <input type="number" class="form-control" formControlName="totalCost">
+        </div>
+
+    </div>
+
+    <br />
+
+    <div formArrayName="rooms">
+        <div *ngFor="let room of getRooms(bookingForm); let r = index">
+
+            <div  class="card">
+                <div class="card-header">
+                    Room {{ r + 1}}
+
+                    <button class="btn btn-dark  float-right" *ngIf="bookingForm.controls['rooms'].length > 1" (click)="removeRoom(r)">
+                        Remove Room
+                    </button>
+
+                </div>
+
+                <div [formGroupName]="r">
+
+                    <div formArrayName="roomOccupants">
+
+
+                        <div *ngFor="let occupant of getOccupants(room); let o = index;">
+
+                            <div class="form-group row" [formGroupName]="o">
+
+                                <label class="col-sm-1 col-form-label">Guest {{ o + 1}}</label>
+
+                                <div class="col-sm-10">
+                                    <select class="form-control" name="occupant" formControlName="occupant">
+                                        <option value="Available">Available</option>
+                                        <option *ngFor="let a of attendees" [ngValue]="a.userId">
+                                            {{ a.discord?.username }}
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <button  *ngIf="getOccupants(room).length > 1" class="btn btn-danger col-sm-1" (click)="removeOccupant(r, o)">
+                                    <span class="fas fa-minus"></span>
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-group row">
+                            <button class="btn btn-success col-sm-1" (click)="addOccupant(r)"><span class="fas fa-plus"></span></button>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+            <br />
+        </div>
+
+        <div class="form-group row">
+
+            <button class="btn btn-success" (click)="addRoom()">
+                Add Room
+            </button>
+
+        </div>
+
+
+
+        <pre>{{bookingForm.value | json}}</pre>
+
+
+    </div>
+
+
+</form>

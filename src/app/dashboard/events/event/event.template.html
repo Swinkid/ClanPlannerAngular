@@ -38,125 +38,144 @@
     </div>
 </div>
 
-<div class="card" *ngIf="isUserAttending(attendee?.userId, attendees)">
-    <div class="card-header">
-        Attendance Settings
-    </div>
-    <div class="card-block">
+<ngb-tabset>
+    <ngb-tab title="Attendance">
 
-        <form [formGroup]="attendeeForm" (ngSubmit)="submitForm()">
-            <div class="form-group row">
-                <label for="realName" class="col-1 col-form-label">Real Name</label>
-                <div class="col-2">
-                    <input class="form-control" type="text" id="realName" formControlName="realName">
+        <ng-template ngbTabContent>
+
+            <br />
+
+            <div class="card" *ngIf="isUserAttending(attendee?.userId, attendees)">
+
+                <div class="card-header">
+                    Attendance Settings
                 </div>
-                <label class="col-1 col-form-label" for="ticketPurchasedSelect">Ticket Purchased</label>
-                <div class="col-2">
-                    <select class="custom-select" id="ticketPurchasedSelect" formControlName="ticketPurchasedSelect" required>
-                        <option *ngFor="let t of tickets" [ngValue]="t">
+                <div class="card-block">
 
-                            {{ t ? 'Yes' : 'No'}}
+                    <form [formGroup]="attendeeForm" (ngSubmit)="submitForm()">
+                        <div class="form-group row">
+                            <label for="realName" class="col-1 col-form-label">Real Name</label>
+                            <div class="col-2">
+                                <input class="form-control" type="text" id="realName" formControlName="realName">
+                            </div>
+                            <label class="col-1 col-form-label" for="ticketPurchasedSelect">Ticket Purchased</label>
+                            <div class="col-2">
+                                <select class="custom-select" id="ticketPurchasedSelect" formControlName="ticketPurchasedSelect" required>
+                                    <option *ngFor="let t of tickets" [ngValue]="t">
 
-                        </option>
-                    </select>
-                </div>
+                                        {{ t ? 'Yes' : 'No'}}
 
-                <label class="col-1 col-form-label" for="seatPickerSelect">On Seat Picker</label>
-                <div class="col-2">
-                    <select class="custom-select" id="seatPickerSelect" formControlName="seatPickerSelect" required>
-                        <option *ngFor="let s of seatPicker" [ngValue]="s">
-                            {{ s ? 'Yes' : 'No'}}
-                        </option>
-                    </select>
-                </div>
+                                    </option>
+                                </select>
+                            </div>
 
-                <label class="col-1 col-form-label" for="inFacebookChat">In Facebook Chat</label>
-                <div class="col-2">
-                    <select class="custom-select" id="inFacebookChat" formControlName="inFacebookChat" required>
-                        <option *ngFor="let f of facebookChat" [ngValue]="f">
-                            {{ f ? 'Yes' : 'No'}}
-                        </option>
-                    </select>
+                            <label class="col-1 col-form-label" for="seatPickerSelect">On Seat Picker</label>
+                            <div class="col-2">
+                                <select class="custom-select" id="seatPickerSelect" formControlName="seatPickerSelect" required>
+                                    <option *ngFor="let s of seatPicker" [ngValue]="s">
+                                        {{ s ? 'Yes' : 'No'}}
+                                    </option>
+                                </select>
+                            </div>
+
+                            <label class="col-1 col-form-label" for="inFacebookChat">In Facebook Chat</label>
+                            <div class="col-2">
+                                <select class="custom-select" id="inFacebookChat" formControlName="inFacebookChat" required>
+                                    <option *ngFor="let f of facebookChat" [ngValue]="f">
+                                        {{ f ? 'Yes' : 'No'}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="arrivalDate" class="col-1 col-form-label">Arrival Date</label>
+                            <div class="col-2">
+                                <input class="form-control" type="date" id="arrivalDate" formControlName="arrivalDate" required>
+                            </div>
+                            <label class="col-1 col-form-label" for="accommodationSelect">Accommodation</label>
+                            <div class="col-2">
+                                <select class="custom-select" id="accommodationSelect" formControlName="accommodationSelect" required>
+                                    <option value="" disabled>Select</option>
+                                    <option *ngFor="let a of accomodation" [ngValue]="a">
+                                        {{ a }}
+                                    </option>
+                                </select>
+                            </div>
+                            <label class="col-1 col-form-label" for="transportSelect">Transport</label>
+                            <div class="col-2">
+                                <select class="custom-select" id="transportSelect" formControlName="transportSelect" required>
+                                    <option value="" disabled>Select</option>
+                                    <option *ngFor="let t of transport" [ngValue]="t">
+                                        {{ t }}
+                                    </option>
+                                </select>
+                            </div>
+                            <label class="col-1 col-form-label" for="location">Location</label>
+                            <div class="col-2">
+                                <input class="form-control" type="text" id="location" formControlName="location" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <button type="submit" class="btn btn-primary col-1">Submit</button>
+                            <div class="col-2">
+                                <span *ngIf="submitted">Saved</span>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
-            <div class="form-group row">
-                <label for="arrivalDate" class="col-1 col-form-label">Arrival Date</label>
-                <div class="col-2">
-                    <input class="form-control" type="date" id="arrivalDate" formControlName="arrivalDate" required>
+
+            <br />
+
+            <div class="card">
+                <div class="card-header">
+                    Attendee's
                 </div>
-                <label class="col-1 col-form-label" for="accommodationSelect">Accommodation</label>
-                <div class="col-2">
-                    <select class="custom-select" id="accommodationSelect" formControlName="accommodationSelect" required>
-                        <option value="" disabled>Select</option>
-                        <option *ngFor="let a of accomodation" [ngValue]="a">
-                            {{ a }}
-                        </option>
-                    </select>
-                </div>
-                <label class="col-1 col-form-label" for="transportSelect">Transport</label>
-                <div class="col-2">
-                    <select class="custom-select" id="transportSelect" formControlName="transportSelect" required>
-                        <option value="" disabled>Select</option>
-                        <option *ngFor="let t of transport" [ngValue]="t">
-                            {{ t }}
-                        </option>
-                    </select>
-                </div>
-                <label class="col-1 col-form-label" for="location">Location</label>
-                <div class="col-2">
-                    <input class="form-control" type="text" id="location" formControlName="location" required>
+                <div class="card-block">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>Discord Name</th>
+                            <th>Real Name</th>
+                            <th>Brought Ticket</th>
+                            <th>On Seat Picker</th>
+                            <th>Arrival Date</th>
+                            <th>Accommodation</th>
+                            <th>Transport</th>
+                            <th>Location</th>
+                            <th>In Facebook Chat</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let attendee of attendees">
+
+                            <td>
+                                <img class="img-thumbnail rounded-circle" width="100" height="100" *ngIf="attendee.discord.avatar !== null" src="{{ 'http://cdn.discordapp.com/avatars/' + attendee.discord.id + '/' + attendee.discord.avatar }}">
+                                <img class="img-thumbnail rounded-circle" width="100" height="100" *ngIf="attendee.discord.avatar === null" src="http://placehold.it/100x100">
+                            </td>
+                            <td>{{ attendee?.discord.username + '#' + attendee.discord.discriminator }}</td>
+                            <td>{{ attendee?.realName }}</td>
+                            <td>{{ attendee?.broughtTicket ? 'Yes' : 'No' }}</td>
+                            <td>{{ attendee?.onSeatPicker ? 'Yes' : 'No' }}</td>
+                            <td>{{ attendee?.dateArriving | date: 'dd/MM/yyyy'}}</td>
+                            <td>{{ attendee?.accommodation }}</td>
+                            <td>{{ attendee?.transportPlans }}</td>
+                            <td>{{ attendee?.location }}</td>
+                            <td>{{ attendee?.inFacebookChat ? 'Yes' : 'No' }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
-            <div class="form-group row">
-                <button type="submit" class="btn btn-primary col-1">Submit</button>
-                <div class="col-2">
-                    <span *ngIf="submitted">Saved</span>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
+        </ng-template>
+    </ngb-tab>
+    <ngb-tab title="Hotel">
 
-<br />
+        <ng-template ngbTabContent>
 
-<div class="card">
-    <div class="card-header">
-        Attendee's
-    </div>
-    <div class="card-block">
-        <table class="table">
-            <thead>
-            <tr>
-                <th></th>
-                <th>Discord Name</th>
-                <th>Real Name</th>
-                <th>Brought Ticket</th>
-                <th>On Seat Picker</th>
-                <th>Arrival Date</th>
-                <th>Accommodation</th>
-                <th>Transport</th>
-                <th>Location</th>
-                <th>In Facebook Chat</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let attendee of attendees">
 
-                <td>
-                    <img class="img-thumbnail rounded-circle" width="100" height="100" *ngIf="attendee.discord.avatar !== null" src="{{ 'http://cdn.discordapp.com/avatars/' + attendee.discord.id + '/' + attendee.discord.avatar }}">
-                    <img class="img-thumbnail rounded-circle" width="100" height="100" *ngIf="attendee.discord.avatar === null" src="http://placehold.it/100x100">
-                </td>
-                <td>{{ attendee?.discord.username + '#' + attendee.discord.discriminator }}</td>
-                <td>{{ attendee?.realName }}</td>
-                <td>{{ attendee?.broughtTicket ? 'Yes' : 'No' }}</td>
-                <td>{{ attendee?.onSeatPicker ? 'Yes' : 'No' }}</td>
-                <td>{{ attendee?.dateArriving | date: 'dd/MM/yyyy'}}</td>
-                <td>{{ attendee?.accommodation }}</td>
-                <td>{{ attendee?.transportPlans }}</td>
-                <td>{{ attendee?.location }}</td>
-                <td>{{ attendee?.inFacebookChat ? 'Yes' : 'No' }}</td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
+        </ng-template>
+
+    </ngb-tab>
+</ngb-tabset>
