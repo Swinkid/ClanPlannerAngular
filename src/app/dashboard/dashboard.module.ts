@@ -20,9 +20,8 @@ import { EventComponent } from './events/event/event.component';
 import { EditComponent } from './events/edit/edit.component';
 import { NewComponent } from './events/new/new.component';
 import { AttendeeComponent } from "./events/edit/attendee/attendee.component";
-import { HotelComponent } from "./events/edit/hotel/hotel.component";
-import { BookingFormComponent } from './events/edit/hotel/booking-form.component';
-import { DisplayBookingsComponent } from './events/edit/hotel/display-bookings.component';
+import { BookingFormComponent } from './events/new/booking-form.component';
+import { DisplayBookingsComponent } from './events/event/display-bookings.component';
 
 
 
@@ -61,7 +60,6 @@ const routes: Routes = [
         EditComponent,
         NewComponent,
         AttendeeComponent,
-        HotelComponent,
         BookingFormComponent,
         DisplayBookingsComponent
     ],
