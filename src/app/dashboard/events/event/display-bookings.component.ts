@@ -39,7 +39,7 @@ export class DisplayBookingsComponent implements OnInit {
 
     setBookings(event){
 
-        this.apiService.getBooking(event).subscribe(
+        this.apiService.getBookings(event).subscribe(
             bookings => {this.bookings = bookings;},
             error => {},
             () => {

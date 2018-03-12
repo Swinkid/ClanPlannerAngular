@@ -78,7 +78,7 @@ export class ApiService {
         }, { headers: {'x-access-token': this.authService.getToken()}});
     }
 
-    public getBooking(event){
+    public getBookings(event){
         return this._http.get<Booking[]>('/api/booking/' + event._id, { headers: {'x-access-token': this.authService.getToken()} });
     }
 
@@ -91,6 +91,14 @@ export class ApiService {
             headers: {
                 'x-access-token': this.authService.getToken()
             }});
+    }
+
+    public getBooking(booking){
+        return this._http.get<Booking>('/api/booking/edit/' + booking, { headers: {'x-access-token': this.authService.getToken()} });
+    }
+
+    public updateBooking(booking, formValues){
+        return this._http.post('/api/booking/edit/' + booking, formValues,{ headers: {'x-access-token': this.authService.getToken()} });
     }
 
 }

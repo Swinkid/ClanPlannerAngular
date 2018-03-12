@@ -2,7 +2,9 @@
     <div class="card">
 
         <div class="card-header">
-            {{booking.booking.bookedBy}} (Cost: {{ booking.booking.totalCost | currency: 'GBP' : 'symbol-narrow' :'1.2-2'}}) <button class="btn btn-danger float-right" (click)="deleteBooking(booking._id)"><span class="fas fa-trash"></span></button>
+            {{booking.booking.bookedBy}} (Cost: {{ booking.booking.totalCost | currency: 'GBP' : 'symbol-narrow' :'1.2-2'}})
+            <button class="btn btn-danger float-right" (click)="deleteBooking(booking._id)"><span class="fas fa-trash"></span></button>
+            <button class="btn btn-primary float-right" routerLink="{{'/dashboard/edit/booking/' + booking._id}}"><span class="fas fa-edit"></span></button>
         </div>
 
         <div class="card-body">
@@ -15,7 +17,7 @@
                 </thead>
                 <tbody>
 
-                <tr *ngFor="let room of calcBiggestRoom(booking); let ri = index">
+                <tr *ngFor="let room of booking.booking.rooms; let ri = index">
                     <td>Room {{ ri + 1}}</td>
 
                     <td *ngFor="let occupant of calcBiggestRoom(booking); let oi = index">
@@ -25,8 +27,8 @@
                     </td>
                     <td>
 
-                        <strong>Room Cost:</strong> {{ (booking.booking.totalCost / booking.booking.rooms.length) | currency: 'GBP' : 'symbol-narrow' :'1.2-2' }} <br />
-                        <strong>Per Person Cost:</strong> {{ (booking.booking.totalCost / booking.booking.rooms.length) / booking.booking.rooms[ri].roomOccupants.length | currency: 'GBP' : 'symbol-narrow' :'1.2-2' }}
+                        <strong>Room Cost:</strong> {{ (booking.booking?.totalCost / booking?.booking.rooms.length) | currency: 'GBP' : 'symbol-narrow' :'1.2-2' }} <br />
+                        <strong>Per Person Cost:</strong> {{ (booking.booking?.totalCost / booking.booking?.rooms.length) / booking.booking.rooms[ri]?.roomOccupants.length | currency: 'GBP' : 'symbol-narrow' :'1.2-2' }}
 
                     </td>
                 </tr>

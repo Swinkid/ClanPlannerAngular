@@ -7,6 +7,7 @@ export interface Booking {
     booking: {
         bookedBy: String,
         totalCost: number,
+        roomType: String,
         rooms: Room[]
     },
 

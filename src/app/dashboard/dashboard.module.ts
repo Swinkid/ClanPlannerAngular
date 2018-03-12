@@ -37,7 +37,8 @@ const routes: Routes = [
             { path: 'edit/event/:id', component: EditComponent},
             { path: 'new/event', component: NewComponent},
             { path: 'edit/event/attendee/:id/:attendee', component: AttendeeComponent},
-            { path: 'new/booking/:id', component: BookingFormComponent}
+            { path: 'new/booking/:id', component: BookingFormComponent},
+            { path: 'edit/booking/:id', component: BookingComponent }
         ]
     }
 

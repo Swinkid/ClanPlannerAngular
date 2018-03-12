@@ -435,7 +435,7 @@ router.delete('/events/:id', authenticate, function (req, res) {
 
 });
 
-router.post('/booking', function (req, res) {
+router.post('/booking', authenticate, function (req, res) {
 
 	var filteredRooms = [];
 
@@ -457,6 +457,7 @@ router.post('/booking', function (req, res) {
 		booking: {
 			bookedBy : xss(req.body.booking.bookedBy),
 			totalCost : xss(req.body.booking.totalCost),
+			roomType: xss(req.body.booking.bookedRoomType),
 			rooms : filteredRooms
 		}
 	});
@@ -475,7 +476,7 @@ router.post('/booking', function (req, res) {
 
 });
 
-router.get('/booking/:id', function (req, res) {
+router.get('/booking/:id', authenticate, function (req, res) {
 
 	var filteredId = req.params.id;
 
@@ -495,6 +496,76 @@ router.get('/booking/:id', function (req, res) {
 
 	});
 
+});
+
+router.get('/booking/edit/:id', authenticate, function (req, res) {
+
+	var filteredId = xss(req.params.id);
+
+	Booking.findOne({_id: filteredId}, function (error, booking) {
+
+		if(error){
+			return res.status(500).json({error: 'Internal Server Error'});
+		}
+
+		if(!booking){
+			return res.status(500).json({error: 'Internal Server Error'});
+		}
+
+		if(booking){
+			return res.status(200).json(booking);
+		}
+
+	});
+
+});
+
+router.post('/booking/edit/:id', authenticate, function (req, res) {
+
+	var filteredId = xss(req.params.id);
+
+	var filteredRooms = [];
+
+	req.body.booking.rooms.forEach(function (room) {
+
+		var r = {
+			roomOccupants: []
+		};
+
+		room.roomOccupants.forEach(function (occupants) {
+			r.roomOccupants.push(xss(occupants.occupant));
+		});
+
+		filteredRooms.push(r);
+	});
+
+	var updatedBooking = {
+		event: xss(req.body.event),
+		booking: {
+			bookedBy : xss(req.body.booking.bookedBy),
+			totalCost : xss(req.body.booking.totalCost),
+			roomType: xss(req.body.booking.bookedRoomType),
+			rooms : filteredRooms
+		}
+	};
+
+	Booking.findByIdAndUpdate(filteredId, {
+		$set: {
+			event: updatedBooking.event,
+			booking: updatedBooking.booking
+		}
+	}, {new: true}, function (error) {
+
+		if(error){
+
+			return res.status(500).json({error: 'Internal Server Error'});
+
+		} else {
+
+			return res.status(200).json({error: 'Done'});
+
+		}
+	});
 });
 
 router.delete('/booking/:id', function (req, res) {
