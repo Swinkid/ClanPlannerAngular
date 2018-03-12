@@ -497,6 +497,26 @@ router.get('/booking/:id', function (req, res) {
 
 });
 
+router.delete('/booking/:id', function (req, res) {
+
+	var filteredId = req.params.id;
+
+	Booking.remove({_id: filteredId}, function (error) {
+
+		if(error){
+
+			return res.status(500).json({error: 'Internal Server Error'});
+
+		} else {
+
+			return res.status(200).json({error: 'Done'});
+
+		}
+
+	});
+
+});
+
 
 function authenticate(req, res, next) {
 	var token = req.headers['x-access-token'];

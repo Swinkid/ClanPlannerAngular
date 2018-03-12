@@ -86,4 +86,11 @@ export class ApiService {
         return this._http.get<User>('/api/user/' + userId, { headers: {'x-access-token': this.authService.getToken()} })
     }
 
+    public removeBooking(booking){
+        return this._http.delete('/api/booking/' + booking, {
+            headers: {
+                'x-access-token': this.authService.getToken()
+            }});
+    }
+
 }

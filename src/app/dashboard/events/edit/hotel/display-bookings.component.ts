@@ -109,4 +109,13 @@ export class DisplayBookingsComponent implements OnInit {
 
     }
 
+    deleteBooking(booking){
+        this.apiService.removeBooking(booking).subscribe(
+            data => {},
+            error => {},
+            () => {
+                this.setEvent();
+            });
+    }
+
 }

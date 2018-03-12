@@ -2,7 +2,7 @@
     <div class="card">
 
         <div class="card-header">
-            {{booking.booking.bookedBy}}
+            {{booking.booking.bookedBy}} (Cost: {{ booking.booking.totalCost | currency: 'GBP'}}) <button class="btn btn-danger float-right" (click)="deleteBooking(booking._id)"><span class="fas fa-trash"></span></button>
         </div>
 
         <div class="card-body">
@@ -11,12 +11,26 @@
                 <thead>
                 <th></th>
                 <th *ngFor="let g of calcBiggestRoom(booking); let i = index">Guest {{ i + 1}}</th>
+                <th>Prices</th>
                 </thead>
                 <tbody>
 
-                <tr *ngFor="let room of booking.booking.rooms; let ri = index">
+                <!--<tr *ngFor="let room of booking.booking.rooms; let ri = index">-->
+                <tr *ngFor="let room of calcBiggestRoom(booking); let ri = index">
                     <td>Room {{ ri + 1}}</td>
-                    <td *ngFor="let occupant of room.roomOccupants;">{{ occupant }}</td>
+
+                    <!--<td *ngFor="let occupant of booking.booking.rooms[ri].roomOccupants;">{{ occupant ? occupant : ' '}}</td>-->
+                    <td *ngFor="let occupant of calcBiggestRoom(booking); let oi = index">
+
+                        {{ booking.booking.rooms[ri]?.roomOccupants[oi] }}
+
+                    </td>
+                    <td>
+
+                        <strong>Room Cost:</strong> {{ (booking.booking.totalCost / booking.booking.rooms.length) | currency: 'GBP' }} <br />
+                        <strong>Per Person Cost:</strong> {{ (booking.booking.totalCost / booking.booking.rooms.length) / booking.booking.rooms[ri].roomOccupants.length | currency: 'GBP' }}
+
+                    </td>
                 </tr>
 
                 </tbody>
