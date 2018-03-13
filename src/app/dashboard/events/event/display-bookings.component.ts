@@ -5,6 +5,7 @@ import {Event} from "../../../interfaces/event";
 import {Booking} from "../../../interfaces/hotel/booking";
 import {Attendance} from "../../../interfaces/attendance";
 import * as _ from 'lodash';
+import {UserService} from "../../../services/user.service";
 
 @Component({
     selector: 'app-display-bookings',
@@ -16,10 +17,12 @@ export class DisplayBookingsComponent implements OnInit {
     public event : Event;
     public bookings : Booking[];
     public attendance : Attendance[];
+    public isAdmin  : Boolean = false;
 
-    constructor(public apiService : ApiService, private route : ActivatedRoute) { }
+    constructor(private userService : UserService, public apiService : ApiService, private route : ActivatedRoute) { }
 
     ngOnInit() {
+        this.isAdmin = this.userService.isAdmin();
         this.setEvent();
     }
 

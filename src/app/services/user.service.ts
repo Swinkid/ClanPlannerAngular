@@ -40,4 +40,8 @@ export class UserService {
         return "https://cdn.discordapp.com/avatars/" + this.getDiscordUserId() + "/" + this.getAvatarHash() + ".jpg"
     }
 
+    public isAdmin() : Boolean {
+        return jwt_decode(this.authService.getToken()).user.admin;
+    }
+
 }

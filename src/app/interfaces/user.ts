@@ -14,6 +14,7 @@ export interface User {
         accessToken: String,
         fetchedAt: String,
     },
-    regDate: String
+    regDate: String,
+    admin : boolean
 
 }

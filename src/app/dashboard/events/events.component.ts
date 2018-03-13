@@ -6,6 +6,7 @@ import { ApiService } from "../../services/api.service";
 
 import {Event} from "../../interfaces/event";
 import {UserService} from "../../services/user.service";
+import {User} from "../../interfaces/user";
 
 
 
@@ -17,6 +18,7 @@ import {UserService} from "../../services/user.service";
 export class EventsComponent implements OnInit {
 
     public events: Event[];
+    public isAdmin : Boolean = false;
     public userId: String;
 
     constructor(public authService : AuthService, private apiService : ApiService, public userService : UserService ) {
@@ -29,6 +31,8 @@ export class EventsComponent implements OnInit {
     }
 
     getEvents(){
+        this.isAdmin = this.userService.isAdmin();
+
         this.apiService.getEvents().subscribe(
             data => {this.events = data },
             err => function () {},

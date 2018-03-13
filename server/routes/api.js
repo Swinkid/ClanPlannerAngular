@@ -81,7 +81,7 @@ router.patch('/users/:id', authenticate, function (req, res) {
 
 });
 
-router.delete('/users/:id', authenticate, function (req, res) {
+router.delete('/users/:id', authenticate, isAdmin, function (req, res) {
 
 	return res.status(501).json({error: "Not Implemented"});
 
@@ -166,7 +166,7 @@ router.get('/events/:id', authenticate, function (req, res) {
 //http://mongoosejs.com/docs/subdocs.html#altsyntax
 //Leverage above instead
 
-router.post('/events/attendee/:id/:user', authenticate, function (req, res) {
+router.post('/events/attendee/:id/:user', authenticate, isAdmin, function (req, res) {
 
 	var filteredId = xss(req.params.id);
 	var filteredUserId = xss(req.params.user);
@@ -367,7 +367,7 @@ router.post('/events/attendance/:event', authenticate, function (req, res) {
 
 });
 
-router.post('/events', authenticate, function (req, res) {
+router.post('/events', authenticate, isAdmin, function (req, res) {
 
 	var filteredName = xss(req.body.formValue.name);
 	var filteredFromDate = xss(req.body.formValue.fromDate);
@@ -399,7 +399,7 @@ router.post('/events', authenticate, function (req, res) {
 
 });
 
-router.post('/events/:id', authenticate, function (req, res) {
+router.post('/events/:id', authenticate, isAdmin, function (req, res) {
 
 	var filteredEventId = xss(req.params.id);
 	var filteredName = xss(req.body.formValue.name);
@@ -423,7 +423,7 @@ router.post('/events/:id', authenticate, function (req, res) {
 
 });
 
-router.delete('/events/:id', authenticate, function (req, res) {
+router.delete('/events/:id', authenticate, isAdmin, function (req, res) {
 
 	Event.remove({_id: xss(req.params.id)}, function (error) {
 		if(error){
@@ -435,7 +435,7 @@ router.delete('/events/:id', authenticate, function (req, res) {
 
 });
 
-router.post('/booking', authenticate, function (req, res) {
+router.post('/booking', authenticate, isAdmin, function (req, res) {
 
 	var filteredRooms = [];
 
@@ -498,7 +498,7 @@ router.get('/booking/:id', authenticate, function (req, res) {
 
 });
 
-router.get('/booking/edit/:id', authenticate, function (req, res) {
+router.get('/booking/edit/:id', authenticate, isAdmin, function (req, res) {
 
 	var filteredId = xss(req.params.id);
 
@@ -520,7 +520,7 @@ router.get('/booking/edit/:id', authenticate, function (req, res) {
 
 });
 
-router.post('/booking/edit/:id', authenticate, function (req, res) {
+router.post('/booking/edit/:id', authenticate, isAdmin, function (req, res) {
 
 	var filteredId = xss(req.params.id);
 
@@ -568,7 +568,7 @@ router.post('/booking/edit/:id', authenticate, function (req, res) {
 	});
 });
 
-router.delete('/booking/:id', function (req, res) {
+router.delete('/booking/:id', authenticate, isAdmin, function (req, res) {
 
 	var filteredId = req.params.id;
 
@@ -587,6 +587,14 @@ router.delete('/booking/:id', function (req, res) {
 	});
 
 });
+
+function isAdmin(req, res, next){
+	if(req.principal.user.admin === true){
+		return next();
+	} else {
+		return res.status(401).json({error: 'Invalid Access Token'});
+	}
+}
 
 
 function authenticate(req, res, next) {

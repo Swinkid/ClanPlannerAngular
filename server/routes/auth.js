@@ -26,7 +26,13 @@ router.get('/discord/callback', function (req, res, next) {
 			return res.redirect('/');
 		}
 
-		var rolesData = {};
+		var rolesData = [];
+
+		if(user.admin){
+			rolesData.push('admin');
+		} else {
+			rolesData.push('user');
+		}
 
 		var tokenData = {
 			user: user,

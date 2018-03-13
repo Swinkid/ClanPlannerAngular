@@ -23,6 +23,7 @@ import { AttendeeComponent } from "./events/edit/attendee/attendee.component";
 import { BookingFormComponent } from './events/new/booking-form.component';
 import { DisplayBookingsComponent } from './events/event/display-bookings.component';
 import { BookingComponent } from './events/edit/booking.component';
+import {AuthorizeGuard} from "../guards/authorize.guard";
 
 
 
@@ -34,11 +35,11 @@ const routes: Routes = [
             { path :'', component: HomeComponent },
             { path: 'events', component: EventsComponent },
             { path: 'events/:id', component: EventComponent },
-            { path: 'edit/event/:id', component: EditComponent},
-            { path: 'new/event', component: NewComponent},
-            { path: 'edit/event/attendee/:id/:attendee', component: AttendeeComponent},
-            { path: 'new/booking/:id', component: BookingFormComponent},
-            { path: 'edit/booking/:id', component: BookingComponent }
+            { path: 'edit/event/:id', component: EditComponent , canActivate: [AuthorizeGuard]},
+            { path: 'new/event', component: NewComponent , canActivate: [AuthorizeGuard]},
+            { path: 'edit/event/attendee/:id/:attendee', component: AttendeeComponent , canActivate: [AuthorizeGuard]},
+            { path: 'new/booking/:id', component: BookingFormComponent , canActivate: [AuthorizeGuard]},
+            { path: 'edit/booking/:id', component: BookingComponent, canActivate: [AuthorizeGuard] }
         ]
     }
 
@@ -69,6 +70,7 @@ const routes: Routes = [
     providers: [
         AuthService,
         AuthenticateGuard,
+        AuthorizeGuard,
         CookieService,
         UserService,
         ApiService

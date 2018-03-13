@@ -26,7 +26,8 @@ module.exports = function(passport) {
 					var user = new User({
 						discord: profile,
 						regEvents: [],
-						regDate: new Date().getTime()
+						regDate: new Date().getTime(),
+						admin: false
 					});
 
 					user.save(function (err) {
