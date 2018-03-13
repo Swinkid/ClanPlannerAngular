@@ -11,6 +11,7 @@ const Event = require('../models/event');
 const User = require('../models/user');
 const Attendance = require('../models/attendance');
 const Booking = require('../models/booking');
+const Jersey = require('../models/jersey');
 
 /* GET api listing. */
 router.get('/', function (req, res) {
@@ -570,7 +571,7 @@ router.post('/booking/edit/:id', authenticate, isAdmin, function (req, res) {
 
 router.delete('/booking/:id', authenticate, isAdmin, function (req, res) {
 
-	var filteredId = req.params.id;
+	var filteredId = xss(req.params.id);
 
 	Booking.remove({_id: filteredId}, function (error) {
 
@@ -588,6 +589,118 @@ router.delete('/booking/:id', authenticate, isAdmin, function (req, res) {
 
 });
 
+/**
+ * Get all jerseys for event
+ */
+router.get('/jersey/:event', authenticate, function (req, res) {
+
+	var filteredId = xss(req.params.event);
+
+	Jersey.find({eventId: filteredId}, function (error, jerseys) {
+
+		if(error){
+			return res.status(500).json({error: 'Internal Server Error'});
+		}
+
+		if(!jerseys){
+			return res.status(500).json({error: 'Internal Server Error'});
+		}
+
+		if(jerseys){
+			return res.status(200).json(jerseys);
+		}
+
+	});
+
+});
+
+/**
+ * Get user jerseys for event
+ */
+router.get('/jersey/:event/:user', authenticate, function (req, res) {
+
+	var filteredId = xss(req.params.event);
+	var filteredUserId = xss(req.params.user);
+
+	Jersey.findOne({eventId: filteredId, userId: filteredUserId}, function (error, jerseys) {
+
+		if(error){
+			return res.status(500).json({error: 'Internal Server Error'});
+		}
+
+		if(!jerseys){
+			return res.status(500).json({error: 'Internal Server Error'});
+		}
+
+		if(jerseys){
+			return res.status(200).json(jerseys);
+		}
+
+	});
+
+});
+
+
+/**
+ * Add a jersey for a user in an event
+ */
+router.post('/jersey/:event/:user', authenticate, function (req, res) {
+
+	var filteredEventId = xss(req.params.event);
+	var filteredUserId = xss(req.params.user);
+
+	if((req.principal.user._id === filteredUserId) || isAdmin()){
+		var newJersey = new Jersey({
+
+			eventId: filteredEventId,
+			userId: filteredUserId,
+			size: xss(req.body.size),
+			hidden: xss(req.body.hidden),
+			paid: false
+
+		});
+
+		newJersey.save(function (error, savedJersey) {
+			if(error){
+				return res.status(500).json({error: 'Internal Server Error'});
+			}
+
+			if(!savedJersey){
+				return res.status(500).json({error: 'Internal Server Error'});
+			}
+
+			if(savedJersey){
+				return res.status(200).json({error: 'Done'});
+			}
+		});
+	} else {
+		return res.status(401).json({error: 'Invalid Access Token'});
+	}
+});
+
+router.delete('/jersey/:event/:user', authenticate, function (req, res) {
+
+	var filteredEventId = xss(req.params.event);
+	var filteredUserId = xss(req.params.user);
+
+	if((req.principal.user._id === filteredUserId) || isAdmin()){
+
+		Jersey.remove({eventId: filteredEventId, userId: filteredUserId}, function (error) {
+			if(error){
+				return res.status(500).json({error: 'Internal Server Error'});
+			}
+
+			if(!error){
+				return res.status(200).json({error: 'Done'});
+			}
+		})
+
+	} else {
+		return res.status(401).json({error: 'Invalid Access Token'});
+	}
+
+});
+
 function isAdmin(req, res, next){
 	if(req.principal.user.admin === true){
 		return next();
@@ -596,6 +709,13 @@ function isAdmin(req, res, next){
 	}
 }
 
+function isAdmin(){
+	if(req.principal.user.admin === true){
+		return true;
+	} else {
+		return false;
+	}
+}
 
 function authenticate(req, res, next) {
 	var token = req.headers['x-access-token'];
