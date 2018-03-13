@@ -650,29 +650,45 @@ router.post('/jersey/:event/:user', authenticate, function (req, res) {
 	var filteredUserId = xss(req.params.user);
 
 	if((req.principal.user._id === filteredUserId) || isAdmin()){
-		var newJersey = new Jersey({
 
-			eventId: filteredEventId,
-			userId: filteredUserId,
-			size: xss(req.body.size),
-			hidden: xss(req.body.hidden),
-			paid: false
+		Jersey.findOne({eventId: filteredEventId, userId: filteredUserId}, function(error, found){
 
-		});
-
-		newJersey.save(function (error, savedJersey) {
 			if(error){
 				return res.status(500).json({error: 'Internal Server Error'});
 			}
 
-			if(!savedJersey){
+			if(found){
 				return res.status(500).json({error: 'Internal Server Error'});
 			}
 
-			if(savedJersey){
-				return res.status(200).json({error: 'Done'});
+			if(!found){
+				var newJersey = new Jersey({
+
+					eventId: filteredEventId,
+					userId: filteredUserId,
+					size: xss(req.body.size),
+					hidden: xss(req.body.hidden),
+					paid: false
+
+				});
+
+				newJersey.save(function (error, savedJersey) {
+					if(error){
+						return res.status(500).json({error: 'Internal Server Error'});
+					}
+
+					if(!savedJersey){
+						return res.status(500).json({error: 'Internal Server Error'});
+					}
+
+					if(savedJersey){
+						return res.status(200).json({error: 'Done'});
+					}
+				});
 			}
+
 		});
+
 	} else {
 		return res.status(401).json({error: 'Invalid Access Token'});
 	}
@@ -694,6 +710,39 @@ router.delete('/jersey/:event/:user', authenticate, function (req, res) {
 				return res.status(200).json({error: 'Done'});
 			}
 		})
+
+	} else {
+		return res.status(401).json({error: 'Invalid Access Token'});
+	}
+
+});
+
+router.post('/jersey/update/:event/:user', authenticate, function (res, req) {
+	var filteredEventId = xss(req.params.event);
+	var filteredUserId = xss(req.params.user);
+
+	if((req.principal.user._id === filteredUserId) || isAdmin()){
+
+		Jersey.update({eventId: filteredEventId, userId: filteredUserId}, {
+
+			$set: {
+				size: xss(req.body.size),
+				hidden: xss(req.body.hidden),
+				paid: xss(req.body.hidden)
+			}
+
+		}, function (error) {
+
+			if(error){
+				return res.status(500).json({error: 'Internal Server Error'});
+			}
+
+			if(!error){
+				return res.status(200).json({error: 'Done'});
+			}
+
+		});
+
 
 	} else {
 		return res.status(401).json({error: 'Invalid Access Token'});
