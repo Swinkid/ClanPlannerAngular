@@ -603,7 +603,7 @@ router.get('/jersey/:event', authenticate, function (req, res) {
 		}
 
 		if(!jerseys){
-			return res.status(500).json({error: 'Internal Server Error'});
+			return res.status(404).json({error: 'No Jerseys Found'});
 		}
 
 		if(jerseys){
@@ -629,7 +629,7 @@ router.get('/jersey/:event/:user', authenticate, function (req, res) {
 		}
 
 		if(!jerseys){
-			return res.status(500).json({error: 'Internal Server Error'});
+			return res.status(404).json({error: 'Jersey not found'});
 		}
 
 		if(jerseys){
@@ -649,7 +649,7 @@ router.post('/jersey/:event/:user', authenticate, function (req, res) {
 	var filteredEventId = xss(req.params.event);
 	var filteredUserId = xss(req.params.user);
 
-	if((req.principal.user._id === filteredUserId) || isAdmin()){
+	if((req.principal.user._id === filteredUserId) || checkAdmin(req.principal.user)){
 
 		Jersey.findOne({eventId: filteredEventId, userId: filteredUserId}, function(error, found){
 
@@ -666,8 +666,8 @@ router.post('/jersey/:event/:user', authenticate, function (req, res) {
 
 					eventId: filteredEventId,
 					userId: filteredUserId,
-					size: xss(req.body.size),
-					hidden: xss(req.body.hidden),
+					size: req.body.size,
+					hidden: req.body.hidden,
 					paid: false
 
 				});
@@ -699,7 +699,7 @@ router.delete('/jersey/:event/:user', authenticate, function (req, res) {
 	var filteredEventId = xss(req.params.event);
 	var filteredUserId = xss(req.params.user);
 
-	if((req.principal.user._id === filteredUserId) || isAdmin()){
+	if((req.principal.user._id === filteredUserId) || checkAdmin(req.principal.user)){
 
 		Jersey.remove({eventId: filteredEventId, userId: filteredUserId}, function (error) {
 			if(error){
@@ -717,18 +717,18 @@ router.delete('/jersey/:event/:user', authenticate, function (req, res) {
 
 });
 
-router.post('/jersey/update/:event/:user', authenticate, function (res, req) {
+router.post('/jersey/update/:event/:user', authenticate, function (req, res) {
 	var filteredEventId = xss(req.params.event);
 	var filteredUserId = xss(req.params.user);
 
-	if((req.principal.user._id === filteredUserId) || isAdmin()){
+	if((req.principal.user._id === filteredUserId) || checkAdmin(req.principal.user)){
 
 		Jersey.update({eventId: filteredEventId, userId: filteredUserId}, {
 
 			$set: {
 				size: xss(req.body.size),
-				hidden: xss(req.body.hidden),
-				paid: xss(req.body.hidden)
+				hidden: req.body.hidden,
+				paid: req.body.paid
 			}
 
 		}, function (error) {
@@ -758,8 +758,8 @@ function isAdmin(req, res, next){
 	}
 }
 
-function isAdmin(){
-	if(req.principal.user.admin === true){
+function checkAdmin(user){
+	if(user.admin === true){
 		return true;
 	} else {
 		return false;

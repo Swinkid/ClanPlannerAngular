@@ -1,0 +1,32 @@
+<h2>Jerseys</h2>
+<div *ngIf="jerseys">
+    <table class="table">
+        <thead>
+        <tr>
+            <th>User</th>
+            <th>Size</th>
+            <th>Paid</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let jersey of jerseys">
+            <td>{{ jersey.username }}</td>
+            <td>{{ jersey.hidden ? 'Hidden' : jersey.size}}</td>
+            <td>{{ jersey.paid ? 'Yes' : 'No'}}</td>
+            <td *ngIf="admin || jersey.userId === userId">
+                <button class="btn btn-primary" (click)="editJersey(jersey.userId)">
+                    <span class="fas fa-edit"></span>
+                </button>
+
+                <button class="btn btn-danger" (click)="deleteJersey(jersey.userId)">
+                    <span class="fas fa-times"></span>
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div *ngIf="!jerseys">
+Not Found
+</div>

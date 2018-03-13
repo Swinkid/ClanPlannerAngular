@@ -24,7 +24,9 @@ import { BookingFormComponent } from './events/new/booking-form.component';
 import { DisplayBookingsComponent } from './events/event/display-bookings.component';
 import { BookingComponent } from './events/edit/booking.component';
 import {AuthorizeGuard} from "../guards/authorize.guard";
-
+import { JerseysComponent } from './events/event/jerseys/jerseys.component';
+import { AddJersyComponent } from './events/event/jerseys/add-jersy.component';
+import { ShowJerseysComponent} from "./events/event/jerseys/show-jerseys.component";
 
 
 const routes: Routes = [
@@ -39,7 +41,7 @@ const routes: Routes = [
             { path: 'new/event', component: NewComponent , canActivate: [AuthorizeGuard]},
             { path: 'edit/event/attendee/:id/:attendee', component: AttendeeComponent , canActivate: [AuthorizeGuard]},
             { path: 'new/booking/:id', component: BookingFormComponent , canActivate: [AuthorizeGuard]},
-            { path: 'edit/booking/:id', component: BookingComponent, canActivate: [AuthorizeGuard] }
+            { path: 'edit/booking/:id', component: BookingComponent, canActivate: [AuthorizeGuard] },
         ]
     }
 
@@ -65,7 +67,10 @@ const routes: Routes = [
         AttendeeComponent,
         BookingFormComponent,
         DisplayBookingsComponent,
-        BookingComponent
+        BookingComponent,
+        JerseysComponent,
+        AddJersyComponent,
+        ShowJerseysComponent
     ],
     providers: [
         AuthService,

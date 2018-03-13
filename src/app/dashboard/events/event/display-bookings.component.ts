@@ -66,8 +66,6 @@ export class DisplayBookingsComponent implements OnInit {
 
             var currentBooking = this.bookings[i];
 
-            console.log(currentBooking);
-
             var bookedByUser = this.findUsername(this.bookings[i].booking.bookedBy);
             this.bookings[i].booking.bookedBy = bookedByUser.discord.username + '#' + bookedByUser.discord.discriminator;
 

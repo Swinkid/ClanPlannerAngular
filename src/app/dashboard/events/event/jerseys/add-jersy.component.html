@@ -1,0 +1,36 @@
+<form *ngIf="jerseyForm" [formGroup]="jerseyForm" (ngSubmit)="onSubmit(jerseyForm)" novalidate>
+
+    <div class="form-group">
+        <label>Jersey Size</label>
+        <select class="form-control" name="size" formControlName="size">
+            <option value="" disabled>Select</option>
+            <option *ngFor="let s of jerseySizes" [ngValue]="s">
+                {{ s }}
+            </option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>Hide Size</label>
+        <select class="form-control" name="hidden" formControlName="hidden">
+            <option value="" disabled>Select</option>
+            <option *ngFor="let h of hidden" [ngValue]="h">
+                {{ h ? 'Yes' : 'No'}}
+            </option>
+        </select>
+    </div>
+
+    <div *ngIf="isAdmin" class="form-group">
+        <label>Paid</label>
+        <select class="form-control" name="paid" formControlName="paid">
+            <option value="" disabled>Select</option>
+            <option *ngFor="let p of hasPaid" [ngValue]="p">
+                {{ p ? 'Yes' : 'No' }}
+            </option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary col-sm-1">Submit</button>
+    </div>
+</form>

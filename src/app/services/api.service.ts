@@ -7,7 +7,7 @@ import {Event} from "../interfaces/event";
 import {User} from "../interfaces/user";
 import {Attendance} from "../interfaces/attendance";
 import {Booking} from "../interfaces/hotel/booking";
-
+import {Jersey} from "../interfaces/jersey";
 
 @Injectable()
 export class ApiService {
@@ -98,7 +98,27 @@ export class ApiService {
     }
 
     public updateBooking(booking, formValues){
-        return this._http.post('/api/booking/edit/' + booking, formValues,{ headers: {'x-access-token': this.authService.getToken()} });
+        return this._http.post('/api/booking/edit/' + booking, formValues,{ headers: {'x-access-token': this.authService.getToken()}});
+    }
+
+    public getJerseys(event){
+        return this._http.get<Jersey[]>('/api/jersey/' + event, { headers: {'x-access-token': this.authService.getToken()}});
+    }
+
+    public getJersey(event, user){
+        return this._http.get<Jersey>('/api/jersey/' + event + '/' + user, { headers: {'x-access-token': this.authService.getToken()}});
+    }
+
+    public deleteJersey(event, user){
+        return this._http.delete('/api/jersey/' + event + '/' + user, { headers: {'x-access-token': this.authService.getToken()}});
+    }
+
+    public addJersey(event, user, formValue){
+        return this._http.post('/api/jersey/' + event + '/' + user, formValue, { headers: {'x-access-token': this.authService.getToken()}});
+    }
+
+    public updateJersey(event, user, formValue){
+        return this._http.post('/api/jersey/update/' + event + '/' + user, formValue, { headers: {'x-access-token': this.authService.getToken()}});
     }
 
 }

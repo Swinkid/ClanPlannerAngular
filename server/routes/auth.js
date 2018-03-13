@@ -8,11 +8,6 @@ var config = require('../../config')[env];
 
 router.get('/discord', passport.authenticate('discord', { scope: config.auth.discord.scopes }));
 
-/*router.get('/discord/callback',
-	passport.authenticate('discord', { failureRedirect: '/' }), function(req, res) {
-		res.redirect('/dashboard');
-	} // auth success
-);*/
 
 router.get('/discord/callback', function (req, res, next) {
 
