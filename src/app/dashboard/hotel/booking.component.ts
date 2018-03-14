@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
-import {Attendance} from "../../../interfaces/attendance";
-import {ApiService} from "../../../services/api.service";
-import {Event} from "../../../interfaces/event";
-import {Booking} from "../../../interfaces/hotel/booking";
+import {Attendance} from "../../interfaces/attendance";
+import {ApiService} from "../../services/api.service";
+import {Event} from "../../interfaces/event";
+import {Booking} from "../../interfaces/hotel/booking";
 
 @Component({
   selector: 'app-booking',

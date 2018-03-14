@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {Event} from "../../../../interfaces/event";
-import {Attendance} from "../../../../interfaces/attendance";
-import {ApiService} from "../../../../services/api.service";
-import {UserService} from "../../../../services/user.service";
+import {Event} from "../../../interfaces/event";
+import {Attendance} from "../../../interfaces/attendance";
+import {ApiService} from "../../../services/api.service";
+import {UserService} from "../../../services/user.service";
 import {ActivatedRoute, Route} from "@angular/router";
-import {AuthService} from "../../../../services/auth.service";
+import {AuthService} from "../../../services/auth.service";
 import * as _ from 'lodash';
 
 @Component({

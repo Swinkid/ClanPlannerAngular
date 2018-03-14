@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import {ApiService} from "../../../services/api.service";
+import {ApiService} from "../../services/api.service";
 import {ActivatedRoute} from "@angular/router";
-import {Event} from "../../../interfaces/event";
-import {Booking} from "../../../interfaces/hotel/booking";
-import {Attendance} from "../../../interfaces/attendance";
+import {Event} from "../../interfaces/event";
+import {Booking} from "../../interfaces/hotel/booking";
+import {Attendance} from "../../interfaces/attendance";
 import * as _ from 'lodash';
-import {UserService} from "../../../services/user.service";
+import {UserService} from "../../services/user.service";
 
 @Component({
     selector: 'app-display-bookings',

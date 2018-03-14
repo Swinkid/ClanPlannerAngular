@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import {ApiService} from "../../../services/api.service";
-import {AuthService} from "../../../services/auth.service";
-import {UserService} from "../../../services/user.service";
+import {ApiService} from "../../services/api.service";
+import {AuthService} from "../../services/auth.service";
+import {UserService} from "../../services/user.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {Event} from "../../../interfaces/event";
-import {Attendance} from "../../../interfaces/attendance";
+import {Event} from "../../interfaces/event";
+import {Attendance} from "../../interfaces/attendance";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 
 @Component({

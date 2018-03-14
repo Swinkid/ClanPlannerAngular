@@ -3,12 +3,12 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import * as _ from 'lodash';
 
-import {ApiService} from "../../../services/api.service";
-import {AuthService} from "../../../services/auth.service";
-import {UserService} from "../../../services/user.service";
+import {ApiService} from "../../services/api.service";
+import {AuthService} from "../../services/auth.service";
+import {UserService} from "../../services/user.service";
 
-import {Event} from "../../../interfaces/event";
-import {Attendance} from "../../../interfaces/attendance";
+import {Event} from "../../interfaces/event";
+import {Attendance} from "../../interfaces/attendance";
 
 @Component({
     selector: 'dashboard-event',
