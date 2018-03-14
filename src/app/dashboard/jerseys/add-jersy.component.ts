@@ -1,9 +1,9 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {ApiService} from "../../../../services/api.service";
-import {Event} from "../../../../interfaces/event";
+import {ApiService} from "../../services/api.service";
+import {Event} from "../../interfaces/event";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {Jersey} from "../../../../interfaces/jersey";
-import {UserService} from "../../../../services/user.service";
+import {Jersey} from "../../interfaces/jersey";
+import {UserService} from "../../services/user.service";
 
 @Component({
     selector: 'app-add-jersy',

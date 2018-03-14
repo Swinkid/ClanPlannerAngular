@@ -1,9 +1,9 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Jersey} from "../../../../interfaces/jersey";
-import {ApiService} from "../../../../services/api.service";
-import {UserService} from "../../../../services/user.service";
-import {Event} from "../../../../interfaces/event";
-import {Attendance} from "../../../../interfaces/attendance";
+import {Jersey} from "../../interfaces/jersey";
+import {ApiService} from "../../services/api.service";
+import {UserService} from "../../services/user.service";
+import {Event} from "../../interfaces/event";
+import {Attendance} from "../../interfaces/attendance";
 
 import * as _ from 'lodash';
 

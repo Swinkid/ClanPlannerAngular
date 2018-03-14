@@ -24,9 +24,12 @@ import { BookingFormComponent } from './events/new/booking-form.component';
 import { DisplayBookingsComponent } from './events/event/display-bookings.component';
 import { BookingComponent } from './events/edit/booking.component';
 import {AuthorizeGuard} from "../guards/authorize.guard";
-import { JerseysComponent } from './events/event/jerseys/jerseys.component';
-import { AddJersyComponent } from './events/event/jerseys/add-jersy.component';
-import { ShowJerseysComponent} from "./events/event/jerseys/show-jerseys.component";
+import { JerseysComponent } from './jerseys/jerseys.component';
+import { AddJersyComponent } from './jerseys/add-jersy.component';
+import { ShowJerseysComponent} from "./jerseys/show-jerseys.component";
+import { MealComponent } from './meal/meal.component';
+import { MealAttendanceComponent } from './meal/meal-attendance.component';
+import { MealFormComponent } from './meal/meal-form.component';
 
 
 const routes: Routes = [
@@ -70,7 +73,10 @@ const routes: Routes = [
         BookingComponent,
         JerseysComponent,
         AddJersyComponent,
-        ShowJerseysComponent
+        ShowJerseysComponent,
+        MealComponent,
+        MealAttendanceComponent,
+        MealFormComponent
     ],
     providers: [
         AuthService,
