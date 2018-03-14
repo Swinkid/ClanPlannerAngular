@@ -11,11 +11,11 @@ import { AuthService } from "../services/auth.service";
 import { UserService } from "../services/user.service";
 import { ApiService } from "../services/api.service";
 
-import { NavigationComponent } from './navigation/navigation.component';
+import { NavigationComponent } from './template/navigation/navigation.component';
 import { EventsComponent} from "./events/events.component";
 import { DashboardComponent} from "./dashboard.component";
 import { HomeComponent } from './home/home.component';
-import { NavbarComponent } from './navbar/navbar.component';
+import { NavbarComponent } from './template/navbar/navbar.component';
 import { EventComponent } from './events/event/event.component';
 import { EditComponent } from './events/edit/edit.component';
 import { NewComponent } from './events/new/new.component';
@@ -30,6 +30,14 @@ import { ShowJerseysComponent} from "./jerseys/show-jerseys.component";
 import { MealComponent } from './meal/meal.component';
 import { MealAttendanceComponent } from './meal/meal-attendance.component';
 import { MealFormComponent } from './meal/meal-form.component';
+import { QuizComponent } from './quiz/quiz.component';
+import { TableFormComponent } from './quiz/table-form.component';
+import { TableListComponent } from './quiz/table-list.component';
+import { ChecklistComponent } from './checklist/checklist.component';
+import { ChecklistListComponent } from './checklist/checklist-list/checklist-list.component';
+import { ChecklistFormComponent } from './checklist/checklist-form/checklist-form.component';
+import { CompListComponent } from './competitions/comp-list/comp-list.component';
+import { CompFormComponent } from './competitions/comp-form.component';
 
 
 const routes: Routes = [
@@ -76,7 +84,15 @@ const routes: Routes = [
         ShowJerseysComponent,
         MealComponent,
         MealAttendanceComponent,
-        MealFormComponent
+        MealFormComponent,
+        QuizComponent,
+        TableFormComponent,
+        TableListComponent,
+        ChecklistComponent,
+        ChecklistListComponent,
+        ChecklistFormComponent,
+        CompListComponent,
+        CompFormComponent
     ],
     providers: [
         AuthService,
