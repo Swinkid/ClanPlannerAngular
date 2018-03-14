@@ -34,9 +34,9 @@ import { QuizComponent } from './quiz/quiz.component';
 import { TableFormComponent } from './quiz/table-form.component';
 import { TableListComponent } from './quiz/table-list.component';
 import { ChecklistComponent } from './checklist/checklist.component';
-import { ChecklistListComponent } from './checklist/checklist-list/checklist-list.component';
-import { ChecklistFormComponent } from './checklist/checklist-form/checklist-form.component';
-import { CompListComponent } from './competitions/comp-list/comp-list.component';
+import { ChecklistListComponent } from './checklist/checklist-list.component';
+import { ChecklistFormComponent } from './checklist/checklist-form.component';
+import { CompListComponent } from './competitions/comp-list.component';
 import { CompFormComponent } from './competitions/comp-form.component';
 
 
