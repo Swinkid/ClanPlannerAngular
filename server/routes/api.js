@@ -591,7 +591,7 @@ router.delete('/booking/:id', authenticate, isAdmin, function (req, res) {
 });
 
 /**
- * Get all jerseys for event
+ * Get all jerseys for _event
  */
 router.get('/jersey/:event', authenticate, function (req, res) {
 
@@ -616,7 +616,7 @@ router.get('/jersey/:event', authenticate, function (req, res) {
 });
 
 /**
- * Get user jerseys for event
+ * Get user jerseys for _event
  */
 router.get('/jersey/:event/:user', authenticate, function (req, res) {
 
@@ -643,7 +643,7 @@ router.get('/jersey/:event/:user', authenticate, function (req, res) {
 
 
 /**
- * Add a jersey for a user in an event
+ * Add a jersey for a user in an _event
  */
 router.post('/jersey/:event/:user', authenticate, function (req, res) {
 
@@ -809,6 +809,7 @@ router.post('/quiz/:event', authenticate, isAdmin, function (req, res) {
 
 	var quizTable = new Quiz({
 
+		tableNumber: xss(req.body.tableNumber),
 		event: xss(req.params.event),
 		bookedBy: xss(req.body.bookedBy),
 		paypalLink: xss(req.body.paypalLink),
@@ -848,10 +849,11 @@ router.post('/quiz/update/:id', authenticate, isAdmin, function (req, res) {
 		});
 	});
 
-	Quiz.update({event: filteredId}, {
+	Quiz.update({_id: filteredId}, {
 
 		$set: {
-			"event": xss(req.params.event),
+			"tableNumber" : xss(req.body.tableNumber),
+			"event": xss(req.body.event),
 			"bookedBy": xss(req.body.bookedBy),
 			"paypalLink": xss(req.body.paypalLink),
 			"tableType": xss(req.body.tableType),

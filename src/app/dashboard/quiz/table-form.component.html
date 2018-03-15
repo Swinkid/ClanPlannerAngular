@@ -1,0 +1,69 @@
+<form *ngIf="quizForm" [formGroup]="quizForm" (ngSubmit)="onSubmit(quizForm)" novalidate>
+
+
+    <h3>Table Info</h3>
+
+    <div class="form-group row">
+        <label class="col-form-label">Table Number</label>
+        <input type="number" class="form-control" name="tableNumber" formControlName="tableNumber">
+    </div>
+
+    <div class="form-group row">
+        <label class="col-form-label">Booked By</label>
+        <select class="form-control" name="bookedBy" formControlName="bookedBy">
+            <option value="" disabled>Select</option>
+            <option *ngFor="let a of _attendees" [ngValue]="a.userId">
+                {{ a.discord.username + '#' + a.discord.discriminator }}
+            </option>
+        </select>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-form-label">Paypal.me Link</label>
+        <input type="text" class="form-control" name="paypalLink" formControlName="paypalLink">
+    </div>
+
+    <div class="form-group row">
+        <label class="col-form-label">Table Type</label>
+        <select class="form-control" name="tableType" formControlName="tableType">
+            <option value="" disabled>Select</option>
+            <option *ngFor="let type of tableTypes" [ngValue]="type">
+                {{ type }}
+            </option>
+        </select>
+    </div>
+
+
+    <h3>Seats</h3>
+
+    <div formArrayName="attendees">
+
+        <div class="form-group row" *ngFor="let attendee of getAttendees(quizForm) let a = index;" [formGroupName]="a">
+
+            <label class="col-form-label col-1">Seat {{ a + 1 }}</label>
+            <select class="form-control col-4 mx-2" name="user" formControlName="user">
+                <option value="Available">Available</option>
+                <option *ngFor="let a of _attendees" [ngValue]="a.userId">
+                    {{ a.discord.username + '#' + a.discord.discriminator }}
+                </option>
+            </select>
+
+
+            <select class="form-control col-4 mx-2" name="paid" formControlName="paid">
+                <option *ngFor="let p of paidOptions" [ngValue]="p">
+                    {{ p ? 'Yes' : 'No' }}
+                </option>
+            </select>
+
+            <button type="button" (click)="addAttendee()" class="btn btn-success col-1 mx-2"><span class="fas fa-plus"></span></button>
+            <button type="button" (click)="removeAttendee(a)" class="btn btn-danger col-1 mx-2" *ngIf="getAttendees(quizForm).length > 1"><span class="fas fa-times"></span></button>
+
+        </div>
+
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary col-1">Submit</button>
+    </div>
+
+</form>

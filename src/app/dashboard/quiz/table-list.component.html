@@ -1,0 +1,33 @@
+<h2>Tables</h2>
+<div class="card" *ngFor="let table of tables; let t = index">
+
+    <div class="card-header">
+        Table {{ table.tableNumber }} ({{ table.tableType }})
+        <button type="button" class="btn btn-danger float-right" (click)="deleteTable(table._id)"><span class="fas fa-trash"></span></button>
+        <button type="button" class="btn btn-primary float-right" (click)="editTable(table._id)"><span class="fas fa-edit"></span></button>
+    </div>
+
+    <div class="card-body">
+
+        <strong>Paypal Link: </strong>{{ table.paypalLink }} <br />
+        <strong>Booked By: </strong>{{ getUsername(table.bookedBy) }} <br /><br />
+
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <th>Seat</th>
+                    <th>Attendee</th>
+                    <th>Paid</th>
+                    </thead>
+                <tbody>
+                    <tr *ngFor="let seat of table.attendees; let s = index">
+                        <td>{{ s + 1}}</td>
+                        <td *ngIf="seat.user !== 'Available'">{{ getUsername(seat.user) }}</td>
+                        <td *ngIf="seat.user === 'Available'">{{ seat.user }}</td>
+                        <td>{{ seat.paid ? 'Yes' : 'No' }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

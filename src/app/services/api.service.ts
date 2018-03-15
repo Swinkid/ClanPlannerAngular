@@ -8,6 +8,7 @@ import {User} from "../interfaces/user";
 import {Attendance} from "../interfaces/attendance";
 import {Booking} from "../interfaces/hotel/booking";
 import {Jersey} from "../interfaces/jersey";
+import {Quiz} from "../interfaces/quiz";
 
 @Injectable()
 export class ApiService {
@@ -119,6 +120,26 @@ export class ApiService {
 
     public updateJersey(event, user, formValue){
         return this._http.post('/api/jersey/update/' + event + '/' + user, formValue, { headers: {'x-access-token': this.authService.getToken()}});
+    }
+
+    public getTable(table){
+        return this._http.get<Quiz>('/api/quiz/' + table, { headers: {'x-access-token': this.authService.getToken()}});
+    }
+
+    public getEventTables(event){
+        return this._http.get<Quiz[]>('/api/quiz/event/' + event, { headers: {'x-access-token': this.authService.getToken()}});
+    }
+
+    public addTable(event, formValue){
+        return this._http.post('/api/quiz/' + event, formValue, { headers: {'x-access-token': this.authService.getToken()}});
+    }
+
+    public updateTable(table, formValue){
+        return this._http.post('/api/quiz/update/' + table, formValue, { headers: {'x-access-token': this.authService.getToken()}});
+    }
+
+    public deleteTable(table){
+        return this._http.delete('/api/quiz/' + table, { headers: {'x-access-token': this.authService.getToken()}});
     }
 
 }

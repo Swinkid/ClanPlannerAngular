@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 
 var quizSchema = mongoose.Schema({
 
+	"tableNumber" : Number,
 	"event" : String,
 	"bookedBy" : String,
 	"paypalLink" : String,
