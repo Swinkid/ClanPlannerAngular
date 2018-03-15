@@ -152,18 +152,18 @@
                                     <img class="img-thumbnail rounded-circle" width="100" height="100" *ngIf="attendee.discord.avatar === null" src="http://placehold.it/100x100">
                                 </td>
                                 <td>
-                                    Discord: {{ attendee?.discord.username + '#' + attendee.discord.discriminator }} <br />
-                                    Real Name: {{ attendee?.realName }}
+                                    <strong>Discord:</strong> {{ attendee?.discord.username + '#' + attendee.discord.discriminator }} <br />
+                                    <strong>Real Name:</strong> {{ attendee?.realName }}
                                 </td>
                                 <td>
-                                    Brought Ticket: {{ attendee?.broughtTicket ? 'Yes' : 'No' }} <br />
-                                    On Seat Picker: {{ attendee?.onSeatPicker ? 'Yes' : 'No' }} <br />
-                                    Arrival: {{ attendee?.dateArriving | date: 'dd/MM/yyyy'}}
+                                    <strong>Brought Ticket:</strong> {{ attendee?.broughtTicket ? 'Yes' : 'No' }} <br />
+                                    <strong>On Seat Picker:</strong> {{ attendee?.onSeatPicker ? 'Yes' : 'No' }} <br />
+                                    <strong>Arrival:</strong> {{ attendee?.dateArriving | date: 'dd/MM/yyyy'}}
                                 </td>
                                 <td>{{ attendee?.accommodation }}</td>
                                 <td>
-                                    By: {{ attendee?.transportPlans }} <br />
-                                    From: {{ attendee?.location }}
+                                    <strong>By:</strong> {{ attendee?.transportPlans }} <br />
+                                    <strong>From:</strong> {{ attendee?.location }}
                                 </td>
                                 <td>{{ attendee?.inFacebookChat ? 'Yes' : 'No' }}</td>
                             </tr>

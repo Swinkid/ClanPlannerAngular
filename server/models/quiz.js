@@ -6,7 +6,10 @@ var quizSchema = mongoose.Schema({
 	"bookedBy" : String,
 	"paypalLink" : String,
 	"tableType" : String,
-	"attendees" : []
+	"attendees" : [{
+		user: String,
+		paid: Boolean
+	}]
 
 });
 

@@ -5,7 +5,8 @@ var seatPickerSchema = mongoose.Schema({
 	"event" : String,
 	"userId" : String,
 	"onPicker" : String,
-	"actualSeat" : String
+	"actualSeat" : String,
+	"notes" : String
 
 });
 

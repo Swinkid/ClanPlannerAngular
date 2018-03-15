@@ -23,7 +23,7 @@ import { AttendeeComponent } from "./event/attendee/attendee.component";
 import { BookingFormComponent } from './hotel/booking-form.component';
 import { DisplayBookingsComponent } from './hotel/display-bookings.component';
 import { BookingComponent } from './hotel/booking.component';
-import {AuthorizeGuard} from "../guards/authorize.guard";
+import { AuthorizeGuard} from "../guards/authorize.guard";
 import { JerseysComponent } from './jerseys/jerseys.component';
 import { AddJersyComponent } from './jerseys/add-jersy.component';
 import { ShowJerseysComponent} from "./jerseys/show-jerseys.component";
@@ -38,8 +38,6 @@ import { ChecklistListComponent } from './checklist/checklist-list.component';
 import { ChecklistFormComponent } from './checklist/checklist-form.component';
 import { CompListComponent } from './competitions/comp-list.component';
 import { CompFormComponent } from './competitions/comp-form.component';
-import { QuizFormComponent } from './quiz/quiz-form.component';
-import { QuizTablesComponent } from './quiz/quiz-tables.component';
 import { SeatingPlanComponent } from './seating-plan/seating-plan.component';
 import { SeatingPlanFormComponent } from './seating-plan/seating-plan-form.component';
 import { SeatingPlanListComponent } from './seating-plan/seating-plan-list.component';
@@ -98,8 +96,6 @@ const routes: Routes = [
         ChecklistFormComponent,
         CompListComponent,
         CompFormComponent,
-        QuizFormComponent,
-        QuizTablesComponent,
         SeatingPlanComponent,
         SeatingPlanFormComponent,
         SeatingPlanListComponent

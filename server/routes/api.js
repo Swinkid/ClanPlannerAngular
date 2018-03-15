@@ -12,6 +12,7 @@ const User = require('../models/user');
 const Attendance = require('../models/attendance');
 const Booking = require('../models/booking');
 const Jersey = require('../models/jersey');
+const Quiz = require('../models/quiz');
 
 /* GET api listing. */
 router.get('/', function (req, res) {
@@ -749,6 +750,147 @@ router.post('/jersey/update/:event/:user', authenticate, function (req, res) {
 	}
 
 });
+
+router.get('/quiz/:id', authenticate, function (req, res) {
+
+	var filterdId = xss(req.params.id);
+
+	Quiz.findOne({_id: filterdId}, function (error, foundQuiz) {
+
+		if(error){
+			return res.status(500).json({error: 'Internal Server Error'});
+		}
+
+		if(!foundQuiz){
+			return res.status(404).json({error: 'No Quiz Found'});
+		}
+
+		if(foundQuiz){
+			return res.status(200).json(foundQuiz);
+		}
+
+	});
+
+});
+
+router.get('/quiz/event/:event', authenticate, function (req, res) {
+
+	var filteredEvent = xss(req.params.event);
+
+
+	Quiz.find({"event" : filteredEvent} , function (error, foundQuiz) {
+
+		if(error){
+			return res.status(500).json({error: 'Internal Server Error'});
+		}
+
+		if(!foundQuiz){
+			return res.status(404).json({error: 'No Quiz Found'});
+		}
+
+		if(foundQuiz){
+			return res.status(200).json(foundQuiz);
+		}
+
+	});
+
+});
+
+router.post('/quiz/:event', authenticate, isAdmin, function (req, res) {
+
+	var filteredAttendees = [];
+
+	req.body.attendees.forEach(function (attendee) {
+		filteredAttendees.push({
+			user: xss(attendee.user),
+			paid: attendee.paid
+		});
+	});
+
+	var quizTable = new Quiz({
+
+		event: xss(req.params.event),
+		bookedBy: xss(req.body.bookedBy),
+		paypalLink: xss(req.body.paypalLink),
+		tableType: xss(req.body.tableType),
+		attendees: filteredAttendees
+
+	});
+
+	quizTable.save(function (error, newTable) {
+
+		if(error){
+			return res.status(500).json({error: 'Internal Server Error'});
+		}
+
+		if(!newTable){
+			return res.status(500).json({error: 'Internal Server Error'});
+		}
+
+		if(newTable){
+			return res.status(200).json({error: 'Done'});
+		}
+
+	});
+
+});
+
+router.post('/quiz/update/:id', authenticate, isAdmin, function (req, res) {
+
+	var filteredId = xss(req.params.id);
+
+	var filteredAttendees = [];
+
+	req.body.attendees.forEach(function (attendee) {
+		filteredAttendees.push({
+			user: xss(attendee.user),
+			paid: attendee.paid
+		});
+	});
+
+	Quiz.update({event: filteredId}, {
+
+		$set: {
+			"event": xss(req.params.event),
+			"bookedBy": xss(req.body.bookedBy),
+			"paypalLink": xss(req.body.paypalLink),
+			"tableType": xss(req.body.tableType),
+			"attendees": filteredAttendees
+		}
+
+	}, function (error) {
+
+		if(error){
+			return res.status(500).json({error: 'Internal Server Error'});
+		}
+
+		if(!error){
+			return res.status(200).json({error: 'Done'});
+		}
+
+	});
+
+
+});
+
+router.delete('/quiz/:id', authenticate, isAdmin, function (req, res) {
+
+	var filteredId = xss(req.params.id);
+
+	Quiz.remove({_id: filteredId}, function (error) {
+
+		if(error){
+			return res.status(500).json({error: 'Internal Server Error'});
+		}
+
+		if(!error){
+			return res.status(200).json({error: 'Done'});
+		}
+
+	});
+
+});
+
 
 function isAdmin(req, res, next){
 	if(req.principal.user.admin === true){
