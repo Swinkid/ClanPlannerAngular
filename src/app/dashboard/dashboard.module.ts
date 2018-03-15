@@ -38,6 +38,11 @@ import { ChecklistListComponent } from './checklist/checklist-list.component';
 import { ChecklistFormComponent } from './checklist/checklist-form.component';
 import { CompListComponent } from './competitions/comp-list.component';
 import { CompFormComponent } from './competitions/comp-form.component';
+import { QuizFormComponent } from './quiz/quiz-form.component';
+import { QuizTablesComponent } from './quiz/quiz-tables.component';
+import { SeatingPlanComponent } from './seating-plan/seating-plan.component';
+import { SeatingPlanFormComponent } from './seating-plan/seating-plan-form.component';
+import { SeatingPlanListComponent } from './seating-plan/seating-plan-list.component';
 
 
 const routes: Routes = [
@@ -92,7 +97,12 @@ const routes: Routes = [
         ChecklistListComponent,
         ChecklistFormComponent,
         CompListComponent,
-        CompFormComponent
+        CompFormComponent,
+        QuizFormComponent,
+        QuizTablesComponent,
+        SeatingPlanComponent,
+        SeatingPlanFormComponent,
+        SeatingPlanListComponent
     ],
     providers: [
         AuthService,
