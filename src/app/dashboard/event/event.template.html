@@ -131,41 +131,45 @@
                 <div class="card-header">
                     Attendee's
                 </div>
-                <div class="card-block">
-                    <table class="table table-striped table-sm">
-                        <thead>
-                        <tr>
-                            <th></th>
-                            <th>Discord Name</th>
-                            <th>Real Name</th>
-                            <th>Brought Ticket</th>
-                            <th>On Seat Picker</th>
-                            <th>Arrival Date</th>
-                            <th>Accommodation</th>
-                            <th>Transport</th>
-                            <th>Location</th>
-                            <th>In Facebook Chat</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr *ngFor="let attendee of attendees">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th></th>
+                                <th>Name</th>
+                                <th>Details</th>
+                                <th>Accommodation</th>
+                                <th>Transport</th>
+                                <th>In Facebook Chat</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr *ngFor="let attendee of attendees">
 
-                            <td>
-                                <img class="img-thumbnail rounded-circle" width="100" height="100" *ngIf="attendee.discord.avatar !== null" src="{{ 'http://cdn.discordapp.com/avatars/' + attendee.discord.id + '/' + attendee.discord.avatar }}">
-                                <img class="img-thumbnail rounded-circle" width="100" height="100" *ngIf="attendee.discord.avatar === null" src="http://placehold.it/100x100">
-                            </td>
-                            <td>{{ attendee?.discord.username + '#' + attendee.discord.discriminator }}</td>
-                            <td>{{ attendee?.realName }}</td>
-                            <td>{{ attendee?.broughtTicket ? 'Yes' : 'No' }}</td>
-                            <td>{{ attendee?.onSeatPicker ? 'Yes' : 'No' }}</td>
-                            <td>{{ attendee?.dateArriving | date: 'dd/MM/yyyy'}}</td>
-                            <td>{{ attendee?.accommodation }}</td>
-                            <td>{{ attendee?.transportPlans }}</td>
-                            <td>{{ attendee?.location }}</td>
-                            <td>{{ attendee?.inFacebookChat ? 'Yes' : 'No' }}</td>
-                        </tr>
-                        </tbody>
-                    </table>
+                                <td>
+                                    <img class="img-thumbnail rounded-circle" width="100" height="100" *ngIf="attendee.discord.avatar !== null" src="{{ 'http://cdn.discordapp.com/avatars/' + attendee.discord.id + '/' + attendee.discord.avatar }}">
+                                    <img class="img-thumbnail rounded-circle" width="100" height="100" *ngIf="attendee.discord.avatar === null" src="http://placehold.it/100x100">
+                                </td>
+                                <td>
+                                    Discord: {{ attendee?.discord.username + '#' + attendee.discord.discriminator }} <br />
+                                    Real Name: {{ attendee?.realName }}
+                                </td>
+                                <td>
+                                    Brought Ticket: {{ attendee?.broughtTicket ? 'Yes' : 'No' }} <br />
+                                    On Seat Picker: {{ attendee?.onSeatPicker ? 'Yes' : 'No' }} <br />
+                                    Arrival: {{ attendee?.dateArriving | date: 'dd/MM/yyyy'}}
+                                </td>
+                                <td>{{ attendee?.accommodation }}</td>
+                                <td>
+                                    By: {{ attendee?.transportPlans }} <br />
+                                    From: {{ attendee?.location }}
+                                </td>
+                                <td>{{ attendee?.inFacebookChat ? 'Yes' : 'No' }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </ng-template>
