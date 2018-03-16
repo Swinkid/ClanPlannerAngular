@@ -14,9 +14,9 @@ import {UserService} from "../../services/user.service";
 })
 export class DisplayBookingsComponent implements OnInit {
 
-    public event : Event;
+    public _event : Event;
     public bookings : Booking[];
-    public attendance : Attendance[];
+    public _attendees : Attendance[];
     public isAdmin  : Boolean = false;
 
     constructor(private userService : UserService, public apiService : ApiService, private route : ActivatedRoute) { }
@@ -27,17 +27,19 @@ export class DisplayBookingsComponent implements OnInit {
     }
 
     setEvent(){
-        this.apiService.getEvent(this.route.snapshot.params['id']).subscribe(
-            event => {
-                this.event = event;
-            },
-            err => {
 
+        this.apiService.getEventAndAttendace(this.route.snapshot.params['id']).subscribe(
+            data => {
+                this._event = data[0];
+                this._attendees = data[1];
+            },
+            error => {
+                //TODO: Error handling
             },
             () => {
-                this.setBookings(this.event);
+                this.setBookings(this._event);
             }
-        )
+        );
     }
 
     setBookings(event){
@@ -46,17 +48,11 @@ export class DisplayBookingsComponent implements OnInit {
             bookings => {this.bookings = bookings;},
             error => {},
             () => {
-                this.setAttendance();
+                this.translateUserIdFromBooking();
             },
 
         );
 
-    }
-
-    setAttendance(){
-        this.attendance = this.event.users;
-
-        this.translateUserIdFromBooking();
     }
 
     //TODO: Fix dirtyness below
@@ -66,7 +62,7 @@ export class DisplayBookingsComponent implements OnInit {
 
             var currentBooking = this.bookings[i];
 
-            var bookedByUser = this.findUsername(this.bookings[i].booking.bookedBy);
+            var bookedByUser = this.findUsername(this.bookings[i].booking.bookedBy).user;
             this.bookings[i].booking.bookedBy = bookedByUser.discord.username + '#' + bookedByUser.discord.discriminator;
 
             for(let j = 0; j < this.bookings[i].booking.rooms.length; j++){
@@ -74,7 +70,7 @@ export class DisplayBookingsComponent implements OnInit {
                 for(let k = 0; k < this.bookings[i].booking.rooms[j].roomOccupants.length; k++){
 
                     if(this.bookings[i].booking.rooms[j].roomOccupants[k] !== 'Available'){
-                        var guest = this.findUsername(this.bookings[i].booking.rooms[j].roomOccupants[k]);
+                        var guest = this.findUsername(this.bookings[i].booking.rooms[j].roomOccupants[k]).user;
                         this.bookings[i].booking.rooms[j].roomOccupants[k] = guest.discord.username + '#' + guest.discord.discriminator;
                     }
 
@@ -87,10 +83,8 @@ export class DisplayBookingsComponent implements OnInit {
     }
 
     findUsername(userId){
-        return _.find(this.attendance, function (a) {
-
-            return a.userId == userId;
-
+        return _.find(this._attendees, function (a) {
+            return a.user._id == userId;
         });
     }
 

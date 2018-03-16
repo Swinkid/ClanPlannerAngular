@@ -13,9 +13,9 @@ import {Event} from "../../interfaces/event";
 })
 export class BookingFormComponent implements OnInit {
 
-    private event: Event;
+    private _event: Event;
     public bookingForm  : FormGroup;
-    public attendees    : Attendance[];
+    public _attendees    : Attendance[];
 
     public roomType: String[] = [
         'Single',
@@ -55,17 +55,15 @@ export class BookingFormComponent implements OnInit {
     }
 
     setAttendance(){
-        this.apiService.getEvent(this.route.snapshot.params['id']).subscribe(
-            event => {
-                this.event = event;
+        this.apiService.getEventAndAttendace(this.route.snapshot.params['id']).subscribe(
+            data => {
+                this._event = data[0];
+                this._attendees = data[1];
             },
-            err => {
-
-            },
-            () => {
-                this.attendees = this.event.users;
+            error => {
+                //TODO: Error handling
             }
-        )
+        );
     }
 
     initRooms(){
@@ -116,7 +114,7 @@ export class BookingFormComponent implements OnInit {
 
         if(form.valid){
 
-            this.apiService.addBooking(this.event._id, form.value).subscribe(
+            this.apiService.addBooking(this._event._id, form.value).subscribe(
                 booking => {},
                 error => { console.log(error); },
                 () => {

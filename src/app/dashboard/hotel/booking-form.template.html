@@ -11,8 +11,8 @@
             <label>Booked By</label>
             <select class="form-control" name="bookedBy" formControlName="bookedBy">
                 <option value="" disabled>Select</option>
-                <option *ngFor="let a of attendees" [ngValue]="a.userId">
-                    {{ a.discord?.username }}
+                <option *ngFor="let a of _attendees" [ngValue]="a.user._id">
+                    {{ a.user.discord?.username }}
                 </option>
             </select>
         </div>
@@ -64,8 +64,8 @@
                                 <div class="col-sm-10">
                                     <select class="form-control" name="occupant" formControlName="occupant">
                                         <option value="Available">Available</option>
-                                        <option *ngFor="let a of attendees" [ngValue]="a.userId">
-                                            {{ a.discord?.username }}
+                                        <option *ngFor="let a of _attendees" [ngValue]="a.user._id">
+                                            {{ a.user.discord?.username }}
                                         </option>
                                     </select>
                                 </div>
