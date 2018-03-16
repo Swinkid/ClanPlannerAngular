@@ -854,19 +854,23 @@ router.post('/quiz/update/:id', authenticate, isAdmin, function (req, res) {
 
 	var filteredAttendees = [];
 
-	req.body.attendees.forEach(function (attendee) {
-		filteredAttendees.push({
-			user: xss(attendee.user),
-			paid: attendee.paid
-		});
+	req.body.attendees.forEach(function (a) {
+		if(a.user !== ''){
+			filteredAttendees.push({
+				user: mongoose.Types.ObjectId(a.user),
+				paid: a.paid
+			});
+		} else {
+			filteredAttendees.push({})
+		}
 	});
 
 	Quiz.update({_id: filteredId}, {
 
 		$set: {
 			"tableNumber" : xss(req.body.tableNumber),
-			"event": xss(req.body.event),
-			"bookedBy": xss(req.body.bookedBy),
+			"event":  mongoose.Types.ObjectId(xss(req.body.event)),
+			"bookedBy":  mongoose.Types.ObjectId(xss(req.body.bookedBy)),
 			"paypalLink": xss(req.body.paypalLink),
 			"tableType": xss(req.body.tableType),
 			"attendees": filteredAttendees

@@ -71,7 +71,7 @@ export class TableFormComponent implements OnInit {
                     Validators.required
                 ]),
                 attendees: this._fb.array(
-                    this.fetchAttendees(this._fb)
+                    this.fetchAttendees(this._fb, this.initAttendees())
                 )
             });
         } else {
@@ -104,16 +104,21 @@ export class TableFormComponent implements OnInit {
         });
     }
 
-    fetchAttendees(_fb){
+    fetchAttendees(_fb, initAttendees){
         var attendees = [];
 
         this.table.attendees.forEach(function (attendee) {
-            var a = {
-                user: attendee.user._id,
-                paid: attendee.paid
-            };
 
-            attendees.push(_fb.group(a));
+            if(attendee.user){
+                var a = {
+                    user: attendee.user,
+                    paid: attendee.paid
+                };
+
+                attendees.push(_fb.group(a));
+            } else {
+                attendees.push(initAttendees)
+            }
         });
 
         return attendees;
