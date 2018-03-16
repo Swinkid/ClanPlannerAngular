@@ -9,18 +9,36 @@ import {Attendance} from "../interfaces/attendance";
 import {Booking} from "../interfaces/hotel/booking";
 import {Jersey} from "../interfaces/jersey";
 import {Quiz} from "../interfaces/quiz";
+import {forkJoin} from "rxjs/observable/forkJoin";
 
 @Injectable()
 export class ApiService {
 
     constructor(private _http: HttpClient, private authService: AuthService) { }
 
+    getEventsAndAttendeeAttendance(user){
+        return forkJoin([this.getAttendeeAttendances(user), this.getEvents()])
+    }
+
+    getAttendeeAttendances(user){
+        return this._http.get<Attendance[]>('/api/attendance/all/' + user, { headers: {'x-access-token': this.authService.getToken()}});
+    }
+
     getEvents(){
         return this._http.get<Event[]>('/api/events', { headers: {'x-access-token': this.authService.getToken()} });
     }
 
     public getEvent(event : String){
+        //TODO make private
         return this._http.get<Event>('/api/events/' + event, { headers: {'x-access-token': this.authService.getToken()} });
+    }
+
+    private getAttendance(event : String){
+        return this._http.get<Attendance[]>('/api/attendance/' + event, { headers: {'x-access-token': this.authService.getToken()} });
+    }
+
+    public getEventAndAttendace(event : String){
+        return forkJoin([this.getEvent(event), this.getAttendance(event)]);
     }
 
     public getUsers(users : Attendance[]){
@@ -31,16 +49,12 @@ export class ApiService {
         return this._http.get<Attendance[]>('/api/users?id=' + queryId, { headers: {'x-access-token': this.authService.getToken()} });
     }
 
-    public registerAttendance(event : String, attending : String){
-        return this._http.post('/api/events/register/' + event, { attendance: attending }, { headers: {'x-access-token': this.authService.getToken()} });
+    public registerAttendance(event : String, attending : Boolean){
+        return this._http.post('/api/attendee/register/' + event, { attendance: attending }, { headers: {'x-access-token': this.authService.getToken()} });
     }
 
-    //public updateAttendance(eventId : String, realName : String, broughtTicket : Boolean, onSeatPicker : Boolean, dateArriving : String, accommodation : String, transportPlans : String, location : String, inFacebookChat : Boolean){
-    public updateAttendance(eventId : String, formValue){
-        return this._http.post('/api/events/attendance/' + eventId,
-            {
-                formValue
-            }, { headers: {'x-access-token': this.authService.getToken()} });
+    public updateAttendance(eventId : String, user : String, formValue){
+        return this._http.post('/api/attendance/' + user + '/' + eventId, formValue, { headers: {'x-access-token': this.authService.getToken()} });
     }
 
     public updateAttendee(eventId, userId, formValue){

@@ -1,0 +1,46 @@
+<div class="card" *ngIf="_attendees && _event">
+    <div class="card-header">
+        Attendee's
+    </div>
+    <div class="card-body">
+
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>Name</th>
+                    <th>Details</th>
+                    <th>Accommodation</th>
+                    <th>Transport</th>
+                    <th>In Facebook Chat</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let attendee of _attendees">
+
+                    <td>
+                        <img class="img-thumbnail rounded-circle" width="100" height="100" *ngIf="attendee?.user.discord.avatar" src="{{ 'http://cdn.discordapp.com/avatars/' + attendee?.user.discord.id + '/' + attendee?.user.discord.avatar }}">
+                        <img class="img-thumbnail rounded-circle" width="100" height="100" *ngIf="!attendee?.user.discord.avatar" src="http://placehold.it/100x100">
+                    </td>
+                    <td>
+                        <strong>Discord:</strong> {{ attendee?.user.discord.username + '#' + attendee?.user.discord.discriminator }} <br />
+                       <strong>Real Name:</strong> {{ attendee?.realName }}
+                   </td>
+                   <td>
+                       <strong>Brought Ticket:</strong> {{ attendee?.broughtTicket ? 'Yes' : 'No' }} <br />
+                       <strong>On Seat Picker:</strong> {{ attendee?.onSeatPicker ? 'Yes' : 'No' }} <br />
+                       <strong>Arrival:</strong> {{ attendee?.dateArriving | date: 'dd/MM/yyyy'}}
+                   </td>
+                   <td>{{ attendee?.accommodation }}</td>
+                   <td>
+                       <strong>By:</strong> {{ attendee?.transportPlans }} <br />
+                       <strong>From:</strong> {{ attendee?.location }}
+                   </td>
+                   <td>{{ attendee?.inFacebookChat ? 'Yes' : 'No' }}</td>
+               </tr>
+               </tbody>
+           </table>
+       </div>
+   </div>
+</div>

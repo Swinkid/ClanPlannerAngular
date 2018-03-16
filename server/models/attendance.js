@@ -1,11 +1,10 @@
 var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
 var attendanceSchema = mongoose.Schema({
 
-	userId : String,
-	eventId : String,
-	discord : {},
-	realName: String,
+	user : { type: Schema.Types.ObjectId, ref: 'User' },
+	event : { type: Schema.Types.ObjectId, ref: 'Event' },
 	broughtTicket: {
 		type: Boolean,
 		default: false

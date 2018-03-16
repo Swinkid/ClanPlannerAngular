@@ -35,29 +35,14 @@ export class ShowJerseysComponent implements OnInit {
 
     setJerseys() {
         this.apiService.getJerseys(this._event._id).subscribe(
-            jerseys => { this.jerseys = jerseys },
-            error => {},
+            jerseys => {
+                this.jerseys = jerseys
+            },
+            error => {
+            },
             () => {
-                this.translateUserIds();
             }
         );
-    }
-
-    translateUserIds(){
-
-        for(let i = 0; i < this.jerseys.length; i++){
-
-            let currentJersey = this.jerseys[i];
-            this.jerseys[i].username = this.findUsername(currentJersey.userId).discord.username + '#' + this.findUsername(currentJersey.userId).discord.discriminator;
-
-        }
-
-    }
-
-    findUsername(userId){
-        return _.find(this.attendance, function (a) {
-            return a.userId == userId;
-        });
     }
 
     editJersey(user){

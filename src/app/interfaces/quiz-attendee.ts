@@ -1,4 +1,6 @@
+import {User} from "./user";
+
 export interface QuizAttendee {
-    user: String,
+    user: User,
     paid: Boolean
 }

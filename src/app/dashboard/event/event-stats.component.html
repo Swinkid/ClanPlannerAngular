@@ -1,0 +1,34 @@
+<div class="row">
+    <div class="col-3">
+        <div class="card text-white bg-primary mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Attendees</h5>
+                <p class="card-text">{{ _attendees?.length }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-3">
+        <div class="card text-white bg-primary">
+            <div class="card-body">
+                <h5 class="card-title">Tickets Purchased</h5>
+                <p class="card-text">{{ this.ticketsPurchased }} / {{ this._attendees?.length }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-3">
+        <div class="card text-white bg-primary">
+            <div class="card-body">
+                <h5 class="card-title">Seat Selected</h5>
+                <p class="card-text">{{ this.seatsSelected }} / {{ this._attendees?.length }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-3">
+        <div class="card text-white bg-success">
+            <div class="card-body">
+                <h5 class="card-title">Blaze It</h5>
+                <p class="card-text">420</p>
+            </div>
+        </div>
+    </div>
+</div>

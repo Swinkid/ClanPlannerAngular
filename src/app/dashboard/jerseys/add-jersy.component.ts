@@ -65,7 +65,6 @@ export class AddJersyComponent implements OnInit {
 
     initForm(){
         if(this.jersey){
-
             this.jerseyForm = new FormGroup({
                 size: new FormControl(this.jersey.size, [
                     Validators.required
@@ -91,8 +90,6 @@ export class AddJersyComponent implements OnInit {
             });
         }
 
-
-        console.log(this.jerseyForm);
     }
 
 

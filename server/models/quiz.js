@@ -1,14 +1,15 @@
 var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
 var quizSchema = mongoose.Schema({
 
 	"tableNumber" : Number,
-	"event" : String,
-	"bookedBy" : String,
+	"event" : { type: Schema.Types.ObjectId, ref: 'Event' },
+	"bookedBy" : { type: Schema.Types.ObjectId, ref: 'User' },
 	"paypalLink" : String,
 	"tableType" : String,
 	"attendees" : [{
-		user: String,
+		user: { type: Schema.Types.ObjectId, ref: 'User' },
 		paid: Boolean
 	}]
 

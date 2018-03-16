@@ -1,5 +1,4 @@
 import {Attendance} from "./attendance";
-import {User} from "./user";
 
 export interface Event {
 

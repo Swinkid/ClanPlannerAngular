@@ -133,7 +133,7 @@ export class AttendeeComponent implements OnInit {
     submitForm(){
 
         if(this.attendeeForm.status === "VALID"){
-            this.apiService.updateAttendee(this.event._id, this.attendee.userId, this.attendeeForm.value).subscribe(
+            this.apiService.updateAttendee(this.event._id, this.attendee.user._id, this.attendeeForm.value).subscribe(
                 event => {
 
                 },

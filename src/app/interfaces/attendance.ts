@@ -1,20 +1,11 @@
+import {User} from "./user";
+import {Event} from "./event";
+
 export interface Attendance {
 
     _id: String,
-    userId : String,
-    eventId : String,
-    discord : {
-        username: String,
-        verified: boolean,
-        mfa_enabled: boolean,
-        id: String,
-        avatar: String,
-        discriminator: String,
-        email: String,
-        provider: String,
-        accessToken: String,
-        fetchedAt: String,
-    },
+    user : User,
+    event : Event,
     realName: String,
     broughtTicket: Boolean,
     onSeatPicker: Boolean,

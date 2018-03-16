@@ -4,6 +4,8 @@ import {Attendance} from "../../interfaces/attendance";
 import {Quiz} from "../../interfaces/quiz";
 import {ApiService} from "../../services/api.service";
 import * as _ from 'lodash';
+import {UserService} from "../../services/user.service";
+import {User} from "../../interfaces/user";
 
 @Component({
     selector: 'app-table-list',
@@ -20,10 +22,13 @@ export class TableListComponent implements OnInit {
 
     public tables : Quiz[];
 
-    constructor(private apiService : ApiService) { }
+    public isAdmin : Boolean;
+
+    constructor(private apiService : ApiService, private userService : UserService) { }
 
     ngOnInit() {
         this.initTables();
+        this.isAdmin = this.userService.isAdmin();
     }
 
     initTables(){
@@ -54,13 +59,22 @@ export class TableListComponent implements OnInit {
         this.refreshNotify.emit(true);
     }
 
-    getUsername(userId){
-        return this.findUsername(userId).discord.username + '#' + this.findUsername(userId).discord.discriminator;
-    }
+    /*getUsername(userId){
 
-    findUsername(userId){
+        var username;
+
+        if(this.findUsername(userId)){
+            username = this.findUsername(userId).discord.username + '#' + this.findUsername(userId).discord.discriminator;
+        } else {
+            username = "Available";
+        }
+
+        return username;
+    }*/
+
+    findUser(userId) {
         return _.find(this._attendees, function (a) {
-            return a.userId == userId;
+            return a.user._id == userId;
         });
     }
 

@@ -1,4 +1,4 @@
 
 
-<app-add-jersy *ngIf="event && selectedUser" [_event]="event" [_selectedUser]="selectedUser" [_editing]="editing" (notify)='submittedForm($event)'></app-add-jersy>
-<app-show-jerseys *ngIf="event" [_event]="event" (notify)='onNotify($event)'></app-show-jerseys>
+<app-add-jersy *ngIf="_event && selectedUser" [_event]="_event" [_selectedUser]="selectedUser" [_editing]="editing" (notify)='submittedForm($event)'></app-add-jersy>
+<app-show-jerseys *ngIf="_event" [_event]="_event" (notify)='onNotify($event)'></app-show-jerseys>

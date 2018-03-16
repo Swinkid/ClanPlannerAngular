@@ -2,7 +2,7 @@
     <h1 class="h2">Event Register</h1> <button type="button" class="btn bg-success float-right" routerLink="/dashboard/new/event" style="color: #ffffff" *ngIf="isAdmin">Create Event</button>
 </div>
 
-<table class="table">
+<table class="table" *ngIf="attendance && events">
     <thead>
     <tr>
         <th>Event</th>
@@ -19,8 +19,8 @@
         <td>{{ event.toDate | date }}</td>
         <td>
 
-            <button *ngIf="isUserAttending(event, userId) === true" type="button" class="btn btn-danger" (click)="registerAttendance(event._id,'false')">Unattend</button>
-            <button *ngIf="isUserAttending(event, userId) === false" type="button" class="btn btn-success" (click)="registerAttendance(event._id,'true')">Attend</button>
+            <button *ngIf="isUserAttending(userId)" type="button" class="btn btn-danger" (click)="registerAttendance(event._id, false)">Unattend</button>
+            <button *ngIf="!isUserAttending(userId)" type="button" class="btn btn-success" (click)="registerAttendance(event._id, true)">Attend</button>
 
         </td>
         <td *ngIf="isAdmin">

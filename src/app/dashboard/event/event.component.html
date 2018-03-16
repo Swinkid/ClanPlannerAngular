@@ -1,0 +1,36 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+    <h1 class="h2">{{ this._event?.name }}</h1>
+</div>
+
+<!--<app-event-stats></app-event-stats> -->
+
+<ngb-tabset>
+    <ngb-tab title="Attendance">
+
+        <ng-template ngbTabContent>
+
+            <app-attendee-form [_event]="this._event" [_attendee]="this._attendee" [_editing]="this._editing" *ngIf="this._attendee"></app-attendee-form>
+            <app-attendee-list [_event]="this._event" [_attendees]="this._attendees"></app-attendee-list>
+
+        </ng-template>
+    </ngb-tab>
+    <ngb-tab title="Hotel">
+
+        <ng-template ngbTabContent>
+
+            <app-display-bookings></app-display-bookings>
+
+        </ng-template>
+
+    </ngb-tab>
+    <ngb-tab title="Jerseys">
+        <ng-template ngbTabContent>
+            <app-jerseys></app-jerseys>
+        </ng-template>
+    </ngb-tab>
+    <ngb-tab title="Pub Quiz">
+        <ng-template ngbTabContent>
+            <app-quiz></app-quiz>
+        </ng-template>
+    </ngb-tab>
+</ngb-tabset>

@@ -17,7 +17,9 @@ import * as _ from 'lodash';
 })
 export class JerseysComponent implements OnInit {
 
-    public event : Event;
+    public _event : Event;
+    public _attendees : Attendance[];
+
     public selectedUser : String;
     public jersey   : Jersey;
 
@@ -32,7 +34,7 @@ export class JerseysComponent implements OnInit {
     }
 
     initSelectedUser() {
-        if(!this.jersey && this.isUserAttending(this.userService.getUserId(), this.event.users)){
+        if(!this.jersey && this.isUserAttending(this.userService.getUserId())){
             this.selectedUser = this.userService.getUserId();
             this.editing = false;
         }
@@ -53,14 +55,14 @@ export class JerseysComponent implements OnInit {
     }
 
     setEvent(){
-        this.apiService.getEvent(this.route.snapshot.params['id']).subscribe(
-            event => {
-                this.event = event;
+        this.apiService.getEventAndAttendace(this.route.snapshot.params['id']).subscribe(
+            data => {
+                this._event = data[0];
+                this._attendees = data[1];
             },
-            err => {
-
-            },
-            () => {}
+            error => {
+                //TODO: Error handling
+            }
         )
     }
 
@@ -72,15 +74,15 @@ export class JerseysComponent implements OnInit {
     submittedForm(done : Boolean): void {
         this.selectedUser = undefined;
 
-        this.event = undefined;
+        this._event = undefined;
         this.setEvent();
         this.setJersey();
 
     }
 
-    isUserAttending(user : String, event : Attendance[]){
-        let foundUser = _.find(event, function (u) {
-            if(u.userId === user){
+    isUserAttending(user : String){
+        let foundUser = _.find(this._attendees, function (attendee) {
+            if(attendee.user._id === user){
                 return true;
             } else {
                 return false;

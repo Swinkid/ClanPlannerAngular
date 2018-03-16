@@ -1,6 +1,6 @@
 <h2>
-    Pub Quiz <button class="btn btn-primary float-right" (click)="toggleAddTable()">Add Table</button>
+    Pub Quiz <button *ngIf="isAdmin" class="btn btn-primary float-right" (click)="toggleAddTable()">Add Table</button>
 </h2>
 
-<app-table-form (notify)='formSubmitted($event)' *ngIf="showForm" [_event]="_event" [_attendees]="_event.users" [editing]="editing" [selectedTable]="selectedTable"></app-table-form>
-<app-table-list *ngIf="_event" [_event]="_event" [_attendees]="_event.users" (editNotify)="editTable($event)" (refreshNotify)="refreshTable()"></app-table-list>
+<app-table-form (notify)='formSubmitted($event)' *ngIf="showForm" [_event]="_event" [_attendees]="_attendees" [editing]="editing" [selectedTable]="selectedTable"></app-table-form>
+<app-table-list *ngIf="_event" [_event]="_event" [_attendees]="_attendees" (editNotify)="editTable($event)" (refreshNotify)="refreshTable()"></app-table-list>

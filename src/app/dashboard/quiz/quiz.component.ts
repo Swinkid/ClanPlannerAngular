@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {ApiService} from "../../services/api.service";
 import {ActivatedRoute} from "@angular/router";
 import {Event} from "../../interfaces/event";
+import {UserService} from "../../services/user.service";
+import {Attendance} from "../../interfaces/attendance";
 
 @Component({
     selector: 'app-quiz',
@@ -11,17 +13,20 @@ import {Event} from "../../interfaces/event";
 export class QuizComponent implements OnInit {
 
     public editing : Boolean = false;
-    public adding : Boolean = false;
     public selectedTable : String;
 
     public showForm : Boolean = false;
 
     public _event : Event;
+    public _attendees : Attendance[];
 
-    constructor(private apiService : ApiService, private route : ActivatedRoute) { }
+    public isAdmin : Boolean;
+
+    constructor(private apiService : ApiService, private route : ActivatedRoute, private userService : UserService) { }
 
     ngOnInit() {
         this.initEvent();
+        this.isAdmin = this.userService.isAdmin();
     }
 
     private toggleForm(){
@@ -33,14 +38,14 @@ export class QuizComponent implements OnInit {
     }
 
     public initEvent(){
-        this.apiService.getEvent(this.route.snapshot.params['id']).subscribe(
-            event => {
-                this._event = event;
+        this.apiService.getEventAndAttendace(this.route.snapshot.params['id']).subscribe(
+            data => {
+                this._event = data[0];
+                this._attendees = data[1];
             },
-            err => {
-
-            },
-            () => {}
+            error => {
+                //TODO: Error handling
+            }
         )
     }
 

@@ -12,192 +12,44 @@ import {Attendance} from "../../interfaces/attendance";
 
 @Component({
     selector: 'dashboard-event',
-    templateUrl: 'event.template.html',
+    templateUrl: 'event.component.html',
     styles: []
 })
 export class EventComponent implements OnInit {
 
-    public event            : Event;
-    public attendees        : Attendance[];
-    public attendee         : Attendance;
-    public attendeeForm     : FormGroup;
-    public submitted        : Boolean = false;
-    public ticketsPurchased : Number = 0;
-    public seatsSelected    : Number = 0;
+    public _event            : Event;
+    public _attendees        : Attendance[];
+    public _attendee         : Attendance;
+    public _editing          : Boolean = false;
 
-
-    public transport = [
-        'Driving',
-        'Lift',
-        'Train',
-        'Plane',
-        'Nearby',
-        'Other'
-    ];
-
-    public tickets = [
-        true,
-        false
-    ];
-
-    public seatPicker = [
-        true,
-        false
-    ];
-
-    public facebookChat = [
-        true,
-        false
-    ];
-
-    public accomodation = [
-        'Hotel',
-        'Camping',
-        'Nearby'
-    ];
-
-
-    constructor(public authService : AuthService, private apiService : ApiService, private route: ActivatedRoute, public userService : UserService) {
-
-    }
+    constructor(public authService : AuthService, private apiService : ApiService, private route: ActivatedRoute, public userService : UserService) {}
 
     ngOnInit() {
         this.setEvent();
     }
 
     setEvent(){
-
-        this.apiService.getEvent(this.route.snapshot.params['id']).subscribe(
-            event => {
-                this.event = event;
+        this.apiService.getEventAndAttendace(this.route.snapshot.params['id']).subscribe(
+            data => {
+                this._event = data[0];
+                this._attendees = data[1];
+                this.setAttendee(this.userService.getUserId());
             },
-            err => {},
-            () => {
-
-                this.setAttendees(this.event);
-                this.setAttendee(this.userService.getUserId(), this.event);
-
-                if(this.attendee){
-                    this.setForm(this.attendee);
-                    this.ticketsPurchased = this.calcPurchasedTicket(this.event);
-                    this.seatsSelected = this.calcSelectedSeats(this.event);
-                }
+            error => {
+                //TODO: Error handling
             }
-        );
-
+        )
     }
 
-    setForm(attendee : Attendance){
-        this.attendeeForm = new FormGroup({
-            realName: new FormControl(attendee.realName,[
-                Validators.required,
-                Validators.maxLength(20)
-            ]),
-            ticketPurchasedSelect: new FormControl(attendee.broughtTicket, [
-                Validators.required
-            ]),
-            seatPickerSelect: new FormControl(attendee.onSeatPicker, [
-                Validators.required
-            ]),
-            inFacebookChat: new FormControl(attendee.inFacebookChat, [
-                Validators.required
-            ]),
-            arrivalDate: new FormControl(this.formatDate(attendee.dateArriving), [
-                Validators.required
-            ]),
-            accommodationSelect: new FormControl(attendee.accommodation, [
-                Validators.required
-            ]),
-            transportSelect: new FormControl(attendee.transportPlans, [
-                Validators.required
-            ]),
-            location: new FormControl(attendee.location, [
-                Validators.required,
-                Validators.maxLength(20)
-            ]),
-        });
-    }
-
-    setAttendees(event : Event){
-        this.attendees = event.users;
-    }
-
-    setAttendee(user : String, event : Event){
-        let foundUser = _.find(event.users, function (u) {
-            if(u.userId === user){
+    setAttendee(user : String){
+        let foundUser = _.find(this._attendees, function (u) {
+            if(u.user._id === user){
                 return true;
             } else {
                 return false;
             }
         });
 
-        this.attendee = foundUser;
-    }
-
-    isUserAttending(user : String, event : Attendance[]){
-        let foundUser = _.find(event, function (u) {
-            if(u.userId === user){
-                return true;
-            } else {
-                return false;
-            }
-        });
-
-        return foundUser !== undefined;
-    }
-
-    submitForm(){
-
-        if(this.attendeeForm.status === "VALID"){
-            this.apiService.updateAttendance(this.event._id, this.attendeeForm.value).subscribe(
-                event => {
-
-                },
-                err => {
-
-                },
-                () =>{
-                    this.setEvent();
-                    this.submitted = true;
-                }
-            );
-        }
-    }
-
-    calcPurchasedTicket(event : Event){
-        let purchased = 0;
-
-        event.users.forEach(function (attendee) {
-            if(attendee.broughtTicket){
-                purchased++;
-            }
-        });
-
-        return purchased;
-    }
-
-    calcSelectedSeats(event : Event){
-        let selected = 0;
-
-        event.users.forEach(function (attendee) {
-           if(attendee.onSeatPicker){
-               selected++;
-           }
-        });
-
-        return selected;
-    }
-
-
-    formatDate(date) {
-        var d = new Date(date),
-            month = '' + (d.getMonth() + 1),
-            day = '' + d.getDate(),
-            year = d.getFullYear();
-
-        if (month.length < 2) month = '0' + month;
-        if (day.length < 2) day = '0' + day;
-
-        return [year, month, day].join('-');
+        this._attendee = foundUser;
     }
 }

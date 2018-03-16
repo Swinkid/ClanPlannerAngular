@@ -1,0 +1,76 @@
+<div class="card" *ngIf="isUserAttending(_attendee.user._id) && attendeeForm">
+
+    <div class="card-header">
+        Attendance Settings
+    </div>
+    <div class="card-block">
+
+        <form [formGroup]="attendeeForm" (ngSubmit)="submitForm()">
+            <div class="form-group row">
+
+                <label class="col-1 col-form-label" for="ticketPurchasedSelect">Ticket Purchased</label>
+                <div class="col-2">
+                    <select class="custom-select" id="ticketPurchasedSelect" formControlName="ticketPurchasedSelect" required>
+                        <option *ngFor="let t of tickets" [ngValue]="t">
+
+                            {{ t ? 'Yes' : 'No'}}
+
+                        </option>
+                    </select>
+                </div>
+
+                <label class="col-1 col-form-label" for="seatPickerSelect">On Seat Picker</label>
+                <div class="col-2">
+                    <select class="custom-select" id="seatPickerSelect" formControlName="seatPickerSelect" required>
+                        <option *ngFor="let s of seatPicker" [ngValue]="s">
+                            {{ s ? 'Yes' : 'No'}}
+                        </option>
+                    </select>
+                </div>
+
+                <label class="col-1 col-form-label" for="inFacebookChat">In Facebook Chat</label>
+                <div class="col-2">
+                    <select class="custom-select" id="inFacebookChat" formControlName="inFacebookChat" required>
+                        <option *ngFor="let f of facebookChat" [ngValue]="f">
+                            {{ f ? 'Yes' : 'No'}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="arrivalDate" class="col-1 col-form-label">Arrival Date</label>
+                <div class="col-2">
+                    <input class="form-control" type="date" id="arrivalDate" formControlName="arrivalDate" required>
+                </div>
+                <label class="col-1 col-form-label" for="accommodationSelect">Accommodation</label>
+                <div class="col-2">
+                    <select class="custom-select" id="accommodationSelect" formControlName="accommodationSelect" required>
+                        <option value="" disabled>Select</option>
+                        <option *ngFor="let a of accomodation" [ngValue]="a">
+                            {{ a }}
+                        </option>
+                    </select>
+                </div>
+                <label class="col-1 col-form-label" for="transportSelect">Transport</label>
+                <div class="col-2">
+                    <select class="custom-select" id="transportSelect" formControlName="transportSelect" required>
+                        <option value="" disabled>Select</option>
+                        <option *ngFor="let t of transport" [ngValue]="t">
+                            {{ t }}
+                        </option>
+                    </select>
+                </div>
+                <label class="col-1 col-form-label" for="location">Location</label>
+                <div class="col-2">
+                    <input class="form-control" type="text" id="location" formControlName="location" required>
+                </div>
+            </div>
+            <div class="form-group row">
+                <button type="submit" class="btn btn-primary col-1">Submit</button>
+                <div class="col-2">
+                    <span *ngIf="submitted">Saved</span>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

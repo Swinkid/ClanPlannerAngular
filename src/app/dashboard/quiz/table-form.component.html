@@ -12,8 +12,8 @@
         <label class="col-form-label">Booked By</label>
         <select class="form-control" name="bookedBy" formControlName="bookedBy">
             <option value="" disabled>Select</option>
-            <option *ngFor="let a of _attendees" [ngValue]="a.userId">
-                {{ a.discord.username + '#' + a.discord.discriminator }}
+            <option *ngFor="let a of _attendees" [ngValue]="a.user?._id">
+                {{ a.user?.discord.username + '#' + a.user?.discord.discriminator }}
             </option>
         </select>
     </div>
@@ -38,13 +38,13 @@
 
     <div formArrayName="attendees">
 
-        <div class="form-group row" *ngFor="let attendee of getAttendees(quizForm) let a = index;" [formGroupName]="a">
+        <div class="form-group row" *ngFor="let attendeeControl of getAttendees(quizForm) let a = index;" [formGroupName]="a">
 
             <label class="col-form-label col-1">Seat {{ a + 1 }}</label>
             <select class="form-control col-4 mx-2" name="user" formControlName="user">
-                <option value="Available">Available</option>
-                <option *ngFor="let a of _attendees" [ngValue]="a.userId">
-                    {{ a.discord.username + '#' + a.discord.discriminator }}
+                <option value="">Available</option>
+                <option *ngFor="let __user of _attendees" [ngValue]="__user.user?._id">
+                    {{ __user.user?.discord.username + '#' + __user.user?.discord.discriminator }}
                 </option>
             </select>
 

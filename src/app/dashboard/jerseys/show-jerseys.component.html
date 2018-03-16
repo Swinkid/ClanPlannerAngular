@@ -11,15 +11,15 @@
         </thead>
         <tbody>
         <tr *ngFor="let jersey of jerseys">
-            <td>{{ jersey.username }}</td>
+            <td>{{ jersey.user.discord.username + '#' + jersey.user.discord.discriminator }}</td>
             <td>{{ jersey.hidden ? 'Hidden' : jersey.size}}</td>
             <td>{{ jersey.paid ? 'Yes' : 'No'}}</td>
-            <td *ngIf="admin || jersey.userId === userId">
-                <button class="btn btn-primary" (click)="editJersey(jersey.userId)">
+            <td *ngIf="admin || jersey.user._id === userId">
+                <button class="btn btn-primary" (click)="editJersey(jersey.user._id)">
                     <span class="fas fa-edit"></span>
                 </button>
 
-                <button class="btn btn-danger" (click)="deleteJersey(jersey.userId)">
+                <button class="btn btn-danger" (click)="deleteJersey(jersey.user._id)">
                     <span class="fas fa-times"></span>
                 </button>
             </td>

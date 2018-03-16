@@ -41,6 +41,10 @@ import { CompFormComponent } from './competitions/comp-form.component';
 import { SeatingPlanComponent } from './seating-plan/seating-plan.component';
 import { SeatingPlanFormComponent } from './seating-plan/seating-plan-form.component';
 import { SeatingPlanListComponent } from './seating-plan/seating-plan-list.component';
+import { AttendeeListComponent } from './event/attendee-list.component';
+import { AttendeeFormComponent } from './event/attendee-form.component';
+import { EventStatsComponent } from './event/event-stats.component';
+
 
 
 const routes: Routes = [
@@ -98,7 +102,10 @@ const routes: Routes = [
         CompFormComponent,
         SeatingPlanComponent,
         SeatingPlanFormComponent,
-        SeatingPlanListComponent
+        SeatingPlanListComponent,
+        AttendeeListComponent,
+        AttendeeFormComponent,
+        EventStatsComponent
     ],
     providers: [
         AuthService,

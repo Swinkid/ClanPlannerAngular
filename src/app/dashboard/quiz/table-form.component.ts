@@ -12,8 +12,8 @@ import {Quiz} from "../../interfaces/quiz";
 })
 export class TableFormComponent implements OnInit {
 
-    @Input() _event : Event;
-    @Input() _attendees : Attendance[];
+    @Input() public _event : Event;
+    @Input() public _attendees : Attendance[];
     @Input() editing : Boolean;
     @Input() selectedTable : String;
 
@@ -61,7 +61,7 @@ export class TableFormComponent implements OnInit {
                     Validators.min(1),
                     Validators.max(200)
                 ]),
-                bookedBy: new FormControl(this.table.bookedBy, [
+                bookedBy: new FormControl(this.table.bookedBy._id, [
                     Validators.required
                 ]),
                 paypalLink: new FormControl(this.table.paypalLink, [
@@ -99,7 +99,7 @@ export class TableFormComponent implements OnInit {
 
     initAttendees(){
         return this._fb.group({
-            user: 'Available',
+            user: '',
             paid: false
         });
     }
@@ -108,7 +108,12 @@ export class TableFormComponent implements OnInit {
         var attendees = [];
 
         this.table.attendees.forEach(function (attendee) {
-            attendees.push(_fb.group(attendee));
+            var a = {
+                user: attendee.user._id,
+                paid: attendee.paid
+            };
+
+            attendees.push(_fb.group(a));
         });
 
         return attendees;

@@ -3,6 +3,7 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 const xss = require("xss");
 const _ = require('lodash');
+const mongoose = require('mongoose');
 
 var env = process.env.NODE_ENV || 'development';
 var config = require('../../config')[env];
@@ -163,211 +164,218 @@ router.get('/events/:id', authenticate, function (req, res) {
 });
 
 
+/**
+ * Get all attendance for user.
+ */
+router.get('/attendance/all/:user', authenticate, function (req, res) {
 
-//TODO: In hindsight, this is a jankey way of doing it.......
-//http://mongoosejs.com/docs/subdocs.html#altsyntax
-//Leverage above instead
-
-router.post('/events/attendee/:id/:user', authenticate, isAdmin, function (req, res) {
-
-	var filteredId = xss(req.params.id);
-	var filteredUserId = xss(req.params.user);
-
-
-	Event.findOne({'_id': filteredId}, function (error, e) {
+	Attendance.find({user: req.params.user}).populate('user').exec(function (error, result) {
 
 		if(error){
-			return res.status(500).json({error: 'Internal Server Error'});
+			return res.status(500).json({response: 'Internal Server Error'});
 		}
 
-		if(!e){
-			return res.status(500).json({error: 'Internal Server Error'});
+		if(!result){
+			return res.status(404).json({response: 'No found attendances'});
 		}
 
-		if(e){
-			var user = e.users.find(function (value) {
-				return value.userId === filteredUserId;
+		if(result){
+			//TODO Really need to remove access tokens and email
+
+			result.forEach(function (r) {
+				delete r.user.discord.email;
+				delete r.user.discord.accessToken;
 			});
 
-			var attendance = new Attendance({
-
-				userId : filteredUserId,
-				eventId : filteredId,
-				discord : user.discord,
-				realName:  xss(req.body.formValue.realName),
-				broughtTicket:  xss(req.body.formValue.ticketPurchasedSelect),
-				onSeatPicker:  xss(req.body.formValue.seatPickerSelect),
-				accommodation:  xss(req.body.formValue.accommodationSelect),
-				transportPlans:  xss(req.body.formValue.transportSelect),
-				dateArriving: new Date(xss(req.body.formValue.arrivalDate)),
-				location:  xss(req.body.formValue.location),
-				inFacebookChat:  xss(req.body.formValue.inFacebookChat)
-
-			});
-
-			Event.update({'_id': filteredId}, { $pull: { 'users': {'userId': filteredUserId}}}, function (error, updatedEvent) {
-				if(error){
-					return res.status(500).json({error: 'Internal Server Error'});
-				}
-
-				if(!updatedEvent){
-					return res.status(204).json({error: 'Event not found'});
-				}
-
-				if(updatedEvent){
-
-					Event.update({'_id': filteredId}, { $push: { 'users': attendance}}, function (error, addedAttendance) {
-						if(error){
-							return res.status(500).json({error: 'Internal Server Error'});
-						}
-
-						if(!updatedEvent){
-							return res.status(204).json({error: 'Event not found'});
-						}
-
-						if(updatedEvent){
-							return res.status(200).json({error: 'Done'});
-						}
-					});
-				}
-			});
+			return res.status(200).json(result);
 		}
+
 	});
+
 });
 
+/**
+ * Get attendance for specified user
+ */
+router.get('/attendee/:user/:event', authenticate, function (req, res) {
 
-router.post('/events/register/:id', authenticate, function (req, res) {
+	Attendance.findOne({user: req.params.user, event:req.params.event}, function (error, foundAttendance) {
 
-	var filteredId = xss(req.params.id);
-	var filteredToggle = xss(req.body.attendance);
+		if(error){
+			return res.status(500).json({response: 'Internal Server Error'});
+		}
+
+		if(!foundAttendance){
+			return res.status(404).json({response: 'No found attendances'});
+		}
+
+		if(foundAttendance){
+			return res.status(200).json(foundAttendance);
+		}
 
 
-	if(filteredToggle === "true"){
+	});
 
-		Event.findOne({'_id': filteredId}, function (error, fetchedEvent) {
+});
+
+/**
+ * Update (user) registration details
+ */
+router.post('/attendance/:user/:event', authenticate, function (req, res) {
+
+	if(req.params.user === req.principal.user._id || isAdmin()){
+
+		Attendance.update({user: xss(req.params.user), event: xss(req.params.event)}, {
+			$set : {
+				broughtTicket:  req.body.ticketPurchasedSelect,
+				onSeatPicker:  req.body.seatPickerSelect,
+				accommodation:  xss(req.body.accommodationSelect),
+				transportPlans:  xss(req.body.transportSelect),
+				dateArriving: new Date(xss(req.body.arrivalDate)),
+				location:  xss(req.body.location),
+				inFacebookChat:  req.body.inFacebookChat
+			}
+		}, function (error) {
+			if(error){
+				return res.status(500).json({response: 'Internal Server Error'});
+			}
+
+			if(!error){
+				res.status(200).json({response: 'Ok'});
+			}
+		});
+
+	} else {
+
+		return res.status(401).json({error: 'Invalid Access Token'});
+
+	}
+
+});
+
+router.get('/attendance/:event', function (req, res) {
+
+	Attendance.find({event: req.params.event}).populate('user').exec(function (error, attendance) {
+
+		if(error){
+			return res.status(500).json({response: 'Internal Server Error'});
+		}
+
+		if(!attendance){
+			return res.status(404).json({response: 'No found attendances'});
+		}
+
+		if(attendance){
+			attendance.forEach(function (a) {
+
+				delete a.user.discord.email;
+				delete a.user.discord.accessToken;
+
+			});
+
+			res.status(200).json(attendance);
+		}
+
+	});
+
+});
+
+/**
+ * Register (user) for event
+ */
+router.post('/attendee/register/:event', authenticate, function (req, res) {
+
+	if(req.body.attendance === true){
+
+		Attendance.findOne({user: req.principal.user._id, event: xss(req.params.event)}, function (error, foundAttendance) {
 
 			if(error){
-				return res.status(500).json({error: 'Internal Server Error'});
+				return  res.status(500).json({response: 'Internal Server Error'});
 			}
 
-			if(!fetchedEvent){
-				return res.status(204).json({error: 'Event not found'});
+			if(foundAttendance){
+				return res.status(404).json({response: 'User already participating'});
 			}
 
-			if(fetchedEvent.users.indexOf(req.principal.user._id) > -1){
-				return res.status(204).json({error: 'User already attending'});
-			} else {
-
-				//TODO : Need to rework how users are stored in db
-				delete req.principal.user.discord.accessToken;
-				delete req.principal.user.discord.email;
-				delete req.principal.user.discord.fetchedAt;
-
-				var attendance = new Attendance({
-
-					userId : req.principal.user._id,
-					eventId : filteredId,
-					discord : req.principal.user.discord,
-					realName: "",
+			if(!foundAttendance){
+				var newAttendance = new Attendance({
+					user: mongoose.Types.ObjectId(xss(req.principal.user._id)),
+					event: mongoose.Types.ObjectId(xss(req.params.event)),
 					broughtTicket: false,
 					onSeatPicker: false,
+					dateArriving: new Date(),
 					accommodation: "",
 					transportPlans: "",
 					location: "",
 					inFacebookChat: false
-
 				});
 
-				Event.update({'_id': filteredId}, { $push: { 'users': attendance}}, function (error, updatedEvent) {
+				newAttendance.save(function (error, saved) {
 					if(error){
-						return res.status(500).json({error: 'Internal Server Error'});
+						return  res.status(500).json({response: 'Internal Server Error'});
 					}
 
-					if(!updatedEvent){
-						return res.status(204).json({error: 'Event not found'});
-					}
-
-					if(updatedEvent){
-						return res.status(200).json({error: 'Done'});
+					if(saved){
+						return res.status(200).json({response: 'Ok'});
 					}
 				});
-
 			}
 
 		});
-
 	}
 
-	if(filteredToggle === "false"){
+	if(req.body.attendance === false){
 
-		Event.update({'_id': filteredId}, { $pull: { 'users': {'userId': req.principal.user._id}}}, function (error, updatedEvent) {
+		Attendance.remove({user: req.principal.user._id, event: xss(req.params.event)}, function (error) {
+
 			if(error){
-				return res.status(500).json({error: 'Internal Server Error'});
+				return  res.status(500).json({response: 'Internal Server Error'});
 			}
 
-			if(!updatedEvent){
-				return res.status(204).json({error: 'Event not found'});
+			if(!error){
+				return res.status(200).json({response: 'Ok'});
 			}
 
-			if(updatedEvent){
-				return res.status(200).json({error: 'Done'});
-			}
 		});
 
 	}
 
 });
 
-router.post('/events/attendance/:event', authenticate, function (req, res) {
+/**
+ * Delete (user) registration for event
+ */
+router.delete('/attendee/:user/:event', authenticate, function (req, res) {
 
-	//TODO validate
+	if((req.params.user === req.principal.user._id) || isAdmin()){
 
-	var attendance = new Attendance({
+		Attendance.remove({user: xss(req.params.user), event: xss(req.params.event)}, function (error) {
 
-		userId : req.principal.user._id,
-		eventId : xss(req.params.event),
-		discord : req.principal.user.discord,
-		realName:  xss(req.body.formValue.realName),
-		broughtTicket:  xss(req.body.formValue.ticketPurchasedSelect),
-		onSeatPicker:  xss(req.body.formValue.seatPickerSelect),
-		accommodation:  xss(req.body.formValue.accommodationSelect),
-		transportPlans:  xss(req.body.formValue.transportSelect),
-		dateArriving: new Date(xss(req.body.formValue.arrivalDate)),
-		location:  xss(req.body.formValue.location),
-		inFacebookChat:  xss(req.body.formValue.inFacebookChat)
+			if(error){
 
-	});
+				res.status(500).json({response: 'Internal Server Error'});
 
-	Event.update({'_id': xss(req.params.event)}, { $pull: { 'users': {'userId': req.principal.user._id}}}, function (error, updatedEvent) {
-		if(error){
-			return res.status(500).json({error: 'Internal Server Error'});
-		}
+			} else {
 
-		if(!updatedEvent){
-			return res.status(204).json({error: 'Event not found'});
-		}
+				res.status(200).json({response: 'Ok'});
 
-		if(updatedEvent){
+			}
 
-			Event.update({'_id': req.params.event}, { $push: { 'users': attendance}}, function (error, addedAttendance) {
-				if(error){
-					return res.status(500).json({error: 'Internal Server Error'});
-				}
+		});
 
-				if(!updatedEvent){
-					return res.status(204).json({error: 'Event not found'});
-				}
+	} else {
 
-				if(updatedEvent){
-					return res.status(200).json({error: 'Done'});
-				}
-			});
+		return res.status(401).json({error: 'Invalid Access'});
 
-
-		}
-	});
+	}
 
 });
+
+
+
+//TODO: In hindsight, this is a jankey way of doing it.......
+//http://mongoosejs.com/docs/subdocs.html#altsyntax
+//Leverage above instead
 
 router.post('/events', authenticate, isAdmin, function (req, res) {
 
@@ -597,7 +605,7 @@ router.get('/jersey/:event', authenticate, function (req, res) {
 
 	var filteredId = xss(req.params.event);
 
-	Jersey.find({eventId: filteredId}, function (error, jerseys) {
+	Jersey.find({event: filteredId}).populate('user').exec(function (error, jerseys) {
 
 		if(error){
 			return res.status(500).json({error: 'Internal Server Error'});
@@ -623,7 +631,7 @@ router.get('/jersey/:event/:user', authenticate, function (req, res) {
 	var filteredId = xss(req.params.event);
 	var filteredUserId = xss(req.params.user);
 
-	Jersey.findOne({eventId: filteredId, userId: filteredUserId}, function (error, jerseys) {
+	Jersey.findOne({event: filteredId, user: filteredUserId}).populate('user').exec(function (error, jerseys) {
 
 		if(error){
 			return res.status(500).json({error: 'Internal Server Error'});
@@ -652,7 +660,7 @@ router.post('/jersey/:event/:user', authenticate, function (req, res) {
 
 	if((req.principal.user._id === filteredUserId) || checkAdmin(req.principal.user)){
 
-		Jersey.findOne({eventId: filteredEventId, userId: filteredUserId}, function(error, found){
+		Jersey.findOne({event: filteredEventId, user: filteredUserId}).populate('user').exec(function(error, found){
 
 			if(error){
 				return res.status(500).json({error: 'Internal Server Error'});
@@ -665,8 +673,8 @@ router.post('/jersey/:event/:user', authenticate, function (req, res) {
 			if(!found){
 				var newJersey = new Jersey({
 
-					eventId: filteredEventId,
-					userId: filteredUserId,
+					event: filteredEventId,
+					user: filteredUserId,
 					size: req.body.size,
 					hidden: req.body.hidden,
 					paid: false
@@ -702,7 +710,7 @@ router.delete('/jersey/:event/:user', authenticate, function (req, res) {
 
 	if((req.principal.user._id === filteredUserId) || checkAdmin(req.principal.user)){
 
-		Jersey.remove({eventId: filteredEventId, userId: filteredUserId}, function (error) {
+		Jersey.remove({event: filteredEventId, user: filteredUserId}).populate('user').exec(function (error) {
 			if(error){
 				return res.status(500).json({error: 'Internal Server Error'});
 			}
@@ -724,7 +732,7 @@ router.post('/jersey/update/:event/:user', authenticate, function (req, res) {
 
 	if((req.principal.user._id === filteredUserId) || checkAdmin(req.principal.user)){
 
-		Jersey.update({eventId: filteredEventId, userId: filteredUserId}, {
+		Jersey.update({event: filteredEventId, user: filteredUserId}, {
 
 			$set: {
 				size: xss(req.body.size),
@@ -732,7 +740,7 @@ router.post('/jersey/update/:event/:user', authenticate, function (req, res) {
 				paid: req.body.paid
 			}
 
-		}, function (error) {
+		}).exec(function (error) {
 
 			if(error){
 				return res.status(500).json({error: 'Internal Server Error'});
@@ -755,7 +763,7 @@ router.get('/quiz/:id', authenticate, function (req, res) {
 
 	var filterdId = xss(req.params.id);
 
-	Quiz.findOne({_id: filterdId}, function (error, foundQuiz) {
+	Quiz.findOne({_id: filterdId}).populate(['user', 'bookedBy']).exec(function (error, foundQuiz) {
 
 		if(error){
 			return res.status(500).json({error: 'Internal Server Error'});
@@ -778,7 +786,7 @@ router.get('/quiz/event/:event', authenticate, function (req, res) {
 	var filteredEvent = xss(req.params.event);
 
 
-	Quiz.find({"event" : filteredEvent} , function (error, foundQuiz) {
+	Quiz.find({"event" : filteredEvent}).populate(['bookedBy', 'attendees.user']).exec(function (error, foundQuiz) {
 
 		if(error){
 			return res.status(500).json({error: 'Internal Server Error'});
@@ -800,18 +808,22 @@ router.post('/quiz/:event', authenticate, isAdmin, function (req, res) {
 
 	var filteredAttendees = [];
 
-	req.body.attendees.forEach(function (attendee) {
-		filteredAttendees.push({
-			user: xss(attendee.user),
-			paid: attendee.paid
-		});
+	req.body.attendees.forEach(function (a) {
+		if(a.user !== ''){
+			filteredAttendees.push({
+				user: mongoose.Types.ObjectId(a.user),
+				paid: a.paid
+			});
+		} else {
+			filteredAttendees.push({})
+		}
 	});
 
 	var quizTable = new Quiz({
 
 		tableNumber: xss(req.body.tableNumber),
-		event: xss(req.params.event),
-		bookedBy: xss(req.body.bookedBy),
+		event: mongoose.Types.ObjectId(xss(req.params.event)),
+		bookedBy: mongoose.Types.ObjectId(xss(req.body.bookedBy)),
 		paypalLink: xss(req.body.paypalLink),
 		tableType: xss(req.body.tableType),
 		attendees: filteredAttendees

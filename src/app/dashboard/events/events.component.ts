@@ -1,14 +1,11 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import * as _ from 'lodash';
 
-import { AuthService } from "../../services/auth.service";
 import { ApiService } from "../../services/api.service";
+import {UserService} from "../../services/user.service";
 
 import {Event} from "../../interfaces/event";
-import {UserService} from "../../services/user.service";
-import {User} from "../../interfaces/user";
-
-
+import {Attendance} from "../../interfaces/attendance";
 
 @Component({
     selector: 'dashboard-register',
@@ -18,29 +15,32 @@ import {User} from "../../interfaces/user";
 export class EventsComponent implements OnInit {
 
     public events: Event[];
+    public attendance: Attendance[];
+
     public isAdmin : Boolean = false;
     public userId: String;
 
-    constructor(public authService : AuthService, private apiService : ApiService, public userService : UserService ) {
-
-    }
+    constructor(private apiService : ApiService, public userService : UserService ) {}
 
     ngOnInit() {
-        this.getEvents();
         this.userId = this.userService.getUserId();
+        this.isAdmin = this.userService.isAdmin();
+        this.getEvents();
     }
 
     getEvents(){
-        this.isAdmin = this.userService.isAdmin();
-
-        this.apiService.getEvents().subscribe(
-            data => {this.events = data },
-            err => function () {},
-            () => {}
-        );
+        this.apiService.getEventsAndAttendeeAttendance(this.userId).subscribe(
+        data =>{
+            this.events = data[1];
+            this.attendance = data[0];
+            console.log(data[0]);
+        },
+        error =>{
+            //TODO: Error handling
+        });
     }
 
-    registerAttendance(event : String, attending: String){
+    registerAttendance(event : String, attending: Boolean){
         this.apiService.registerAttendance(event, attending).subscribe(
             data => {},
             error => {},
@@ -50,17 +50,13 @@ export class EventsComponent implements OnInit {
         );
     }
 
-    isUserAttending(event: Event, user : String) {
-
-        let foundUser = _.find(event.users, function (u) {
-            if(u.userId === user){
+    isUserAttending(user : String) {
+        return _.find(this.attendance, function (u) {
+            if(u.user._id === user){
                 return true;
             } else {
                 return false;
             }
         });
-
-        return foundUser !== undefined;
-
     }
 }
