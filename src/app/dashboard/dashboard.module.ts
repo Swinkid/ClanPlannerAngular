@@ -64,7 +64,8 @@ const routes: Routes = [
             { path: 'edit/event/attendee/:id/:attendee', component: AttendeeComponent , canActivate: [AuthorizeGuard]},
             { path: 'new/booking/:id', component: BookingFormComponent , canActivate: [AuthorizeGuard]},
             { path: 'edit/booking/:id', component: BookingComponent, canActivate: [AuthorizeGuard] },
-            { path: 'profile/:id', component: ProfileComponent}
+            { path: 'profile/:id', component: ProfileComponent },
+            { path: 'profile/edit/:id', component: ProfileEditComponent }
         ]
     }
 

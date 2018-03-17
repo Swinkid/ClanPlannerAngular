@@ -78,9 +78,26 @@ router.get('/users/:id', authenticate, function (req, res) {
 
 });
 
-router.patch('/users/:id', authenticate, function (req, res) {
+/**
+ * Update user details
+ */
+router.post('/user/:id', authenticate, function (req, res) {
 
-	return res.status(501).json({error: "Not Implemented"});
+	if((req.params.id === req.principal.user._id) || isAdmin()){
+
+		User.update({_id: req.params.id}, { $set: { realName: xss(req.body.realName), nickname: xss(req.body.nickname)}}, function (error) {
+			if(error){
+				return res.status(500).json({response: 'Internal Server Error'});
+			}
+
+			if(!error){
+				res.status(200).json({response: 'Ok'});
+			}
+		});
+
+	} else {
+		return res.status(401).json({error: 'Invalid Access Token'});
+	}
 
 });
 
@@ -169,7 +186,7 @@ router.get('/events/:id', authenticate, function (req, res) {
  */
 router.get('/attendance/all/:user', authenticate, function (req, res) {
 
-	Attendance.find({user: req.params.user}).populate('user').exec(function (error, result) {
+	Attendance.find({user: req.params.user}).populate(['user', 'event']).exec(function (error, result) {
 
 		if(error){
 			return res.status(500).json({response: 'Internal Server Error'});

@@ -1,3 +1,14 @@
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-    <h1 class="h2">{{ this.user.discord.username + '#' + this.user.discord.discriminator }} </h1> <button *ngIf="loggedInUserId === user._id" class="btn btn-primary"><span class="fas fa-cog"></span></button>
+    <h1 class="h2">{{ this.user.discord.username + '#' + this.user.discord.discriminator }} </h1> <button *ngIf="loggedInUserId === user._id" class="btn btn-primary" routerLink="/dashboard/profile/edit/{{loggedInUserId}}"><span class="fas fa-cog"></span></button>
+</div>
+
+<div class="card">
+
+    <div class="card-body">
+
+        <strong>Real Name: </strong> {{ this.user?.realName }} <br />
+        <strong>Nickname: </strong> {{ this.user?.nickname }} <br />
+
+    </div>
+
 </div>

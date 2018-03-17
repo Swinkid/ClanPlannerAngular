@@ -18,8 +18,8 @@
         <td>{{ event.toDate | date }}</td>
         <td>
 
-            <button *ngIf="isUserAttending(userId)" type="button" class="btn btn-danger" (click)="registerAttendance(event._id, false)">Unattend</button>
-            <button *ngIf="!isUserAttending(userId)" type="button" class="btn btn-success" (click)="registerAttendance(event._id, true)">Attend</button>
+            <button *ngIf="isUserAttending(event)" type="button" class="btn btn-danger" (click)="registerAttendance(event._id, false)">Unattend</button>
+            <button *ngIf="!isUserAttending(event)" type="button" class="btn btn-success" (click)="registerAttendance(event._id, true)">Attend</button>
 
         </td>
     </tr>

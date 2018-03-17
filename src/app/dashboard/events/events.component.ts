@@ -50,9 +50,14 @@ export class EventsComponent implements OnInit {
         );
     }
 
-    isUserAttending(user : String) {
+    isUserAttending(event) {
+        let userId = this.userService.getUserId();
+
         return _.find(this.attendance, function (u) {
-            if(u.user._id === user){
+
+            console.log(u);
+
+            if(u.user._id === userId && u.event._id === event._id){
                 return true;
             } else {
                 return false;

@@ -41,13 +41,6 @@ export class ApiService {
         return forkJoin([this.getEvent(event), this.getAttendance(event)]);
     }
 
-    public getUsers(users : Attendance[]){
-        var queryId = users.map(function (u) {
-            return u._id;
-        }).join(',');
-
-        return this._http.get<Attendance[]>('/api/users?id=' + queryId, { headers: {'x-access-token': this.authService.getToken()} });
-    }
 
     public registerAttendance(event : String, attending : Boolean){
         return this._http.post('/api/attendee/register/' + event, { attendance: attending }, { headers: {'x-access-token': this.authService.getToken()} });
@@ -90,7 +83,11 @@ export class ApiService {
     }
 
     public getUser(userId){
-        return this._http.get<User>('/api/user/' + userId, { headers: {'x-access-token': this.authService.getToken()} })
+        return this._http.get<User>('/api/user/' + userId, { headers: {'x-access-token': this.authService.getToken()} });
+    }
+
+    public updateUser(user, formValue){
+        return this._http.post('/api/user/' + user, formValue, { headers: {'x-access-token': this.authService.getToken()} });
     }
 
     public removeBooking(booking){

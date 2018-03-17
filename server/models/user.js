@@ -6,8 +6,14 @@ var userSchema = mongoose.Schema({
 	regEvents			: [],
 	regDate				: Date,
 	admin				: Boolean,
-	realName			: String,
-	nickname			: String
+	realName			: {
+		type: String,
+		default: ''
+	},
+	nickname			: {
+		type: String,
+		default: ''
+	}
 
 });
 

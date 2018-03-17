@@ -26,7 +26,8 @@
                     </td>
                     <td>
                         <strong>Discord:</strong> <a routerLink="/dashboard/profile/{{attendee.user._id}}">{{ attendee?.user.discord.username + '#' + attendee?.user.discord.discriminator }} </a> <br />
-                       <strong>Real Name:</strong> {{ attendee?.realName }}
+                        <strong>Real Name:</strong> {{ attendee?.user.realName }} <br />
+                        <strong>Nickname: </strong> {{ attendee?.user.nickname }}
                    </td>
                    <td>
                        <strong>Brought Ticket:</strong> {{ attendee?.broughtTicket ? 'Yes' : 'No' }} <br />

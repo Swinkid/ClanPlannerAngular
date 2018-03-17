@@ -1,0 +1,19 @@
+<form [formGroup]="userForm" (ngSubmit)="onSubmit(userForm)" novalidate>
+
+    <div class="form-group">
+
+        <label>Real Name</label>
+        <input type="text" class="form-control" formControlName="realName">
+
+    </div>
+
+    <div class="form-group">
+
+        <label>Nickame</label>
+        <input type="text" class="form-control" formControlName="nickname">
+
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+
+</form>
