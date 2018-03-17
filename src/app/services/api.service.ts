@@ -10,11 +10,17 @@ import {Booking} from "../interfaces/hotel/booking";
 import {Jersey} from "../interfaces/jersey";
 import {Quiz} from "../interfaces/quiz";
 import {forkJoin} from "rxjs/observable/forkJoin";
+import {Competition} from "../interfaces/comp";
+import {Meal} from "../interfaces/meal";
 
 @Injectable()
 export class ApiService {
 
+    public HEADERS : Object = { headers: {'x-access-token': this.authService.getToken()}};
+
     constructor(private _http: HttpClient, private authService: AuthService) { }
+
+
 
     getEventsAndAttendeeAttendance(user){
         return forkJoin([this.getAttendeeAttendances(user), this.getEvents()])
@@ -143,6 +149,46 @@ export class ApiService {
 
     public deleteTable(table){
         return this._http.delete('/api/quiz/' + table, { headers: {'x-access-token': this.authService.getToken()}});
+    }
+
+    public getComps(event){
+        return this._http.get<Competition[]>('/api/comps/all/' + event, this.HEADERS);
+    }
+
+    public getComp(comp){
+        return this._http.get<Competition>('/api/comps/' + comp, this.HEADERS);
+    }
+
+    public addComp(event, formValue){
+        return this._http.post('/api/comps/all/' + event, formValue, this.HEADERS);
+    }
+
+    public updateComp(comp, formvalue){
+        return this._http.post('/api/comps/' + comp, formvalue, this.HEADERS);
+    }
+
+    public deleteComp(comp){
+        return this._http.delete('/api/comps/' + comp, this.HEADERS);
+    }
+
+    public getMeals(event){
+        return this._http.get<Meal[]>('/api/meal/all/' + event, this.HEADERS);
+    }
+
+    public getMeal(meal){
+        return this._http.get<Meal>('/api/meal/' + meal, this.HEADERS);
+    }
+
+    public addMeal(event, user, formValue){
+        return this._http.post('/api/meal/all/' + event + '/' + user, formValue, this.HEADERS);
+    }
+
+    public updateMeal(meal, formValue){
+        return this._http.post('/api/meal/' + meal, formValue, this.HEADERS);
+    }
+
+    public deleteMeal(meal){
+        return this._http.delete('/api/meal' + meal, this.HEADERS);
     }
 
 }
