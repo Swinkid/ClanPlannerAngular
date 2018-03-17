@@ -14,6 +14,8 @@ const Attendance = require('../models/attendance');
 const Booking = require('../models/booking');
 const Jersey = require('../models/jersey');
 const Quiz = require('../models/quiz');
+const Competition = require('../models/competition');
+const Meal = require('../models/meal');
 
 /* GET api listing. */
 router.get('/', function (req, res) {
@@ -925,6 +927,285 @@ router.delete('/quiz/:id', authenticate, isAdmin, function (req, res) {
 	});
 
 });
+
+/**
+ * Get all comps for event
+ */
+router.get('/comps/all/:event', authenticate, function (req, res) {
+
+	Competition.find({event: xss(req.params.id)}).populate(['event', 'teams.teamName', 'teams.subs']).exec(function (error, foundComps) {
+
+		if(error){
+			return res.status(500).json({error: 'Internal Server Error'});
+		}
+
+		if(!foundComps){
+			return res.status(404).json({error: 'No Comps Found'});
+		}
+
+		if(foundComps){
+			return res.status(200).json(foundComps);
+		}
+
+	});
+
+});
+
+/**
+ * Get a single comp
+ */
+router.get('/comps/:id', authenticate, function (req, res) {
+	Competition.findOne({_id: xss(req.params.id)}).populate(['event', 'teams.teamName', 'teams.subs']).exec(function (error, foundComps) {
+
+		if(error){
+			return res.status(500).json({error: 'Internal Server Error'});
+		}
+
+		if(!foundComps){
+			return res.status(404).json({response: 'No Comps Found'});
+		}
+
+		if(foundComps){
+			return res.status(200).json(foundComps);
+		}
+
+	});
+});
+
+/**
+ * Add a new comp
+ */
+router.post('/comps/all/:id', authenticate, isAdmin, function (req, res) {
+
+	let mainTeam = [];
+	let subTeam = [];
+
+	req.body.mainTeam.forEach(function (user) {
+		mainTeam.push(xss(user));
+	});
+
+	req.body.subs.forEach(function (user) {
+		subTeam.push(xss(user))
+	});
+
+
+	var newComp = new Competition({
+		event: req.params.id,
+		game: xss(req.body.game),
+		teamName: xss(req.body.teamName),
+		mainTeam: mainTeam,
+		subs: subTeam
+	});
+
+	newComp.save(function (error, savedComp) {
+		if(error){
+			return res.status(500).json({error: 'Internal Server Error'});
+		}
+
+		if(!savedComp){
+			return res.status(200).json({response: 'Ok'});
+		}
+	});
+
+});
+
+/**
+ * Update a comp
+ */
+router.post('/comps/:id', authenticate, isAdmin, function (req, res) {
+	let mainTeam = [];
+	let subTeam = [];
+
+	req.body.mainTeam.forEach(function (user) {
+		mainTeam.push(xss(user));
+	});
+
+	req.body.subs.forEach(function (user) {
+		subTeam.push(xss(user))
+	});
+
+	Competition.update({_id: req.params.id}, { $set: {
+			event: req.params.id,
+			game: xss(req.body.game),
+			teamName: xss(req.body.teamName),
+			mainTeam: mainTeam,
+			subs: subTeam
+		}},
+		function (error) {
+
+			if(error){
+				return res.status(500).json({error: 'Internal Server Error'});
+			}
+
+			if(!error){
+				return res.status(200).json({response: 'Ok'});
+			}
+
+		}
+	);
+});
+
+/**
+ * Delete a comp
+ */
+router.delete('/comps/:id', authenticate, function (req, res) {
+
+	Competition.remove({_id: this.params.id}, function (error) {
+
+		if(error){
+			return res.status(500).json({error: 'Internal Server Error'});
+		}
+
+		if(!error){
+			return res.status(200).json({response: 'Ok'});
+		}
+
+	});
+
+});
+
+/**
+ * Get all meals for event
+ */
+router.get('/meal/all/:id', authenticate, function (req, res) {
+	Meal.find({event: xss(req.params.id)}).populate(['event', 'user', 'passengers']).exec(function (error, foundMeals) {
+
+		if(error){
+			return res.status(500).json({error: 'Internal Server Error'});
+		}
+
+		if(!foundMeals){
+			return res.status(404).json({error: 'No Meals Found'});
+		}
+
+		if(foundMeals){
+			return res.status(200).json(foundMeals);
+		}
+
+	});
+});
+
+/**
+ * Get A single meal
+ */
+router.get('/meal/:id', authenticate, function (req, res) {
+	Meal.findOne({event: xss(req.params.id)}).populate(['event', 'user', 'passengers']).exec(function (error, foundMeals) {
+
+		if(error){
+			return res.status(500).json({error: 'Internal Server Error'});
+		}
+
+		if(!foundMeals){
+			return res.status(404).json({error: 'No Meals Found'});
+		}
+
+		if(foundMeals){
+			return res.status(200).json(foundMeals);
+		}
+
+	});
+});
+
+/**
+ * Add a meal
+ */
+router.post('/meal/all/:id/:user', authenticate, function () {
+
+	if((req.principal.user === req.params.user) || isAdmin){
+
+		var newPassengers = [];
+
+		if(req.body.drivingNumberOfSeats > 0){
+			req.body.passengers.forEach(function (p) {
+				newPassengers.push(xss(p));
+			});
+		}
+
+		var newMeal = new Meal({
+			event: xss(req.params.id),
+			user: xss(req.params.user),
+			drivingNumberOfSeats: req.body.drivingNumberOfSeats,
+			needsLift: req.body.needsLift,
+			dietaryRequirements: xss(req.body.dietaryRequirements),
+			passengers: newPassengers
+		});
+
+		newMeal.save(function (error, savedMeal) {
+			if(error){
+				return res.status(500).json({error: 'Internal Server Error'});
+			}
+
+			if(!error){
+				return res.status(200).json({response: 'Ok'});
+			}
+		});
+
+
+	} else {
+		return res.status(401).json({error: 'Invalid Access'});
+	}
+
+
+
+});
+
+/**
+ * Update a meal
+ */
+router.post('/meal/:id', authenticate, function () {
+
+	if((req.principal.user === req.params.user) || isAdmin){
+
+		var newPassengers = [];
+
+		if(req.body.drivingNumberOfSeats > 0){
+			req.body.passengers.forEach(function (p) {
+				newPassengers.push(xss(p));
+			});
+		}
+
+		Meal.update({_id: req.params.id}, {
+			$set: {
+				drivingNumberOfSeats: req.body.drivingNumberOfSeats,
+				needsLift: req.body.needsLift,
+				dietaryRequirements: xss(req.body.dietaryRequirements),
+				passengers: newPassengers
+			}
+		}, function (error) {
+			if(error){
+				return res.status(500).json({error: 'Internal Server Error'});
+			}
+
+			if(!error){
+				return res.status(200).json({response: 'Ok'});
+			}
+		});
+
+	} else {
+
+		return res.status(401).json({error: 'Invalid Access'});
+
+	}
+
+});
+
+/**
+ * Delete a meal
+ */
+router.delete('/meal/:id', authenticate, function (req, res) {
+	Meal.remove({_id: this.params.id}, function (error) {
+
+		if(error){
+			return res.status(500).json({error: 'Internal Server Error'});
+		}
+
+		if(!error){
+			return res.status(200).json({response: 'Ok'});
+		}
+
+	});
+});
+
 
 
 function isAdmin(req, res, next){

@@ -2,16 +2,11 @@ var mongoose = require('mongoose');
 
 var competitionSchema = mongoose.Schema({
 
-	eventId : String,
+	event : { type: Schema.Types.ObjectId, ref: 'Event' },
 	game : String,
-	teams : [
-		{
-			teamName : String,
-			mainTeam: [],
-			subs : []
-		}
-	]
-
+	teamName : String,
+	mainTeam: [{type: Schema.Types.ObjectId, ref: 'User' }],
+	subs : [{type: Schema.Types.ObjectId, ref: 'User' }]
 
 });
 
