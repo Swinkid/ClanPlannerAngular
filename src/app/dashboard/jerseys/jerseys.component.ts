@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 import {Event} from "../../interfaces/event";
 
@@ -30,7 +30,6 @@ export class JerseysComponent implements OnInit {
 
     ngOnInit() {
         this.setEvent();
-        this.setJersey();
     }
 
     initSelectedUser() {
@@ -44,12 +43,13 @@ export class JerseysComponent implements OnInit {
         this.apiService.getJersey(this.route.snapshot.params['id'], this.userService.getUserId()).subscribe(
             data => {
                 this.jersey = data;
+                this.initSelectedUser();
             },
             error => {
                 this.initSelectedUser();
             },
             () => {
-                this.initSelectedUser();
+
             }
         );
     }
@@ -59,9 +59,11 @@ export class JerseysComponent implements OnInit {
             data => {
                 this._event = data[0];
                 this._attendees = data[1];
+                this.setJersey();
             },
             error => {
                 //TODO: Error handling
+                this.setJersey();
             }
         )
     }

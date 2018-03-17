@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Event} from "../../interfaces/event";
+import {Attendance} from "../../interfaces/attendance";
 
 @Component({
     selector: 'app-event-stats',
@@ -7,6 +8,9 @@ import {Event} from "../../interfaces/event";
     styles: []
 })
 export class EventStatsComponent implements OnInit {
+
+    @Input() _event : Event;
+    @Input() _attendees : Attendance[];
 
     public ticketsPurchased : Number = 0;
     public seatsSelected    : Number = 0;

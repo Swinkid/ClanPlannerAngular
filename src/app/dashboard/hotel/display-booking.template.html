@@ -38,4 +38,4 @@
         </div>
     </div>
 </div>
-<button *ngIf="isAdmin" class="btn btn-success" [routerLink]="['/dashboard/new/booking/', _event._id]">New Booking</button>
+<button *ngIf="isAdmin" class="btn btn-success" [routerLink]="['/dashboard/new/booking/', this._event?._id]">New Booking</button>
