@@ -9,12 +9,13 @@ export interface User {
         id: String,
         avatar: String,
         discriminator: String,
-        email: String,
         provider: String,
         accessToken: String,
         fetchedAt: String,
     },
     regDate: String,
-    admin : boolean
+    admin : boolean,
+    realName : String,
+    nickname : String
 
 }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {UserService} from "../../../services/user.service";
 
 @Component({
     selector: 'dashboard-navbar',
@@ -9,7 +10,10 @@ export class NavbarComponent implements OnInit {
 
     collapsed = true;
 
-    constructor() { }
+    public userId : String;
+    public username : String;
+
+    constructor(private userService : UserService) { }
 
 
     toggleCollapsed(): void {
@@ -17,6 +21,10 @@ export class NavbarComponent implements OnInit {
     }
 
     ngOnInit() {
+
+        this.userId = this.userService.getUserId();
+        this.username = this.userService.getFullUsername();
+
     }
 
 }

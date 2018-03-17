@@ -5,7 +5,9 @@ var userSchema = mongoose.Schema({
 	discord            : {},
 	regEvents			: [],
 	regDate				: Date,
-	admin				: Boolean
+	admin				: Boolean,
+	realName			: String,
+	nickname			: String
 
 });
 

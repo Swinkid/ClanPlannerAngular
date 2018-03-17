@@ -105,7 +105,8 @@ export class BookingComponent implements OnInit {
 
             },
             () => {
-                this.attendees = this.event.users;
+                //TODO: prob remove this
+                // /this.attendees = this.event.users;
                 this.setForm();
             }
         )

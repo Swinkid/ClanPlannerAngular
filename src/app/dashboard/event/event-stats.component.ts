@@ -23,7 +23,7 @@ export class EventStatsComponent implements OnInit {
     calcPurchasedTicket(event : Event){
         let purchased = 0;
 
-        event.users.forEach(function (attendee) {
+        this._attendees.forEach(function (attendee) {
             if(attendee.broughtTicket){
                 purchased++;
             }
@@ -35,7 +35,7 @@ export class EventStatsComponent implements OnInit {
     calcSelectedSeats(event : Event){
         let selected = 0;
 
-        event.users.forEach(function (attendee) {
+        this._attendees.forEach(function (attendee) {
             if(attendee.onSeatPicker){
                 selected++;
             }

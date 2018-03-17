@@ -30,7 +30,7 @@ export class ShowJerseysComponent implements OnInit {
 
         this.admin = this.userService.isAdmin();
         this.userId = this.userService.getUserId();
-        this.attendance = this._event.users;
+
     }
 
     setJerseys() {

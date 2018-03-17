@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
+import {NgbDropdownModule, NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { Routes, RouterModule } from "@angular/router";
 
@@ -44,6 +44,10 @@ import { SeatingPlanListComponent } from './seating-plan/seating-plan-list.compo
 import { AttendeeListComponent } from './event/attendee-list.component';
 import { AttendeeFormComponent } from './event/attendee-form.component';
 import { EventStatsComponent } from './event/event-stats.component';
+import { ProfileComponent } from './profile/profile.component';
+import { ProfileFormComponent } from './profile/profile-form.component';
+import { ProfileEditComponent } from './profile/profile-edit.component';
+import {NgbDropdownMenu} from "@ng-bootstrap/ng-bootstrap/dropdown/dropdown";
 
 
 
@@ -60,6 +64,7 @@ const routes: Routes = [
             { path: 'edit/event/attendee/:id/:attendee', component: AttendeeComponent , canActivate: [AuthorizeGuard]},
             { path: 'new/booking/:id', component: BookingFormComponent , canActivate: [AuthorizeGuard]},
             { path: 'edit/booking/:id', component: BookingComponent, canActivate: [AuthorizeGuard] },
+            { path: 'profile/:id', component: ProfileComponent}
         ]
     }
 
@@ -105,7 +110,10 @@ const routes: Routes = [
         SeatingPlanListComponent,
         AttendeeListComponent,
         AttendeeFormComponent,
-        EventStatsComponent
+        EventStatsComponent,
+        ProfileComponent,
+        ProfileFormComponent,
+        ProfileEditComponent
     ],
     providers: [
         AuthService,

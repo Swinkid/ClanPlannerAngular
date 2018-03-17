@@ -58,15 +58,10 @@ export class EditComponent implements OnInit {
             },
             err => {},
             () => {
-                this.setAttendees(this.event);
                 this.setForm(this.event);
             }
         );
 
-    }
-
-    setAttendees(event : Event){
-        this.attendees = event.users;
     }
 
     formatDate(date) {
