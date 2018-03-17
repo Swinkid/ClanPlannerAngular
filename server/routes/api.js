@@ -1089,7 +1089,28 @@ router.get('/meal/all/:id', authenticate, function (req, res) {
  * Get A single meal
  */
 router.get('/meal/:id', authenticate, function (req, res) {
-	Meal.findOne({event: xss(req.params.id)}).populate(['event', 'user', 'passengers']).exec(function (error, foundMeals) {
+	Meal.findOne({_id: xss(req.params.id)}).populate(['event', 'user', 'passengers']).exec(function (error, foundMeals) {
+
+		if(error){
+			return res.status(500).json({error: 'Internal Server Error'});
+		}
+
+		if(!foundMeals){
+			return res.status(404).json({error: 'No Meals Found'});
+		}
+
+		if(foundMeals){
+			return res.status(200).json(foundMeals);
+		}
+
+	});
+});
+
+/**
+ * Get A  meal by user
+ */
+router.get('/meal/user/:id', authenticate, function (req, res) {
+	Meal.findOne({user: xss(req.params.id)}).populate(['event', 'user', 'passengers']).exec(function (error, foundMeals) {
 
 		if(error){
 			return res.status(500).json({error: 'Internal Server Error'});
@@ -1109,16 +1130,18 @@ router.get('/meal/:id', authenticate, function (req, res) {
 /**
  * Add a meal
  */
-router.post('/meal/all/:id/:user', authenticate, function () {
+router.post('/meal/all/:id/:user', authenticate, function (req, res) {
 
 	if((req.principal.user === req.params.user) || isAdmin){
 
 		var newPassengers = [];
 
 		if(req.body.drivingNumberOfSeats > 0){
-			req.body.passengers.forEach(function (p) {
-				newPassengers.push(xss(p));
-			});
+			if(req.body.passengers){
+				req.body.passengers.forEach(function (p) {
+					newPassengers.push(xss(p));
+				});
+			}
 		}
 
 		var newMeal = new Meal({

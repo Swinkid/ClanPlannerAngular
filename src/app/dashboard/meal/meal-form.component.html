@@ -1,0 +1,33 @@
+<form [formGroup]="mealForm" *ngIf="this.mealForm" (ngSubmit)="onSubmit(this.mealForm)">
+
+    <div class="form-group">
+
+        <label>Dietary Requirements</label>
+        <input class="form-control" type="text" formControlName="dietaryRequirements">
+
+    </div>
+
+    <div class="form-group">
+
+        <label>Need Lift</label>
+        <select class="custom-select"  formControlName="needsLift" required>
+            <option value="" disabled>Select</option>
+            <option *ngFor="let o of needLiftSelection" [ngValue]="o">
+
+                {{ o ? 'Yes' : 'No (Driving)'}}
+
+            </option>
+        </select>
+
+    </div>
+
+    <div class="form-group" *ngIf="!mealForm.value.needsLift">
+
+        <label>Number of Seats</label>
+        <input class="form-control" type="number" formControlName="drivingNumberOfSeats">
+
+    </div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="!mealForm.valid">Submit</button>
+
+</form>

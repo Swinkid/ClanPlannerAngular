@@ -179,6 +179,10 @@ export class ApiService {
         return this._http.get<Meal>('/api/meal/' + meal, this.HEADERS);
     }
 
+    public getMealByUser(user){
+        return this._http.get<Meal>('/api/meal/user/' + user, this.HEADERS);
+    }
+
     public addMeal(event, user, formValue){
         return this._http.post('/api/meal/all/' + event + '/' + user, formValue, this.HEADERS);
     }

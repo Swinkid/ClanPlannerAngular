@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
 var mealSchema = mongoose.Schema({
 
@@ -7,7 +8,7 @@ var mealSchema = mongoose.Schema({
 	"drivingNumberOfSeats" : Number,
 	"needsLift" : Boolean,
 	"dietaryRequirements" : String,
-	"passengers" : [{ type: Schema.Types.ObjectId, ref: 'User' }]
+	"passengers" : [{ type: Schema.Types.ObjectId, ref: 'User', default: []}]
 
 });
 
