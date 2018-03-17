@@ -1175,16 +1175,22 @@ router.post('/meal/all/:id/:user', authenticate, function (req, res) {
 /**
  * Update a meal
  */
-router.post('/meal/:id', authenticate, function () {
+router.post('/meal/:id', authenticate, function (req, res) {
 
 	if((req.principal.user === req.params.user) || isAdmin){
 
 		var newPassengers = [];
 
 		if(req.body.drivingNumberOfSeats > 0){
-			req.body.passengers.forEach(function (p) {
-				newPassengers.push(xss(p));
-			});
+			if(req.body.passengers) {
+				req.body.passengers.forEach(function (p) {
+					if(p !== ''){
+						newPassengers.push(p);
+					} else {
+						newPassengers.push(undefined);
+					}
+				});
+			}
 		}
 
 		Meal.update({_id: req.params.id}, {
@@ -1216,7 +1222,7 @@ router.post('/meal/:id', authenticate, function () {
  * Delete a meal
  */
 router.delete('/meal/:id', authenticate, function (req, res) {
-	Meal.remove({_id: this.params.id}, function (error) {
+	Meal.remove({_id: req.params.id}, function (error) {
 
 		if(error){
 			return res.status(500).json({error: 'Internal Server Error'});

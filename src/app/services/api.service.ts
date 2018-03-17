@@ -192,7 +192,7 @@ export class ApiService {
     }
 
     public deleteMeal(meal){
-        return this._http.delete('/api/meal' + meal, this.HEADERS);
+        return this._http.delete('/api/meal/' + meal, this.HEADERS);
     }
 
 }

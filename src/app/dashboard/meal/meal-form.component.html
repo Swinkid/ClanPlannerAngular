@@ -1,31 +1,69 @@
 <form [formGroup]="mealForm" *ngIf="this.mealForm" (ngSubmit)="onSubmit(this.mealForm)">
 
-    <div class="form-group">
+    <div class="card">
 
-        <label>Dietary Requirements</label>
-        <input class="form-control" type="text" formControlName="dietaryRequirements">
+        <div class="card-header">
+            Attendee Information
+        </div>
+
+        <div class="card-body">
+            <div class="form-group">
+
+                <label>Dietary Requirements</label>
+                <input class="form-control" type="text" formControlName="dietaryRequirements">
+
+            </div>
+
+            <div class="form-group">
+
+                <label>Need Lift</label>
+                <select class="custom-select"  formControlName="needsLift" required>
+                    <option value="" disabled>Select</option>
+                    <option *ngFor="let o of needLiftSelection" [ngValue]="o">
+
+                        {{ o ? 'Yes' : 'No (Driving)'}}
+
+                    </option>
+                </select>
+
+            </div>
+
+            <div class="form-group" *ngIf="!mealForm.value.needsLift">
+
+                <label>Number of Seats</label>
+                <input class="form-control" type="number" formControlName="drivingNumberOfSeats">
+
+            </div>
+        </div>
 
     </div>
 
-    <div class="form-group">
+    <div class="card" *ngIf="_editing && isAdmin && _selectedMeal && !mealForm.value.needsLift">
+        <div class="card-header">
+            Passengers
+            <button *ngIf="mealForm.value.passengers.length < 4" type="button" class="btn btn-success float-right" (click)="addPassenger()"><span class="fas fa-plus"></span></button>
+        </div>
 
-        <label>Need Lift</label>
-        <select class="custom-select"  formControlName="needsLift" required>
-            <option value="" disabled>Select</option>
-            <option *ngFor="let o of needLiftSelection" [ngValue]="o">
+        <div class="card-body">
 
-                {{ o ? 'Yes' : 'No (Driving)'}}
+           <div formArrayName="passengers">
 
-            </option>
-        </select>
+               <div *ngFor="let control of getPassengers(mealForm); let c = index">
 
-    </div>
+                   <label>{{c + 1}}</label>
+                   <select [formControlName]="c"  class="form-control">
+                       <option value="">Available</option>
+                       <option *ngFor="let a of _attendees" [ngValue]="a.user._id">
+                           {{a.user.discord.username + '#' + a.user.discord.discriminator}}
+                       </option>
+                   </select>
 
-    <div class="form-group" *ngIf="!mealForm.value.needsLift">
+               </div>
 
-        <label>Number of Seats</label>
-        <input class="form-control" type="number" formControlName="drivingNumberOfSeats">
 
+           </div>
+
+        </div>
     </div>
 
     <button type="submit" class="btn btn-primary" [disabled]="!mealForm.valid">Submit</button>

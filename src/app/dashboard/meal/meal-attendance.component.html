@@ -1,0 +1,35 @@
+<table class="table">
+
+    <thead>
+        <th>Attendee</th>
+        <th>Dietary Requirements</th>
+        <th>Needs Lift</th>
+        <th>Seats Available</th>
+        <th> </th>
+        <th> </th>
+        <th> </th>
+        <th> </th>
+        <th *ngIf="isAdmin">Modify</th>
+    </thead>
+    <tbody>
+        <tr *ngFor="let meal of this.meals">
+            <td>{{meal.user.discord.username + '#' + meal.user.discord.discriminator}}</td>
+            <td>{{meal.dietaryRequirements}}</td>
+            <td>{{meal.needsLift ? 'Yes' : 'No'}}</td>
+            <td *ngIf="!meal.needsLift">{{(meal.drivingNumberOfSeats ? meal.drivingNumberOfSeats : '') + ''}}</td>
+            <td *ngIf="meal.needsLift"> </td>
+            <td *ngFor="let passenger of getArray(4); let i = index;">
+                {{ meal.passengers[i]?.discord? (meal.passengers[i].discord.username + '#' + meal.passengers[i].discord.discriminator) : ' '}}
+            </td>
+
+
+
+            <td *ngIf="isAdmin">
+                <button class="btn btn-danger" (click)="deleteMeal(meal._id)"><span class="fas fa-trash"></span></button>
+                <button class="btn btn-primary" (click)="editMeal(meal._id)"><span class="fas fa-edit"></span></button>
+            </td>
+
+        </tr>
+    </tbody>
+
+</table>

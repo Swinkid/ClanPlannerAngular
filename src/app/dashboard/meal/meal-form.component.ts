@@ -28,9 +28,12 @@ export class MealFormComponent implements OnInit {
       false
     ];
 
+    public isAdmin : Boolean;
+
     constructor(private userService : UserService, private _fb : FormBuilder, private apiService : ApiService) { }
 
     ngOnInit() {
+        this.isAdmin = this.userService.isAdmin();
         this.initForm();
     }
 
@@ -44,26 +47,12 @@ export class MealFormComponent implements OnInit {
                         Validators.required
                     ]),
                     drivingNumberOfSeats: new FormControl(this._selectedMeal.drivingNumberOfSeats, [
-
+                        Validators.max(4)
                     ]),
                     dietaryRequirements: new FormControl(this._selectedMeal.dietaryRequirements, [
 
                     ]),
-                    passenger: new FormArray(this.setPassengers(this._fb))
-                });
-            }
-
-            if(!this.userService.isAdmin()){
-                this.mealForm = new FormGroup({
-                    needsLift: new FormControl(this._selectedMeal.needsLift, [
-                        Validators.required
-                    ]),
-                    drivingNumberOfSeats: new FormControl(this._selectedMeal.drivingNumberOfSeats, [
-
-                    ]),
-                    dietaryRequirements: new FormControl(this._selectedMeal.dietaryRequirements, [
-
-                    ])
+                    passengers: this._fb.array(this.initPassengers(this._fb))
                 });
             }
 
@@ -74,7 +63,7 @@ export class MealFormComponent implements OnInit {
                     Validators.required
                 ]),
                 drivingNumberOfSeats: new FormControl(0, [
-
+                    Validators.max(4)
                 ]),
                 dietaryRequirements: new FormControl('', [
 
@@ -83,25 +72,41 @@ export class MealFormComponent implements OnInit {
 
         }
 
+        console.log(this.mealForm);
+
     }
 
-    setPassengers(_fb){
-        var passengers = [];
+    initPassengers(_fb){
+        var returnArray = [];
 
-        this._selectedMeal.passengers.forEach(function (passenger) {
-           passengers.push(new FormControl(passenger, [
-               Validators.required
-           ]));
-        });
+        if(this._selectedMeal.passengers.length > 0){
+            this._selectedMeal.passengers.forEach(function (p) {
+                if(p){
+                    returnArray.push(_fb.control(p._id));
+                } else {
+                    returnArray.push(_fb.control(''));
+                }
+            });
+        } else {
+            returnArray.push(_fb.control(''));
+        }
 
-        return passengers;
+
+        return returnArray;
+    }
+
+    initPassenger(){
+        return this._fb.control('');
     }
 
     onSubmit(form){
 
         if(form.valid){
             if(this._editing){
-                //DO EDIT
+
+                this.apiService.updateMeal(this._selectedMeal._id, form.value).subscribe(data =>{
+                    this.submittedForm.emit(true);
+                })
             } else {
 
                 this.apiService.addMeal(this._event._id, this.userService.getUserId(), form.value).subscribe(data =>{
@@ -114,6 +119,16 @@ export class MealFormComponent implements OnInit {
             }
         }
 
+    }
+
+    addPassenger(){
+       const control = <FormArray>this.mealForm.controls['passengers'];
+       control.push(this.initPassenger());
+       console.log(this.mealForm.value.passengers.length);
+    }
+
+    getPassengers(form){
+        return form.controls.passengers.controls;
     }
 
 }
