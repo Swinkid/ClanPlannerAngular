@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 
 import {Attendance} from "../../interfaces/attendance";
@@ -17,6 +17,8 @@ export class AttendeeFormComponent implements OnInit {
     @Input() public _event      : Event;
     @Input() public _attendee   : Attendance;
     @Input() public _editing    : Boolean;
+
+    @Output() public savedForm: EventEmitter<Boolean> = new EventEmitter<Boolean>();
 
     public attendeeForm     : FormGroup;
     public submitted        : Boolean = false;
@@ -106,7 +108,7 @@ export class AttendeeFormComponent implements OnInit {
 
                 },
                 () =>{
-                    //this.setEvent();
+                    this.savedForm.emit(true);
                     this.submitted = true;
                 }
             );

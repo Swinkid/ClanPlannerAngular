@@ -57,14 +57,6 @@ export class ApiService {
         return this._http.post('/api/attendance/' + user + '/' + eventId, formValue, { headers: {'x-access-token': this.authService.getToken()} });
     }
 
-    public updateAttendee(eventId, userId, formValue){
-        return this._http.post('/api/events/attendee/' + eventId + '/' + userId,
-            {
-                formValue
-            }, { headers: {'x-access-token': this.authService.getToken()} });
-
-    }
-
     public updateEvent(eventId, formValue){
         return this._http.post('/api/events/' + eventId,
             {

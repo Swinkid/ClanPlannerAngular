@@ -1,5 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Attendance} from "../../interfaces/attendance";
+import {UserService} from "../../services/user.service";
+import {Event} from "../../interfaces/event";
 
 @Component({
     selector: 'app-attendee-list',
@@ -11,10 +13,12 @@ export class AttendeeListComponent implements OnInit {
     @Input() public _event : Event;
     @Input() public _attendees : Attendance[];
 
-    constructor() { }
+    public _isAdmin : Boolean;
+
+    constructor(private userService : UserService) { }
 
     ngOnInit() {
-
+        this._isAdmin = this.userService.isAdmin();
     }
 
 }

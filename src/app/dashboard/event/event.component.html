@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-    <h1 class="h2">{{ this._event?.name }}</h1>
+    <h1 class="h2">{{ this._event?.name }} </h1> <button class="btn btn-primary float-right" [routerLink]="['/dashboard/edit/event/', _event._id]"><span class="fas fa-cog"></span></button>
 </div>
 
 <!--<app-event-stats></app-event-stats> -->
@@ -9,7 +9,7 @@
 
         <ng-template ngbTabContent>
 
-            <app-attendee-form [_event]="this._event" [_attendee]="this._attendee" [_editing]="this._editing" *ngIf="this._attendee"></app-attendee-form>
+            <app-attendee-form [_event]="this._event" [_attendee]="this._attendee" [_editing]="this._editing" *ngIf="this._attendee" (savedForm)="savedForm($event)"></app-attendee-form>
             <app-attendee-list [_event]="this._event" [_attendees]="this._attendees"></app-attendee-list>
 
         </ng-template>

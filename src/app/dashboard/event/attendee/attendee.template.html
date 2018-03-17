@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-    <h1 class="h2">Editing {{ this.attendee?.discord.username + '#' + this.attendee?.discord.discriminator }} ({{ this.event?.name}})</h1>
+    <h1 class="h2">Editing {{ this._attendee?.user.discord.username + '#' + this._attendee?.user.discord.discriminator }} ({{ this._event?.name}})</h1>
 </div>
 
 <div class="card">
@@ -10,10 +10,6 @@
 
         <form [formGroup]="attendeeForm" (ngSubmit)="submitForm()">
             <div class="form-group row">
-                <label for="realName" class="col-1 col-form-label">Real Name</label>
-                <div class="col-2">
-                    <input class="form-control" type="text" id="realName" formControlName="realName">
-                </div>
                 <label class="col-1 col-form-label" for="ticketPurchasedSelect">Ticket Purchased</label>
                 <div class="col-2">
                     <select class="custom-select" id="ticketPurchasedSelect" formControlName="ticketPurchasedSelect" required>

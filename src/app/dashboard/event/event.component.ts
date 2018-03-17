@@ -52,4 +52,10 @@ export class EventComponent implements OnInit {
 
         this._attendee = foundUser;
     }
+
+    savedForm(hasSaved){
+        this._attendees = undefined;
+        this._event = undefined;
+        this.setEvent();
+    }
 }

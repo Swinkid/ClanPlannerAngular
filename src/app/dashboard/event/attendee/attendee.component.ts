@@ -4,7 +4,7 @@ import {Event} from "../../../interfaces/event";
 import {Attendance} from "../../../interfaces/attendance";
 import {ApiService} from "../../../services/api.service";
 import {UserService} from "../../../services/user.service";
-import {ActivatedRoute, Route} from "@angular/router";
+import {ActivatedRoute, Route, Router} from "@angular/router";
 import {AuthService} from "../../../services/auth.service";
 import * as _ from 'lodash';
 
@@ -15,9 +15,10 @@ import * as _ from 'lodash';
 })
 export class AttendeeComponent implements OnInit {
 
-    public event            : Event;
+    public _event            : Event;
     public attendeeForm        : FormGroup;
-    public attendee         : Attendance;
+    public _attendee         : Attendance;
+    public attendeeId   : String;
 
     public submitted        : Boolean = false;
 
@@ -51,19 +52,15 @@ export class AttendeeComponent implements OnInit {
         'Nearby'
     ];
 
-    constructor(public authService : AuthService, private apiService : ApiService, private route: ActivatedRoute, public userService : UserService) { }
+    constructor(private router: Router, public authService : AuthService, private apiService : ApiService, private route: ActivatedRoute, public userService : UserService) { }
 
     ngOnInit() {
-        this.setEvent();
+        this.setEvent(this.route.snapshot.params['attendee']);
     }
 
 
     setForm(attendee : Attendance){
         this.attendeeForm = new FormGroup({
-            realName: new FormControl(attendee.realName,[
-                Validators.required,
-                Validators.maxLength(20)
-            ]),
             ticketPurchasedSelect: new FormControl(attendee.broughtTicket, [
                 Validators.required
             ]),
@@ -89,33 +86,23 @@ export class AttendeeComponent implements OnInit {
         });
     }
 
-    setEvent(){
+    setEvent(attendeeId){
+        this.apiService.getEventAndAttendace(this.route.snapshot.params['id']).subscribe(
+            data => {
+                this._event = data[0];
 
-        this.apiService.getEvent(this.route.snapshot.params['id']).subscribe(
-            event => {
-                this.event = event;
+                this._attendee = _.find(data[1], function (e) {
+                   return e.user._id === attendeeId;
+                });
+
             },
-            err => {},
+            error => {
+                //TODO: Error handling
+            },
             () => {
-
-                this.setAttendee(this.route.snapshot.params['attendee'], this.event);
-
-                if(this.attendee){
-                    this.setForm(this.attendee);
-                }
+                this.setForm(this._attendee);
             }
-        );
-
-    }
-
-    setAttendee(user : String, event : Event){
-        this.attendee = _.find(event.users, function (u) {
-            if (u.userId === user) {
-                return true;
-            } else {
-                return false;
-            }
-        });
+        )
     }
 
     formatDate(date) {
@@ -133,7 +120,7 @@ export class AttendeeComponent implements OnInit {
     submitForm(){
 
         if(this.attendeeForm.status === "VALID"){
-            this.apiService.updateAttendee(this.event._id, this.attendee.user._id, this.attendeeForm.value).subscribe(
+            this.apiService.updateAttendance(this._event._id, this._attendee.user._id, this.attendeeForm.value).subscribe(
                 event => {
 
                 },
@@ -141,8 +128,7 @@ export class AttendeeComponent implements OnInit {
 
                 },
                 () =>{
-                    this.setEvent();
-                    this.submitted = true;
+                    this.router.navigate(['/dashboard/events/' + this._event._id]);
                 }
             );
         }

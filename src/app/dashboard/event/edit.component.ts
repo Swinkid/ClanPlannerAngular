@@ -14,8 +14,6 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 })
 export class EditComponent implements OnInit {
 
-    //TODO: ROLES!!!!!!!!!!
-
     event            : Event;
     attendees        : Attendance[];
     public eventForm        : FormGroup;
@@ -108,7 +106,7 @@ export class EditComponent implements OnInit {
 
             },
             () =>{
-                this.router.navigate(['/dashboard/events']);
+                this.router.navigate(['/dashboard/events/' + this.event._id]);
             }
         );
     }

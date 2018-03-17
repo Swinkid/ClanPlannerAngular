@@ -2,121 +2,52 @@
     <h1 class="h2">{{ event?.name }}</h1> <button type="button" class="btn btn-danger float-right" (click)="deleteEvent()">Delete Event</button>
 </div>
 
-<ngb-tabset>
-    <ngb-tab title="General">
-        <ng-template ngbTabContent>
 
-            <div class="card" *ngIf="eventForm !== undefined">
-                <div class="card-header">
-                    Event Settings
-                </div>
-                <div class="card-block">
+<div class="card" *ngIf="eventForm !== undefined">
+    <div class="card-header">
+        Event Settings
+    </div>
+    <div class="card-block">
 
-                    <form [formGroup]="eventForm" (ngSubmit)="submitForm()" >
-                        <div class="form-group row">
-                            <label for="name" class="col-2 col-form-label">Event Name</label>
-                            <div class="col-10">
-                                <input class="form-control" type="text" id="name" formControlName="name">
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="fromDate" class="col-2 col-form-label">From Date</label>
-                            <div class="col-4">
-                                <input class="form-control" type="date" id="fromDate" formControlName="fromDate" required>
-                            </div>
-
-
-                            <label for="toDate" class="col-2 col-form-label">To Date</label>
-                            <div class="col-4">
-                                <input class="form-control" type="date" id="toDate" formControlName="toDate" required>
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="seatPickerUrl" class="col-2 col-form-label">Seat Picker URL</label>
-                            <div class="col-4">
-                                <input class="form-control" type="text" id="seatPickerUrl" formControlName="seatPickerUrl">
-                            </div>
-
-                            <label for="eventLocation" class="col-2 col-form-label">Event Location</label>
-                            <div class="col-4">
-                                <input class="form-control" type="text" id="eventLocation" formControlName="eventLocation">
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <button type="submit" class="btn btn-primary col-4">Submit</button>
-                            <div class="col-8">
-                                <span *ngIf="submitted">Saved</span>
-                            </div>
-                        </div>
-                    </form>
+        <form [formGroup]="eventForm" (ngSubmit)="submitForm()" >
+            <div class="form-group row">
+                <label for="name" class="col-2 col-form-label">Event Name</label>
+                <div class="col-10">
+                    <input class="form-control" type="text" id="name" formControlName="name">
                 </div>
             </div>
 
-
-        </ng-template>
-    </ngb-tab>
-    <ngb-tab title="Attendees">
-        <ng-template ngbTabContent>
-
-            <br />
-
-            <div class="card">
-                <div class="card-header">
-                    Attendee's
+            <div class="form-group row">
+                <label for="fromDate" class="col-2 col-form-label">From Date</label>
+                <div class="col-4">
+                    <input class="form-control" type="date" id="fromDate" formControlName="fromDate" required>
                 </div>
-                <div class="card-block">
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th></th>
-                            <th>Discord Name</th>
-                            <th>Real Name</th>
-                            <th>Brought Ticket</th>
-                            <th>On Seat Picker</th>
-                            <th>Arrival Date</th>
-                            <th>Accommodation</th>
-                            <th>Transport</th>
-                            <th>Location</th>
-                            <th>In Facebook Chat</th>
-                            <th>Modify</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr *ngFor="let attendee of attendees">
 
-                            <td>
-                                <img class="img-thumbnail rounded-circle" width="100" height="100" *ngIf="attendee.discord.avatar !== null" src="{{ 'http://cdn.discordapp.com/avatars/' + attendee.discord.id + '/' + attendee.discord.avatar }}">
-                                <img class="img-thumbnail rounded-circle" width="100" height="100" *ngIf="attendee.discord.avatar === null" src="http://placehold.it/100x100">
-                            </td>
-                            <td>{{ attendee?.discord.username + '#' + attendee.discord.discriminator }}</td>
-                            <td>{{ attendee?.realName }}</td>
-                            <td>{{ attendee?.broughtTicket ? 'Yes' : 'No' }}</td>
-                            <td>{{ attendee?.onSeatPicker ? 'Yes' : 'No' }}</td>
-                            <td>{{ attendee?.dateArriving | date: 'dd/MM/yyyy'}}</td>
-                            <td>{{ attendee?.accommodation }}</td>
-                            <td>{{ attendee?.transportPlans }}</td>
-                            <td>{{ attendee?.location }}</td>
-                            <td>{{ attendee?.inFacebookChat ? 'Yes' : 'No' }}</td>
-                            <th><button type="button" class="btn btn-primary" routerLink="{{'/dashboard/edit/event/attendee/' + this.event._id + '/' + this.attendee.userId }}">Edit</button></th>
-                        </tr>
-                        </tbody>
-                    </table>
+
+                <label for="toDate" class="col-2 col-form-label">To Date</label>
+                <div class="col-4">
+                    <input class="form-control" type="date" id="toDate" formControlName="toDate" required>
                 </div>
             </div>
 
-        </ng-template>
-    </ngb-tab>
-    <ngb-tab title="Hotel">
-        <ng-template ngbTabContent>
+            <div class="form-group row">
+                <label for="seatPickerUrl" class="col-2 col-form-label">Seat Picker URL</label>
+                <div class="col-4">
+                    <input class="form-control" type="text" id="seatPickerUrl" formControlName="seatPickerUrl">
+                </div>
 
-            <br />
+                <label for="eventLocation" class="col-2 col-form-label">Event Location</label>
+                <div class="col-4">
+                    <input class="form-control" type="text" id="eventLocation" formControlName="eventLocation">
+                </div>
+            </div>
 
-            <app-display-bookings></app-display-bookings>
-            <button class="btn btn-success" [routerLink]="['/dashboard/new/booking/', event._id]">New Booking</button>
-
-        </ng-template>
-    </ngb-tab>
-</ngb-tabset>
+            <div class="form-group row">
+                <button type="submit" class="btn btn-primary col-4">Submit</button>
+                <div class="col-8">
+                    <span *ngIf="submitted">Saved</span>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -14,6 +14,7 @@
                     <th>Accommodation</th>
                     <th>Transport</th>
                     <th>In Facebook Chat</th>
+                    <th *ngIf="_isAdmin">Modify</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -38,6 +39,9 @@
                        <strong>From:</strong> {{ attendee?.location }}
                    </td>
                    <td>{{ attendee?.inFacebookChat ? 'Yes' : 'No' }}</td>
+                    <td *ngIf="_isAdmin">
+                        <button type="button" class="btn btn-primary" routerLink="{{'/dashboard/edit/event/attendee/' + _event._id + '/' + attendee.user._id }}">Edit</button>
+                    </td>
                </tr>
                </tbody>
            </table>

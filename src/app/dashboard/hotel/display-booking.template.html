@@ -1,5 +1,3 @@
-
-
 <div *ngFor="let booking of bookings">
     <div class="card">
 
@@ -39,5 +37,5 @@
             </table>
         </div>
     </div>
-    <br />
 </div>
+<button *ngIf="isAdmin" class="btn btn-success" [routerLink]="['/dashboard/new/booking/', _event._id]">New Booking</button>
