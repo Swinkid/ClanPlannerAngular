@@ -21,6 +21,8 @@ export class MealFormComponent implements OnInit {
 
     @Output() submittedForm : EventEmitter<Boolean> = new EventEmitter<Boolean>();
 
+    public userId : String;
+
     public mealForm : FormGroup;
 
     public needLiftSelection : Boolean[] = [
@@ -34,6 +36,7 @@ export class MealFormComponent implements OnInit {
 
     ngOnInit() {
         this.isAdmin = this.userService.isAdmin();
+        this.userId = this.userService.getUserId();
         this.initForm();
     }
 
@@ -129,6 +132,16 @@ export class MealFormComponent implements OnInit {
 
     getPassengers(form){
         return form.controls.passengers.controls;
+    }
+
+    public isUserAttending(userId){
+        _.find(this._attendees, function (a) {
+           if(a.user._id === userId){
+               return true;
+           } else {
+               return false;
+           }
+        });
     }
 
 }

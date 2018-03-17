@@ -1,2 +1,2 @@
-<app-meal-form *ngIf="showForm && this._event && this._attendees && isUserAttending(userId)" [_event]="this._event" [_attendees]="this._attendees" [_selectedMeal]="_selectedMeal" [_editing]="_editing" (submittedForm)="refresh($event)"></app-meal-form>
+<app-meal-form *ngIf="showForm && this._event && this._attendees && isUserAttending(this.userId)" [_event]="this._event" [_attendees]="this._attendees" [_selectedMeal]="_selectedMeal" [_editing]="_editing" (submittedForm)="refresh($event)"></app-meal-form>
 <app-meal-attendance *ngIf="this._event && this._attendees" [_event]="this._event" [_attendance]="this._attendees" (editPrompt)="editForm($event)"></app-meal-attendance>

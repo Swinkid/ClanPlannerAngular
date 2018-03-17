@@ -89,14 +89,16 @@ export class MealComponent implements OnInit {
         );
     }
 
-    isUserAttending(user){
-        _.find(this._attendees, function (u) {
-            if(u._id === user){
+    isUserAttending(user : String){
+        let foundUser = _.find(this._attendees, function (attendee) {
+            if(attendee.user._id === user){
                 return true;
             } else {
                 return false;
             }
-        })
+        });
+
+        return foundUser !== undefined;
     }
 
 }
