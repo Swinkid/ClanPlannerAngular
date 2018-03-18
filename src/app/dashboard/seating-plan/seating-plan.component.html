@@ -1,0 +1,2 @@
+<app-seating-plan-form *ngIf="showForm" (_savedNotify)="savedNotify($event)" [_attendance]="_attendees" [_event]="_event" [_selectedSeat]="_selectedSeat"></app-seating-plan-form>
+<app-seating-plan-list [_seats]="_seats" (_editNotify)="editNotify($event)"></app-seating-plan-list>

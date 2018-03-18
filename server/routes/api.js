@@ -16,6 +16,7 @@ const Jersey = require('../models/jersey');
 const Quiz = require('../models/quiz');
 const Competition = require('../models/competition');
 const Meal = require('../models/meal');
+const Seat = require('../models/seatPicker');
 
 /* GET api listing. */
 router.get('/', function (req, res) {
@@ -85,7 +86,7 @@ router.get('/users/:id', authenticate, function (req, res) {
  */
 router.post('/user/:id', authenticate, function (req, res) {
 
-	if((req.params.id === req.principal.user._id) || isAdmin()){
+	if((req.params.id === req.principal.user._id) || checkAdmin(req.principal.user)){
 
 		User.update({_id: req.params.id}, { $set: { realName: xss(req.body.realName), nickname: xss(req.body.nickname)}}, function (error) {
 			if(error){
@@ -242,7 +243,7 @@ router.get('/attendee/:user/:event', authenticate, function (req, res) {
  */
 router.post('/attendance/:user/:event', authenticate, function (req, res) {
 
-	if(req.params.user === req.principal.user._id || isAdmin()){
+	if(req.params.user === req.principal.user._id || checkAdmin(req.principal.user)){
 
 		Attendance.update({user: xss(req.params.user), event: xss(req.params.event)}, {
 			$set : {
@@ -292,7 +293,7 @@ router.get('/attendance/:event', function (req, res) {
 
 			});
 
-			res.status(200).json(attendance);
+			return res.status(200).json(attendance);
 		}
 
 	});
@@ -366,7 +367,7 @@ router.post('/attendee/register/:event', authenticate, function (req, res) {
  */
 router.delete('/attendee/:user/:event', authenticate, function (req, res) {
 
-	if((req.params.user === req.principal.user._id) || isAdmin()){
+	if((req.params.user === req.principal.user._id) || checkAdmin(req.principal.user)){
 
 		Attendance.remove({user: xss(req.params.user), event: xss(req.params.event)}, function (error) {
 
@@ -1234,6 +1235,138 @@ router.delete('/meal/:id', authenticate, function (req, res) {
 	});
 });
 
+
+router.get('/seat/single/:seat', authenticate, function (req, res) {
+
+
+	Seat.findOne({_id: req.params.seat}, function (error, foundSeat) {
+		if(error){
+			return res.status(500).json({error: 'Internal Server Error!'});
+		}
+
+		if(!foundSeat){
+			return res.status(404).json({response: 'No Seats Found'});
+		}
+
+		if(foundSeat){
+			return res.status(200).json(foundSeat);
+		}
+	});
+
+});
+
+router.get('/seat/all/:id', authenticate, function (req, res) {
+
+	Seat.find({event: req.params.id}).populate(['event', 'user']).exec(function (error, foundSeats) {
+
+		if(error){
+			return res.status(500).json({error: 'Internal Server Error'});
+		}
+
+		if(!foundSeats){
+			return res.status(404).json({response: 'No Seats Found'});
+		}
+
+		if(foundSeats){
+			return res.status(200).json(foundSeats);
+		}
+
+	});
+
+});
+
+router.get('/seat/:user/:event', authenticate, function(req, res){
+
+	Seat.findOne({event: req.params.event, user: req.params.user}).populate(['event', 'user']).exec(function (error, foundSeats) {
+
+		if(error){
+			return res.status(500).json({error: 'Internal Server Error'});
+		}
+
+		if(!foundSeats){
+			return res.status(404).json({response: 'No Seats Found'});
+		}
+
+		if(foundSeats){
+			return res.status(200).json(foundSeats);
+		}
+
+	});
+
+});
+
+router.post('/seat/:event', authenticate, function (req, res) {
+
+	var newSeat = new Seat({
+
+		event:  mongoose.Types.ObjectId(xss(req.params.event)),
+		user: 	 mongoose.Types.ObjectId(xss(req.principal.user._id)),
+		onPicker: xss(req.body.onPicker),
+		actualSeat: '',
+		notes: ''
+	});
+
+	newSeat.save(function (error) {
+
+		if(error){
+			return res.status(500).json({error: 'Internal Server Error'});
+		}
+
+		if(!error){
+			return res.status(200).json({response: 'Ok'});
+		}
+
+	});
+
+});
+
+router.post('/seat/all/:seat', authenticate, function (req, res) {
+
+	if(checkAdmin(req.principal.user)){
+
+		Seat.update({_id: req.params.seat}, {
+			$set: {
+				onPicker : xss(req.body.onPicker),
+				actualSeat : xss(req.body.actualSeat),
+				notes : xss(req.body.notes)
+			}
+		}, function (error) {
+			if(error){
+				return res.status(500).json({error: 'Internal Server Error'});
+			}
+
+			if(!error){
+				return res.status(200).json({response: 'Ok'});
+			}
+		});
+
+	} else {
+
+		Seat.findOne({_id: req.params.seat}, function (error, foundSeat) {
+
+			if(foundSeat.user._id === req.principal.user._id){
+				Seat.update({_id: req.params.seat}, {
+					$set: {
+						onPicker : xss(req.body.onPicker)
+					}
+				}, function (error) {
+					if(error){
+						return res.status(500).json({error: 'Internal Server Error'});
+					}
+
+					if(!error){
+						return res.status(200).json({response: 'Ok'});
+					}
+				});
+			} else {
+				return res.status(401).json({error: 'Invalid Access'});
+			}
+
+		});
+
+	}
+
+});
 
 
 function isAdmin(req, res, next){

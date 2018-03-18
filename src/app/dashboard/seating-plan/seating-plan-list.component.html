@@ -1,0 +1,30 @@
+<table class="table" *ngIf="_seats">
+
+    <thead>
+
+        <th>Attendee</th>
+        <th>On Seat Picker</th>
+        <th>Actual Seat</th>
+        <th>Notes</th>
+        <th>Modify</th>
+
+    </thead>
+
+    <tbody>
+
+        <tr *ngFor="let seat of _seats">
+
+            <td>{{seat.user.discord.username + '#' + seat.user.discord.discriminator}}</td>
+            <td>{{seat.onPicker}}</td>
+            <td *ngIf="seat.actualSeat"> {{ seat.actualSeat }}</td>
+            <td *ngIf="!seat.actualSeat"> </td>
+            <td>{{ seat.notes }}</td>
+            <td>
+                <button *ngIf="isAdmin || seat.user._id == userId" type="button" class="btn btn-primary" (click)="editSeat(seat._id)"><span class="fas fa-edit"></span></button>
+            </td>
+        </tr>
+
+    </tbody>
+
+
+</table>

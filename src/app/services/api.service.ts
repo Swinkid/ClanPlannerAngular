@@ -12,6 +12,7 @@ import {Quiz} from "../interfaces/quiz";
 import {forkJoin} from "rxjs/observable/forkJoin";
 import {Competition} from "../interfaces/comp";
 import {Meal} from "../interfaces/meal";
+import {Seat} from "../interfaces/seat";
 
 @Injectable()
 export class ApiService {
@@ -193,6 +194,26 @@ export class ApiService {
 
     public deleteMeal(meal){
         return this._http.delete('/api/meal/' + meal, this.HEADERS);
+    }
+
+    public getSeats(event){
+        return this._http.get<Seat[]>('/api/seat/all/' + event, this.HEADERS);
+    }
+
+    public getSeat(user, event){
+        return this._http.get<Seat>('/api/seat/' + user + '/' + event, this.HEADERS)
+    }
+
+    public addSeat(event, formValue){
+        return this._http.post('/api/seat/' + event, formValue, this.HEADERS)
+    }
+
+    public updateSeat(seat, formValue){
+        return this._http.post('/api/seat/all/' + seat, formValue, this.HEADERS);
+    }
+
+    public getSeatById(seat){
+        return this._http.get<Seat>('/api/seat/single/' + seat, this.HEADERS);
     }
 
 }
