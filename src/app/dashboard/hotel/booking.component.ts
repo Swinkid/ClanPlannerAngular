@@ -167,7 +167,7 @@ export class BookingComponent implements OnInit {
 
             this.apiService.updateBooking(this.oldBooking._id, updatedBooking).subscribe(
                 booking => {},
-                error => { console.log(error); },
+                error => { },
                 () => {
                     this.router.navigate(['/dashboard/events']);
                 }

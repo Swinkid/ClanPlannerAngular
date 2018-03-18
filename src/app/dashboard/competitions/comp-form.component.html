@@ -1,0 +1,76 @@
+<form [formGroup]="compForm" *ngIf="compForm" (ngSubmit)="onSubmit(compForm)" novalidate>
+
+    <div class="card my-1">
+
+        <div class="card-header">
+            Competition Details
+        </div>
+
+        <div class="card-body">
+
+            <div class="form-group">
+
+                <label>Game</label>
+                <input type="text" class="form-control" formControlName="game">
+
+            </div>
+
+            <div class="form-group">
+
+                <label>Team Name</label>
+                <input type="text" class="form-control" formControlName="teamName">
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="card my-1">
+
+        <div class="card-header">
+            Team Members <button type="button" name="addTeamButton" class="btn btn-success float-right" (click)="addTeamMember();"><span class="fas fa-plus"></span></button>
+        </div>
+
+        <div class="card-body">
+            <div formArrayName="mainTeam" class="form-group" *ngFor="let member of getMainTeam(compForm); let m = index; ">
+                <label>Team Member</label>
+                <select [formControlName]="m"  class="form-control">
+                    <option value="" disabled>Select</option>
+                    <option *ngFor="let a of _attendees" [value]="a.user._id">
+                        {{a.user.discord.username + '#' + a.user.discord.discriminator}}
+                    </option>
+                </select>
+                <button type="button" class="btn btn-danger" (click)="removeTeamMember(m)"><span class="fas fa-trash"></span></button>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="card my-1">
+
+        <div class="card-header">
+            Team Substitutes <button type="button" name="addSubButton" class="btn btn-success float-right" (click)="addSubMember();"><span class="fas fa-plus"></span></button>
+        </div>
+
+        <div class="card-body">
+            <div formArrayName="subs" class="form-group" *ngFor="let sub of getSubTeam(compForm); let s = index;">
+
+                <label>Substitute Member</label>
+                <select [formControlName]="s"  class="form-control">
+                    <option value="" disabled>Select</option>
+                    <option *ngFor="let b of _attendees" [value]="b.user._id">
+                        {{b.user.discord.username + '#' + b.user.discord.discriminator}}
+                    </option>
+                </select>
+                <button type="button" class="btn btn-danger" (click)="removeSubMember(s)"><span class="fas fa-trash"></span></button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <button class="btn btn-primary" type="submit">Submit</button>
+
+</form>

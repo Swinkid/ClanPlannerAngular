@@ -48,6 +48,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { ProfileFormComponent } from './profile/profile-form.component';
 import { ProfileEditComponent } from './profile/profile-edit.component';
 import {NgbDropdownMenu} from "@ng-bootstrap/ng-bootstrap/dropdown/dropdown";
+import { CompComponent } from './competitions/comp.component';
 
 
 
@@ -114,7 +115,8 @@ const routes: Routes = [
         EventStatsComponent,
         ProfileComponent,
         ProfileFormComponent,
-        ProfileEditComponent
+        ProfileEditComponent,
+        CompComponent
     ],
     providers: [
         AuthService,

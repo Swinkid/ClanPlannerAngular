@@ -116,7 +116,7 @@ export class BookingFormComponent implements OnInit {
 
             this.apiService.addBooking(this._event._id, form.value).subscribe(
                 booking => {},
-                error => { console.log(error); },
+                error => { },
                 () => {
                     this.router.navigate(['/dashboard/events']);
                 }

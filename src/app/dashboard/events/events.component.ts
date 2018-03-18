@@ -33,7 +33,6 @@ export class EventsComponent implements OnInit {
         data =>{
             this.events = data[1];
             this.attendance = data[0];
-            console.log(data[0]);
         },
         error =>{
             //TODO: Error handling
@@ -54,8 +53,6 @@ export class EventsComponent implements OnInit {
         let userId = this.userService.getUserId();
 
         return _.find(this.attendance, function (u) {
-
-            console.log(u);
 
             if(u.user._id === userId && u.event._id === event._id){
                 return true;

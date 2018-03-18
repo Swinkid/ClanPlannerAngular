@@ -75,8 +75,6 @@ export class MealFormComponent implements OnInit {
 
         }
 
-        console.log(this.mealForm);
-
     }
 
     initPassengers(_fb){
@@ -127,7 +125,6 @@ export class MealFormComponent implements OnInit {
     addPassenger(){
        const control = <FormArray>this.mealForm.controls['passengers'];
        control.push(this.initPassenger());
-       console.log(this.mealForm.value.passengers.length);
     }
 
     getPassengers(form){

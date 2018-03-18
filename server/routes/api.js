@@ -933,7 +933,7 @@ router.delete('/quiz/:id', authenticate, isAdmin, function (req, res) {
  */
 router.get('/comps/all/:event', authenticate, function (req, res) {
 
-	Competition.find({event: xss(req.params.id)}).populate(['event', 'teams.teamName', 'teams.subs']).exec(function (error, foundComps) {
+	Competition.find({event: req.params.event}).populate(['event', 'mainTeam', 'subs']).exec(function (error, foundComps) {
 
 		if(error){
 			return res.status(500).json({error: 'Internal Server Error'});
@@ -955,7 +955,7 @@ router.get('/comps/all/:event', authenticate, function (req, res) {
  * Get a single comp
  */
 router.get('/comps/:id', authenticate, function (req, res) {
-	Competition.findOne({_id: xss(req.params.id)}).populate(['event', 'teams.teamName', 'teams.subs']).exec(function (error, foundComps) {
+	Competition.findOne({_id: xss(req.params.id)}).populate(['event', 'mainTeam', 'subs']).exec(function (error, foundComps) {
 
 		if(error){
 			return res.status(500).json({error: 'Internal Server Error'});
@@ -1002,7 +1002,7 @@ router.post('/comps/all/:id', authenticate, isAdmin, function (req, res) {
 			return res.status(500).json({error: 'Internal Server Error'});
 		}
 
-		if(!savedComp){
+		if(!error){
 			return res.status(200).json({response: 'Ok'});
 		}
 	});
@@ -1025,7 +1025,6 @@ router.post('/comps/:id', authenticate, isAdmin, function (req, res) {
 	});
 
 	Competition.update({_id: req.params.id}, { $set: {
-			event: req.params.id,
 			game: xss(req.body.game),
 			teamName: xss(req.body.teamName),
 			mainTeam: mainTeam,
@@ -1050,7 +1049,7 @@ router.post('/comps/:id', authenticate, isAdmin, function (req, res) {
  */
 router.delete('/comps/:id', authenticate, function (req, res) {
 
-	Competition.remove({_id: this.params.id}, function (error) {
+	Competition.remove({_id: req.params.id}, function (error) {
 
 		if(error){
 			return res.status(500).json({error: 'Internal Server Error'});

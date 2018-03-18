@@ -1,0 +1,7 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+    <h2>Competitions</h2> <button class="btn btn-primary float-right" type="button" (click)="addCompetition()" ><span class="fas fa-plus"></span> Add Competition</button>
+</div>
+
+
+<app-comp-form (notifyRefresh)="refresh($event)" *ngIf="this.showForm" [_event]="this._event" [_attendees]="this._attendees" [_selectedComp]="this._selectedComp"></app-comp-form>
+<app-comp-list (sendEdit)="sendEdit($event)" (notify)="refresh($event)" [_comps]="_comps" [_event]="this._event" [_attendance]="this._attendees"></app-comp-list>
