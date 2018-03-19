@@ -63,7 +63,7 @@ export class NewComponent implements OnInit {
                 event => {},
                 err => {},
                 () => {
-                    this.router.navigate(['/dashboard/events']);
+                    this.router.navigate(['/dashboard']);
                 }
             )
 

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {NgbDropdownModule, NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import { NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { Routes, RouterModule } from "@angular/router";
 
@@ -12,9 +12,10 @@ import { UserService } from "../services/user.service";
 import { ApiService } from "../services/api.service";
 
 
-import { EventsComponent} from "./events/events.component";
 import { DashboardComponent} from "./dashboard.component";
 import { NavbarComponent } from './template/navbar/navbar.component';
+import { EventsComponent} from "./events/events.component";
+import { EventStatsComponent } from './event/event-stats.component';
 import { EventComponent } from './event/event.component';
 import { EditComponent } from './event/edit.component';
 import { NewComponent } from './events/new/new.component';
@@ -32,21 +33,17 @@ import { MealFormComponent } from './meal/meal-form.component';
 import { QuizComponent } from './quiz/quiz.component';
 import { TableFormComponent } from './quiz/table-form.component';
 import { TableListComponent } from './quiz/table-list.component';
-import { ChecklistComponent } from './checklist/checklist.component';
-import { ChecklistListComponent } from './checklist/checklist-list.component';
-import { ChecklistFormComponent } from './checklist/checklist-form.component';
-import { CompListComponent } from './competitions/comp-list.component';
-import { CompFormComponent } from './competitions/comp-form.component';
 import { SeatingPlanComponent } from './seating-plan/seating-plan.component';
 import { SeatingPlanFormComponent } from './seating-plan/seating-plan-form.component';
 import { SeatingPlanListComponent } from './seating-plan/seating-plan-list.component';
 import { AttendeeListComponent } from './event/attendee-list.component';
 import { AttendeeFormComponent } from './event/attendee-form.component';
-import { EventStatsComponent } from './event/event-stats.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ProfileFormComponent } from './profile/profile-form.component';
 import { ProfileEditComponent } from './profile/profile-edit.component';
 import { CompComponent } from './competitions/comp.component';
+import { CompListComponent } from './competitions/comp-list.component';
+import { CompFormComponent } from './competitions/comp-form.component';
 
 
 
@@ -66,33 +63,46 @@ const routes: Routes = [
                 { path: '', component: NavbarComponent, outlet: 'nav'}
             ]},
             { path: 'jerseys/:id', children: [
-                    { path: '', component: JerseysComponent },
-                    { path: '', component: NavbarComponent, outlet: 'nav'}
+                { path: '', component: JerseysComponent },
+                { path: '', component: NavbarComponent, outlet: 'nav'}
             ]},
             { path: 'quiz/:id', children: [
-                    { path: '', component: QuizComponent },
-                    { path: '', component: NavbarComponent, outlet: 'nav'}
+                { path: '', component: QuizComponent },
+                { path: '', component: NavbarComponent, outlet: 'nav'}
             ]},
             { path: 'meal/:id', children: [
-                    { path: '', component: MealComponent },
-                    { path: '', component: NavbarComponent, outlet: 'nav'}
+                { path: '', component: MealComponent },
+                { path: '', component: NavbarComponent, outlet: 'nav'}
             ]},
             { path: 'comps/:id', children: [
-                    { path: '', component: CompComponent },
-                    { path: '', component: NavbarComponent, outlet: 'nav'}
+                { path: '', component: CompComponent },
+                { path: '', component: NavbarComponent, outlet: 'nav'}
             ]},
             { path: 'seating/:id', children: [
-                    { path: '', component: SeatingPlanComponent },
-                    { path: '', component: NavbarComponent, outlet: 'nav'}
-            ]}
-
-            //{ path: 'edit/event/:id', component: EditComponent , canActivate: [AuthorizeGuard]},
-            //{ path: 'new/event', component: NewComponent , canActivate: [AuthorizeGuard]},
-            //{ path: 'edit/event/attendee/:id/:attendee', component: AttendeeComponent , canActivate: [AuthorizeGuard]},
-            //{ path: 'new/booking/:id', component: BookingFormComponent , canActivate: [AuthorizeGuard]},
-            //{ path: 'edit/booking/:id', component: BookingComponent, canActivate: [AuthorizeGuard] },
-            //{ path: 'profile/:id', component: ProfileComponent },
-            //{ path: 'profile/edit/:id', component: ProfileEditComponent },
+                { path: '', component: SeatingPlanComponent },
+                { path: '', component: NavbarComponent, outlet: 'nav'}
+            ]},
+            { path: 'edit/event/:id', canActivate: [AuthorizeGuard], children: [
+                { path: '', component: EditComponent },
+                { path: '', component: NavbarComponent, outlet: 'nav'}
+            ]},
+            { path: 'new/event', canActivate: [AuthorizeGuard], children: [
+                { path: '', component: NewComponent },
+            ]},
+            { path: 'edit/event/attendee/:id/:attendee', canActivate: [AuthorizeGuard], children: [
+                { path: '', component: AttendeeComponent },
+                { path: '', component: NavbarComponent, outlet: 'nav'}
+            ]},
+            { path: 'new/booking/:id' , canActivate: [AuthorizeGuard], children: [
+                { path: '', component: BookingFormComponent },
+                { path: '', component: NavbarComponent, outlet: 'nav'}
+            ]},
+            { path: 'edit/booking/:id', canActivate: [AuthorizeGuard], children: [
+                { path: '', component: BookingComponent },
+                { path: '', component: NavbarComponent, outlet: 'nav'}
+            ]},
+            { path: 'profile/:id', component: ProfileComponent },
+            { path: 'profile/edit/:id', component: ProfileEditComponent },
 
 
         ]
@@ -128,9 +138,6 @@ const routes: Routes = [
         QuizComponent,
         TableFormComponent,
         TableListComponent,
-        ChecklistComponent,
-        ChecklistListComponent,
-        ChecklistFormComponent,
         CompListComponent,
         CompFormComponent,
         SeatingPlanComponent,

@@ -1,20 +1,28 @@
 <form [formGroup]="seatForm" *ngIf="seatForm" (ngSubmit)="onSubmit(seatForm)" novalidate>
 
-    <div class="form-group">
-        <label>Seat Row/Number</label>
-        <input type="text" formControlName="onPicker" class="form-control">
-    </div>
+    <div class="card my-2">
 
-    <div class="form-group" *ngIf="isAdmin && _selectedSeat">
-        <label>Actual Seat Row/Number</label>
-        <input type="text" formControlName="actualSeat" class="form-control">
-    </div>
+        <div class="card-body">
 
-    <div class="form-group" *ngIf="isAdmin && _selectedSeat">
-        <label>Notes</label>
-        <input type="text" formControlName="notes" class="form-control">
-    </div>
+            <div class="form-group">
+                <label>Seat Row/Number</label>
+                <input type="text" formControlName="onPicker" class="form-control">
+            </div>
 
-    <button type="submit" class="btn btn-primary">Submit</button>
+            <div class="form-group" *ngIf="isAdmin && _selectedSeat">
+                <label>Actual Seat Row/Number</label>
+                <input type="text" formControlName="actualSeat" class="form-control">
+            </div>
+
+            <div class="form-group" *ngIf="isAdmin && _selectedSeat">
+                <label>Notes</label>
+                <input type="text" formControlName="notes" class="form-control">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+
+        </div>
+
+    </div>
 
 </form>

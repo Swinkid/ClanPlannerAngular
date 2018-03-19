@@ -1,4 +1,16 @@
 
+<div class="card my-2">
+    <div class="card-body">
+        <h1>Jerseys</h1>
+    </div>
+</div>
 
 <app-add-jersy *ngIf="_event && selectedUser" [_event]="_event" [_selectedUser]="selectedUser" [_editing]="editing" (notify)='submittedForm($event)'></app-add-jersy>
-<app-show-jerseys *ngIf="_event" [_event]="_event" (notify)='onNotify($event)'></app-show-jerseys>
+
+<div class="card my-2">
+    <div class="card-body">
+        <app-show-jerseys *ngIf="_event" [_event]="_event" (notify)='onNotify($event)'></app-show-jerseys>
+    </div>
+</div>
+
+

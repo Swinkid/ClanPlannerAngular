@@ -1,20 +1,17 @@
-<div class="card my-1" *ngFor="let comp of _comps">
-
-    <div class="card-header">
-        {{comp.game}}
-        <button class="btn btn-primary float-right" type="button" (click)="editComp(comp._id)"><span class="fas fa-edit"></span></button>
-        <button class="btn btn-danger float-right" type="button" (click)="removecomp(comp._id)"><span class="fas fa-trash"></span></button>
-    </div>
-
+<div class="card my-2" *ngFor="let comp of _comps">
     <div class="card-body">
-
-        <h3>{{comp.teamName}}</h3>
+        <h2>
+            {{comp.game}}
+            <button class="btn btn-primary float-right" type="button" (click)="editComp(comp._id)"><span class="fas fa-edit"></span></button>
+            <button class="btn btn-danger float-right" type="button" (click)="removecomp(comp._id)"><span class="fas fa-trash"></span></button>
+        </h2>
+        <h3>{{comp.teamName}}</h3> <br />
 
         <table class="table">
 
             <thead>
                 <th> </th>
-                <th *ngFor="let th of getTeamArraySize(comp); let i = index">{{'Member' + (i + 1)}}</th>
+                <th *ngFor="let th of getTeamArraySize(comp); let i = index">{{'Member ' + (i + 1)}}</th>
             </thead>
 
             <tbody>

@@ -1,4 +1,4 @@
-<h2>Jerseys</h2>
+<h2>Confirmed Jerseys</h2>
 <div *ngIf="jerseys">
     <table class="table">
         <thead>
@@ -12,7 +12,7 @@
         <tbody>
         <tr *ngFor="let jersey of jerseys">
             <td>{{ jersey.user.discord.username + '#' + jersey.user.discord.discriminator }}</td>
-            <td>{{ jersey.hidden ? 'Hidden' : jersey.size}}</td>
+            <td>{{ jersey.hidden ? 'Hidden' : jersey.size}} {{ (jersey.hidden && admin) ? '(' + jersey.size + ')' : ''}}</td>
             <td>{{ jersey.paid ? 'Yes' : 'No'}}</td>
             <td *ngIf="admin || jersey.user._id === userId">
                 <button class="btn btn-primary" (click)="editJersey(jersey.user._id)">
