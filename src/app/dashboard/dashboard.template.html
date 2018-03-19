@@ -1,13 +1,40 @@
-<dashboard-navbar></dashboard-navbar>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 
-<div class="container-fluid">
-    <div class="row">
+    <a class="navbar-brand" [routerLink]="['/dashboard']">
+        <img src="/assets/logo-white.png" width="30" height="30" class="d-inline-block align-top" alt="">
+        LAN Planner
+    </a>
 
-        <dashboard-navigation></dashboard-navigation>
+    <button class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+            aria-expanded="false" aria-label="Toggle navigation"
+            (click)="toggleCollapsed()">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-            <router-outlet></router-outlet>
-        </main>
+    <div id="navbarSupportedContent" [ngClass]="{'collapse': collapsed, 'navbar-collapse': true}">
+
+            <router-outlet name="nav"></router-outlet>
 
     </div>
+
+    <ul class="navbar-nav my-2 my-lg-0 d-none d-lg-block">
+        <a class="nav-link" routerLink="/logout">Sign out</a>
+    </ul>
+
+</nav>
+
+
+<div class="container-fluid">
+
+    <div class="row">
+
+        <div class="col-md-12 ml-sm-auto pt-3 px-4">
+
+            <router-outlet></router-outlet>
+
+        </div>
+
+    </div>
+
 </div>

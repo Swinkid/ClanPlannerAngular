@@ -11,10 +11,9 @@ import { AuthService } from "../services/auth.service";
 import { UserService } from "../services/user.service";
 import { ApiService } from "../services/api.service";
 
-import { NavigationComponent } from './template/navigation/navigation.component';
+
 import { EventsComponent} from "./events/events.component";
 import { DashboardComponent} from "./dashboard.component";
-import { HomeComponent } from './home/home.component';
 import { NavbarComponent } from './template/navbar/navbar.component';
 import { EventComponent } from './event/event.component';
 import { EditComponent } from './event/edit.component';
@@ -47,7 +46,6 @@ import { EventStatsComponent } from './event/event-stats.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ProfileFormComponent } from './profile/profile-form.component';
 import { ProfileEditComponent } from './profile/profile-edit.component';
-import {NgbDropdownMenu} from "@ng-bootstrap/ng-bootstrap/dropdown/dropdown";
 import { CompComponent } from './competitions/comp.component';
 
 
@@ -57,16 +55,46 @@ const routes: Routes = [
         path: '',
         component: DashboardComponent,
         children: [
-            { path :'', component: HomeComponent },
-            { path: 'events', component: EventsComponent },
-            { path: 'events/:id', component: EventComponent },
-            { path: 'edit/event/:id', component: EditComponent , canActivate: [AuthorizeGuard]},
-            { path: 'new/event', component: NewComponent , canActivate: [AuthorizeGuard]},
-            { path: 'edit/event/attendee/:id/:attendee', component: AttendeeComponent , canActivate: [AuthorizeGuard]},
-            { path: 'new/booking/:id', component: BookingFormComponent , canActivate: [AuthorizeGuard]},
-            { path: 'edit/booking/:id', component: BookingComponent, canActivate: [AuthorizeGuard] },
-            { path: 'profile/:id', component: ProfileComponent },
-            { path: 'profile/edit/:id', component: ProfileEditComponent }
+
+            { path : '', component: EventsComponent },
+            { path: 'events/:id', children: [
+                { path: '', component: EventComponent},
+                { path: '', component: NavbarComponent, outlet: 'nav'}
+            ]},
+            { path: 'hotel/:id', children: [
+                { path: '', component: DisplayBookingsComponent },
+                { path: '', component: NavbarComponent, outlet: 'nav'}
+            ]},
+            { path: 'jerseys/:id', children: [
+                    { path: '', component: JerseysComponent },
+                    { path: '', component: NavbarComponent, outlet: 'nav'}
+            ]},
+            { path: 'quiz/:id', children: [
+                    { path: '', component: QuizComponent },
+                    { path: '', component: NavbarComponent, outlet: 'nav'}
+            ]},
+            { path: 'meal/:id', children: [
+                    { path: '', component: MealComponent },
+                    { path: '', component: NavbarComponent, outlet: 'nav'}
+            ]},
+            { path: 'comps/:id', children: [
+                    { path: '', component: CompComponent },
+                    { path: '', component: NavbarComponent, outlet: 'nav'}
+            ]},
+            { path: 'seating/:id', children: [
+                    { path: '', component: SeatingPlanComponent },
+                    { path: '', component: NavbarComponent, outlet: 'nav'}
+            ]}
+
+            //{ path: 'edit/event/:id', component: EditComponent , canActivate: [AuthorizeGuard]},
+            //{ path: 'new/event', component: NewComponent , canActivate: [AuthorizeGuard]},
+            //{ path: 'edit/event/attendee/:id/:attendee', component: AttendeeComponent , canActivate: [AuthorizeGuard]},
+            //{ path: 'new/booking/:id', component: BookingFormComponent , canActivate: [AuthorizeGuard]},
+            //{ path: 'edit/booking/:id', component: BookingComponent, canActivate: [AuthorizeGuard] },
+            //{ path: 'profile/:id', component: ProfileComponent },
+            //{ path: 'profile/edit/:id', component: ProfileEditComponent },
+
+
         ]
     }
 
@@ -82,9 +110,7 @@ const routes: Routes = [
     ],
     declarations: [
         DashboardComponent,
-        NavigationComponent,
         EventsComponent,
-        HomeComponent,
         NavbarComponent,
         EventComponent,
         EditComponent,

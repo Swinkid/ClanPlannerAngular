@@ -13,7 +13,7 @@ import {Attendance} from "../../interfaces/attendance";
 @Component({
     selector: 'dashboard-event',
     templateUrl: 'event.component.html',
-    styles: []
+    styleUrls: []
 })
 export class EventComponent implements OnInit {
 
