@@ -24,11 +24,13 @@
                         <img class="img-thumbnail rounded-circle" width="100" height="100" *ngIf="!attendee?.user.discord.avatar" src="http://placehold.it/100x100">
                     </td>
                     <td>
+                        <ng-template #tipContent>Set this in your profile settings.</ng-template>
                         <strong>Discord:</strong> <a routerLink="/dashboard/profile/{{attendee.user._id}}">{{ attendee?.user.discord.username + '#' + attendee?.user.discord.discriminator }} </a> <br />
-                        <strong>Real Name:</strong> {{ attendee?.user.realName }} <br />
-                        <strong>Nickname: </strong> {{ attendee?.user.nickname }}
+                        <strong><span [ngbTooltip]="tipContent" class="badge badge-secondary">?</span> Real Name:</strong> {{ attendee?.user.realName }} <br />
+                        <strong><span [ngbTooltip]="tipContent" class="badge badge-secondary">?</span> Nickname: </strong> {{ attendee?.user.nickname }}
                    </td>
                    <td>
+
                        <strong>Brought Ticket:</strong> {{ attendee?.broughtTicket ? 'Yes' : 'No' }} <br />
                        <strong>On Seat Picker:</strong> {{ attendee?.onSeatPicker ? 'Yes' : 'No' }} <br />
                        <strong>Arrival:</strong> {{ attendee?.dateArriving | date: 'dd/MM/yyyy'}}
