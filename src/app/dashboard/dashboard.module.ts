@@ -97,7 +97,7 @@ const routes: Routes = [
                 { path: '', component: BookingFormComponent },
                 { path: '', component: NavbarComponent, outlet: 'nav'}
             ]},
-            { path: 'edit/booking/:id', canActivate: [AuthorizeGuard], children: [
+            { path: 'edit/booking/:id/:event', canActivate: [AuthorizeGuard], children: [
                 { path: '', component: BookingComponent },
                 { path: '', component: NavbarComponent, outlet: 'nav'}
             ]},

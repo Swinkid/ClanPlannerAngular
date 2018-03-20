@@ -27,17 +27,11 @@ export class DisplayBookingsComponent implements OnInit {
     }
 
     setEvent(){
-
         this.apiService.getEventAndAttendace(this.route.snapshot.params['id']).subscribe(
             data => {
                 this._event = data[0];
                 this._attendees = data[1];
-            },
-            error => {
-                //TODO: Error handling
-            },
-            () => {
-                this.setBookings(this._event);
+                this.setBookings(this.route.snapshot.params['id']);
             }
         );
     }
@@ -48,7 +42,7 @@ export class DisplayBookingsComponent implements OnInit {
             bookings => {this.bookings = bookings;},
             error => {},
             () => {
-                this.translateUserIdFromBooking();
+
             },
 
         );
@@ -56,7 +50,7 @@ export class DisplayBookingsComponent implements OnInit {
     }
 
     //TODO: Fix dirtyness below
-    translateUserIdFromBooking(){
+    /*translateUserIdFromBooking(){
 
         for(let i = 0; i < this.bookings.length; i++) {
 
@@ -80,7 +74,7 @@ export class DisplayBookingsComponent implements OnInit {
             }
 
         }
-    }
+    }*/
 
     findUsername(userId){
         return _.find(this._attendees, function (a) {

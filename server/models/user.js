@@ -3,7 +3,6 @@ var mongoose = require('mongoose');
 var userSchema = mongoose.Schema({
 
 	discord            : {},
-	regEvents			: [],
 	regDate				: Date,
 	admin				: Boolean,
 	realName			: {

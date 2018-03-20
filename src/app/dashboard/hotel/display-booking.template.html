@@ -1,9 +1,9 @@
 
-<div class="card">
+<div class="card my-2">
 
     <div class="card-body">
         <h1 class="border-bottom">
-            {{_event.name}} - Hotel Rooms
+            {{_event?.name}} - Hotel Rooms
             <button *ngIf="isAdmin" class="btn btn-primary float-right" [routerLink]="['/dashboard/new/booking/', this._event?._id]"><span class="far fa-plus"></span> New Booking</button>
         </h1>
     </div>
@@ -12,13 +12,13 @@
 
 
 <div *ngFor="let booking of bookings">
-    <div class="card">
+    <div class="card my-2">
         <div class="card-body">
 
             <h2>
-                {{booking.booking.bookedBy}} (Cost: {{ booking.booking.totalCost | currency: 'GBP' : 'symbol-narrow' :'1.2-2'}})
+                {{booking.booking.bookedBy.discord.username + '#' + booking.booking.bookedBy.discord.discriminator}} (Cost: {{ booking.booking.totalCost | currency: 'GBP' : 'symbol-narrow' :'1.2-2'}})
                 <button *ngIf="isAdmin"class="btn btn-danger float-right" (click)="deleteBooking(booking._id)"><span class="fas fa-trash"></span></button>
-                <button *ngIf="isAdmin" class="btn btn-primary float-right" routerLink="{{'/dashboard/edit/booking/' + booking._id}}"><span class="fas fa-edit"></span></button>
+                <button *ngIf="isAdmin" class="btn btn-primary float-right" [routerLink]="['/dashboard/edit/booking', booking._id, _event._id ]"><span class="fas fa-edit"></span></button>
             </h2>
 
 
@@ -36,7 +36,7 @@
 
                     <td *ngFor="let occupant of calcBiggestRoom(booking); let oi = index">
 
-                        {{ booking.booking.rooms[ri]?.roomOccupants[oi] }}
+                        {{ booking.booking.rooms[ri]?.roomOccupants[oi].discord.username + '#' + booking.booking.rooms[ri]?.roomOccupants[oi].discord.discriminator}}
 
                     </td>
                     <td>

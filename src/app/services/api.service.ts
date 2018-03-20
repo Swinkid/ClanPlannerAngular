@@ -86,7 +86,7 @@ export class ApiService {
     }
 
     public getBookings(event){
-        return this._http.get<Booking[]>('/api/booking/' + event._id, { headers: {'x-access-token': this.authService.getToken()} });
+        return this._http.get<Booking[]>('/api/booking/' + event, { headers: {'x-access-token': this.authService.getToken()} });
     }
 
     public getUser(userId){

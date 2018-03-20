@@ -13,7 +13,7 @@ import {Booking} from "../../interfaces/hotel/booking";
 })
 export class BookingComponent implements OnInit {
 
-    private event: Event;
+    public event: Event;
     public bookingForm  : FormGroup;
     public attendees    : Attendance[];
     public oldBooking      : Booking;
@@ -38,24 +38,30 @@ export class BookingComponent implements OnInit {
 
                 data => {
                     this.oldBooking = data;
+                    this.getEvent();
                 },
-                error => {},
-                () => {
-
-                    this.setAttendance();
-                }
             );
         } else {
             this.router.navigate(['/dashboard']);
         }
     }
 
+    getEvent(){
+        this.apiService.getEventAndAttendace(this.route.snapshot.params['event']).subscribe(
+            data => {
+                this.event = data[0];
+                this.attendees = data[1];
+                this.setForm();
+            }
+        )
+    }
+
     setForm(){
 
         this.bookingForm = new FormGroup({
 
-            bookedBy: new FormControl(this.oldBooking.booking.bookedBy, [
-                Validators.required,
+            bookedBy: new FormControl(this.oldBooking.booking.bookedBy._id, [
+                Validators.required
             ]),
             bookedRoomType: new FormControl(this.oldBooking.booking.roomType, [
                 Validators.required
@@ -81,7 +87,7 @@ export class BookingComponent implements OnInit {
             room.roomOccupants.forEach(function (occupant) {
 
                oldRoomOccupants.push(_fb.group({
-                   occupant: occupant
+                   occupant: occupant._id
                }));
 
             });
@@ -96,21 +102,6 @@ export class BookingComponent implements OnInit {
 
     }
 
-    setAttendance(){
-        this.apiService.getEvent(this.oldBooking.event).subscribe(
-            event => {
-                this.event = event;
-            },
-            err => {
-
-            },
-            () => {
-                //TODO: prob remove this
-                // /this.attendees = this.event.users;
-                this.setForm();
-            }
-        )
-    }
 
     initRooms(){
         return this._fb.group({
@@ -124,7 +115,7 @@ export class BookingComponent implements OnInit {
 
     initOccupants(){
         return this._fb.group({
-            occupant: 'Available'
+            occupant: ''
         });
     }
 
@@ -169,7 +160,7 @@ export class BookingComponent implements OnInit {
                 booking => {},
                 error => { },
                 () => {
-                    this.router.navigate(['/dashboard/events']);
+                    this.router.navigate(['/dashboard/hotel', this.event._id]);
                 }
             );
 

@@ -11,10 +11,12 @@ import { UserService } from "../services/user.service";
 export class DashboardComponent implements OnInit {
 
     collapsed = true;
+    userId : String;
 
-    constructor() { }
+    constructor(private userService : UserService) { }
 
     ngOnInit() {
+        this.userId = this.userService.getUserId();
     }
 
     toggleCollapsed(): void {

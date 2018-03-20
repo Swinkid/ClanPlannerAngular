@@ -1,104 +1,97 @@
 <form [formGroup]="bookingForm" (ngSubmit)="onSubmit(bookingForm)" novalidate>
 
-    <br />
-
-    <div class="card">
-        <div class="card-header">
-            Booking Details
-        </div>
-
-        <div class="form-group">
-            <label>Booked By</label>
-            <select class="form-control" name="bookedBy" formControlName="bookedBy">
-                <option value="" disabled>Select</option>
-                <option *ngFor="let a of _attendees" [ngValue]="a.user._id">
-                    {{ a.user.discord?.username }}
-                </option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label>Room Type</label>
-            <select class="form-control" name="bookedRoomType" formControlName="bookedRoomType">
-                <option value="" disabled>Select</option>
-                <option *ngFor="let t of roomType" [ngValue]="t">
-                    {{ t }}
-                </option>
-            </select>
-        </div>
+    <div class="card my-2">
+        <div class="card-body">
+            <h1>Booking Details</h1>
 
 
-        <div class="form-group">
-            <label>Total Cost</label>
-            <input type="number" class="form-control" formControlName="totalCost">
-        </div>
+            <div class="form-group">
+                <label>Booked By</label>
+                <select class="form-control" name="bookedBy" formControlName="bookedBy">
+                    <option value="" disabled>Select</option>
+                    <option *ngFor="let a of _attendees" [ngValue]="a.user._id">
+                        {{ a.user.discord?.username }}
+                    </option>
+                </select>
+            </div>
 
-    </div>
+            <div class="form-group">
+                <label>Room Type</label>
+                <select class="form-control" name="bookedRoomType" formControlName="bookedRoomType">
+                    <option value="" disabled>Select</option>
+                    <option *ngFor="let t of roomType" [ngValue]="t">
+                        {{ t }}
+                    </option>
+                </select>
+            </div>
 
-    <br />
 
-    <div formArrayName="rooms">
-        <div *ngFor="let room of getRooms(bookingForm); let r = index">
+            <div class="form-group">
+                <label>Total Cost</label>
+                <input type="number" class="form-control" formControlName="totalCost">
+            </div>
 
-            <div  class="card">
-                <div class="card-header">
-                    Room {{ r + 1}}
+
+            <br />
+
+            <div formArrayName="rooms">
+                <div *ngFor="let room of getRooms(bookingForm); let r = index">
+
+                    <h3>Room {{ r + 1}}</h3>
 
                     <button class="btn btn-dark  float-right" *ngIf="bookingForm.controls['rooms'].length > 1" (click)="removeRoom(r)">
                         Remove Room
                     </button>
 
-                </div>
 
-                <div [formGroupName]="r">
+                    <div [formGroupName]="r">
 
-                    <div formArrayName="roomOccupants">
+                        <div formArrayName="roomOccupants">
 
 
-                        <div *ngFor="let occupant of getOccupants(room); let o = index;">
+                            <div *ngFor="let occupant of getOccupants(room); let o = index;">
 
-                            <div class="form-group row" [formGroupName]="o">
+                                <div class="form-group row" [formGroupName]="o">
 
-                                <label class="col-sm-1 col-form-label">Guest {{ o + 1}}</label>
+                                    <label class="col-sm-1 col-form-label">Guest {{ o + 1}}</label>
 
-                                <div class="col-sm-10">
-                                    <select class="form-control" name="occupant" formControlName="occupant">
-                                        <option value="Available">Available</option>
-                                        <option *ngFor="let a of _attendees" [ngValue]="a.user._id">
-                                            {{ a.user.discord?.username }}
-                                        </option>
-                                    </select>
+                                    <div class="col-sm-10">
+                                        <select class="form-control" name="occupant" formControlName="occupant">
+                                            <option value="" disabled>Available</option>
+                                            <option *ngFor="let a of _attendees" [ngValue]="a.user._id">
+                                                {{ a.user.discord?.username }}
+                                            </option>
+                                        </select>
+                                    </div>
+
+                                    <button  *ngIf="getOccupants(room).length > 1" class="btn btn-danger col-sm-1" (click)="removeOccupant(r, o)">
+                                        <span class="fas fa-minus"></span>
+                                    </button>
+
                                 </div>
-
-                                <button  *ngIf="getOccupants(room).length > 1" class="btn btn-danger col-sm-1" (click)="removeOccupant(r, o)">
-                                    <span class="fas fa-minus"></span>
-                                </button>
 
                             </div>
 
+
+                            <div class="form-group row">
+                                <a class="btn btn-success col-sm-1" (click)="addOccupant(r)"><span class="fas fa-plus"></span></a>
+                            </div>
+
+
                         </div>
-
-
-                        <div class="form-group row">
-                            <a class="btn btn-success col-sm-1" (click)="addOccupant(r)"><span class="fas fa-plus"></span></a>
-                        </div>
-
-
                     </div>
                 </div>
             </div>
-            <br />
+
+
+            <button type="button" class="btn btn-success" (click)="addRoom()">
+                Add Room
+            </button>
+
+
+
         </div>
 
-
-            <a class="btn btn-success" (click)="addRoom()">
-                Add Room
-            </a>
-
-
-
+        <button type="submit" class="btn btn-primary col-sm-1">Submit</button>
     </div>
-
-    <button type="submit" class="btn btn-primary col-sm-1">Submit</button>
-
 </form>

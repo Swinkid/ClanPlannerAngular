@@ -78,7 +78,7 @@ export class BookingFormComponent implements OnInit {
 
     initOccupants(){
         return this._fb.group({
-            occupant: 'Available'
+            occupant: ''
         });
     }
 
@@ -118,7 +118,7 @@ export class BookingFormComponent implements OnInit {
                 booking => {},
                 error => { },
                 () => {
-                    this.router.navigate(['/dashboard/events']);
+                    this.router.navigate(['/dashboard/hotel', this._event._id]);
                 }
             );
 
