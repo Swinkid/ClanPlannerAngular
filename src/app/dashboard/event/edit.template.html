@@ -1,42 +1,44 @@
 <div class="card">
     <div class="card-body">
-        <h1>{{ event?.name }}</h1> <button type="button" class="btn btn-danger float-right" (click)="deleteEvent()">Delete Event</button>
+        <h1>{{ event?.name }} <button type="button" class="btn btn-danger float-right" (click)="deleteEvent()"><span class="fas fa-minus"></span></button></h1>
+
+        <p>Here you are able to edit the settings of the event you've clicked edit on. You are also able to hide/show different widgets such as hotel bookings and the seating plan as required.</p>
     </div>
 </div>
 
 
-<div class="card" *ngIf="eventForm !== undefined">
+<div class="card my-2" *ngIf="eventForm !== undefined">
     <div class="card-body">
 
         <form [formGroup]="eventForm" (ngSubmit)="submitForm()" >
             <div class="form-group row">
-                <label for="name" class="col-2 col-form-label">Event Name</label>
-                <div class="col-10">
+                <label for="name" class="col-sm-2 col-form-label">Event Name</label>
+                <div class="col-sm-10">
                     <input class="form-control" type="text" id="name" formControlName="name">
                 </div>
             </div>
 
             <div class="form-group row">
-                <label for="fromDate" class="col-2 col-form-label">From Date</label>
-                <div class="col-4">
+                <label for="fromDate" class="col-sm-2 col-form-label">From Date</label>
+                <div class="col-sm-4">
                     <input class="form-control" type="date" id="fromDate" formControlName="fromDate" required>
                 </div>
 
 
-                <label for="toDate" class="col-2 col-form-label">To Date</label>
-                <div class="col-4">
+                <label for="toDate" class="col-sm-2 col-form-label">To Date</label>
+                <div class="col-sm-4">
                     <input class="form-control" type="date" id="toDate" formControlName="toDate" required>
                 </div>
             </div>
 
             <div class="form-group row">
-                <label for="seatPickerUrl" class="col-2 col-form-label">Seat Picker URL</label>
-                <div class="col-4">
+                <label for="seatPickerUrl" class="col-sm-2 col-form-label">Seat Picker URL</label>
+                <div class="col-sm-4">
                     <input class="form-control" type="text" id="seatPickerUrl" formControlName="seatPickerUrl">
                 </div>
 
-                <label for="eventLocation" class="col-2 col-form-label">Event Location</label>
-                <div class="col-4">
+                <label for="eventLocation" class="col-sm-2 col-form-label">Event Location</label>
+                <div class="col-sm-4">
                     <input class="form-control" type="text" id="eventLocation" formControlName="eventLocation">
                 </div>
             </div>

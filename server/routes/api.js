@@ -18,16 +18,7 @@ const Competition = require('../models/competition');
 const Meal = require('../models/meal');
 const Seat = require('../models/seatPicker');
 
-/* GET api listing. */
-router.get('/', function (req, res) {
-	res.send('api works');
-});
-
-//TODO: Split endpoints?
-
 router.get('/users', function (req, res) {
-
-	//TODO: Joi to validate
 
 	var filteredId = xss(req.query.id);
 	var users = filteredId.split(",");
@@ -62,7 +53,6 @@ router.get('/users', function (req, res) {
 
 router.get('/users/:id', authenticate, function (req, res) {
 
-	//TODO: Joi to validate
 
 	var filteredId = xss(req.params.id);
 
@@ -140,8 +130,6 @@ router.get('/user/:id', authenticate, function (req, res) {
 
 router.get('/events', authenticate, function (req, res) {
 
-	//TODO: Joi to validate
-
 	var filteredId = xss(req.query.id);
 	var events = filteredId.split(",");
 
@@ -200,7 +188,6 @@ router.get('/attendance/all/:user', authenticate, function (req, res) {
 		}
 
 		if(result){
-			//TODO Really need to remove access tokens and email
 
 			result.forEach(function (r) {
 				delete r.user.discord.email;
@@ -390,12 +377,6 @@ router.delete('/attendee/:user/:event', authenticate, function (req, res) {
 	}
 
 });
-
-
-
-//TODO: In hindsight, this is a jankey way of doing it.......
-//http://mongoosejs.com/docs/subdocs.html#altsyntax
-//Leverage above instead
 
 router.post('/events', authenticate, isAdmin, function (req, res) {
 
