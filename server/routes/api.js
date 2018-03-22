@@ -380,18 +380,34 @@ router.delete('/attendee/:user/:event', authenticate, function (req, res) {
 
 router.post('/events', authenticate, isAdmin, function (req, res) {
 
-	var filteredName = xss(req.body.formValue.name);
-	var filteredFromDate = xss(req.body.formValue.fromDate);
-	var filteredToDate = xss(req.body.formValue.toDate);
-	var filteredSeatPickerUrl = xss(req.body.formValue.seatPickerUrl);
-	var filteredEventLocation = xss(req.body.formValue.eventLocation);
-
 	var newEvent = new Event({
-		name: filteredName,
-		fromDate: filteredFromDate,
-		toDate: filteredToDate,
-		seatPickerUrl: filteredSeatPickerUrl,
-		eventLocation: filteredEventLocation
+		name:  xss(req.body.formValue.name),
+		fromDate: xss(req.body.formValue.fromDate),
+		toDate: xss(req.body.formValue.toDate),
+		seatPickerUrl: xss(req.body.formValue.seatPickerUrl),
+		eventLocation: xss(req.body.formValue.eventLocation),
+		clanTracker :  xss(req.body.formValue.clanTracker),
+		clanPage : xss(req.body.formValue.clanPage),
+		chatLink : xss(req.body.formValue.chatLink),
+		hotelCheckin : xss(req.body.formValue.hotelCheckin),
+		hotelCheckinTime: xss(req.body.formValue.hotelCheckinTime),
+		hotelCheckout : xss(req.body.formValue.hotelCheckout),
+		hotelCheckoutTime : xss(req.body.formValue.hotelCheckoutTime),
+		hotelAddress : xss(req.body.formValue.hotelAddress),
+		hotelNumber : xss(req.body.formValue.hotelNumber),
+		hotelName : xss(req.body.formValue.hotelName),
+		jerseySizeChart : xss(req.body.formValue.jerseySizeChart),
+		jerseyPaymentLink : xss(req.body.formValue.jerseyPaymentLink),
+		jerseyDesignLink : xss(req.body.formValue.jerseyDesignLink),
+		mealAddress : xss(req.body.formValue.mealAddress),
+		mealName : xss(req.body.formValue.mealName),
+		mealTime : xss(req.body.formValue.mealTime),
+		mealDate : xss(req.body.formValue.mealDate),
+		showJersey : xss(req.body.formValue.showJersey),
+		showQuiz : xss(req.body.formValue.showQuiz),
+		showComps : xss(req.body.formValue.showComps),
+		showSeating : xss(req.body.formValue.showSeating),
+		showMeal : xss(req.body.formValue.showMeal)
 	});
 
 	newEvent.save(function (error, event) {
@@ -413,13 +429,38 @@ router.post('/events', authenticate, isAdmin, function (req, res) {
 router.post('/events/:id', authenticate, isAdmin, function (req, res) {
 
 	var filteredEventId = xss(req.params.id);
-	var filteredName = xss(req.body.formValue.name);
-	var filteredFromDate = xss(req.body.formValue.fromDate);
-	var filteredToDate = xss(req.body.formValue.toDate);
-	var filteredSeatPickerUrl = xss(req.body.formValue.seatPickerUrl);
-	var filteredEventLocation = xss(req.body.formValue.eventLocation);
 
-	Event.update({_id: filteredEventId}, {$set: { name: filteredName, fromDate: filteredFromDate, toDate: filteredToDate, seatPickerUrl: filteredSeatPickerUrl, eventLocation: filteredEventLocation }}, function (error) {
+	Event.update({_id: filteredEventId},
+		{$set: {
+				name: xss(req.body.formValue.name),
+				fromDate: xss(req.body.formValue.fromDate),
+				toDate: xss(req.body.formValue.toDate),
+				seatPickerUrl: xss(req.body.formValue.seatPickerUrl),
+				eventLocation: xss(req.body.formValue.eventLocation),
+				clanTracker :  xss(req.body.formValue.clanTracker),
+				clanPage : xss(req.body.formValue.clanPage),
+				chatLink : xss(req.body.formValue.chatLink),
+				hotelCheckin : xss(req.body.formValue.hotelCheckin),
+				hotelCheckinTime: xss(req.body.formValue.hotelCheckinTime),
+				hotelCheckout : xss(req.body.formValue.hotelCheckout),
+				hotelCheckoutTime : xss(req.body.formValue.hotelCheckoutTime),
+				hotelAddress : xss(req.body.formValue.hotelAddress),
+				hotelNumber : xss(req.body.formValue.hotelNumber),
+				hotelName : xss(req.body.formValue.hotelName),
+				jerseySizeChart : xss(req.body.formValue.jerseySizeChart),
+				jerseyPaymentLink : xss(req.body.formValue.jerseyPaymentLink),
+				jerseyDesignLink : xss(req.body.formValue.jerseyDesignLink),
+				mealAddress : xss(req.body.formValue.mealAddress),
+				mealName : xss(req.body.formValue.mealName),
+				mealTime : xss(req.body.formValue.mealTime),
+				mealDate : xss(req.body.formValue.mealDate),
+				showJersey : xss(req.body.formValue.showJersey),
+				showQuiz : xss(req.body.formValue.showQuiz),
+				showComps : xss(req.body.formValue.showComps),
+				showSeating : xss(req.body.formValue.showSeating),
+				showMeal : xss(req.body.formValue.showMeal)
+
+		}}, function (error) {
 
 		if(error){
 

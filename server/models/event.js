@@ -15,7 +15,7 @@ var eventSchema = mongoose.Schema({
 	"hotelCheckinTime": String,
 	"hotelCheckout" : Date,
 	"hotelCheckoutTime" : String,
-	"hotelAddres" : String,
+	"hotelAddress" : String,
 	"hotelNumber" :String,
 	"hotelName" : String,
 	"jerseySizeChart" : String,
@@ -25,11 +25,11 @@ var eventSchema = mongoose.Schema({
 	"mealName" : String,
 	"mealTime" : String,
 	"mealDate" : Date,
-	"showJersey" : Boolean,
-	"showQuiz" : Boolean,
-	"showComps" : Boolean,
-	"showSeating" : Boolean,
-	"showMeal" : Boolean
+	"showJersey" : { type: Boolean, default: false},
+	"showQuiz" : { type: Boolean, default: false},
+	"showComps" : { type: Boolean, default: false},
+	"showSeating" : { type: Boolean, default: false},
+	"showMeal" : { type: Boolean, default: false}
 });
 
 module.exports = mongoose.model('Event', eventSchema);
