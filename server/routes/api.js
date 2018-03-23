@@ -403,11 +403,11 @@ router.post('/events', authenticate, isAdmin, function (req, res) {
 		mealName : xss(req.body.formValue.mealName),
 		mealTime : xss(req.body.formValue.mealTime),
 		mealDate : xss(req.body.formValue.mealDate),
-		showJersey : xss(req.body.formValue.showJersey),
-		showQuiz : xss(req.body.formValue.showQuiz),
-		showComps : xss(req.body.formValue.showComps),
-		showSeating : xss(req.body.formValue.showSeating),
-		showMeal : xss(req.body.formValue.showMeal)
+		showJersey : req.body.formValue.showJersey,
+		showQuiz : req.body.formValue.showQuiz,
+		showComps : req.body.formValue.showComps,
+		showSeating : req.body.formValue.showSeating,
+		showMeal : req.body.formValue.showMeal
 	});
 
 	newEvent.save(function (error, event) {
@@ -454,11 +454,11 @@ router.post('/events/:id', authenticate, isAdmin, function (req, res) {
 				mealName : xss(req.body.formValue.mealName),
 				mealTime : xss(req.body.formValue.mealTime),
 				mealDate : xss(req.body.formValue.mealDate),
-				showJersey : xss(req.body.formValue.showJersey),
-				showQuiz : xss(req.body.formValue.showQuiz),
-				showComps : xss(req.body.formValue.showComps),
-				showSeating : xss(req.body.formValue.showSeating),
-				showMeal : xss(req.body.formValue.showMeal)
+				showJersey : req.body.formValue.showJersey,
+				showQuiz : req.body.formValue.showQuiz,
+				showComps : req.body.formValue.showComps,
+				showSeating : req.body.formValue.showSeating,
+				showMeal : req.body.formValue.showMeal
 
 		}}, function (error) {
 

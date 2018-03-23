@@ -20,6 +20,10 @@
                     <label for="name" class="col-sm-2 col-form-label">Event Name</label>
                     <div class="col-sm-10">
                         <input class="form-control" type="text" id="name" formControlName="name">
+                        <div class='form-text' *ngIf="eventForm.controls['name'].touched">
+                            <div *ngIf="eventForm.controls['name'].hasError('required')" class="error-text">Name is required</div>
+                            <div *ngIf="eventForm.controls['name'].hasError('maxlength')" class="error-text">Name too long</div>
+                        </div>
                     </div>
                 </div>
 
@@ -27,12 +31,18 @@
                     <label for="fromDate" class="col-sm-2 col-form-label">From Date</label>
                     <div class="col-sm-4">
                         <input class="form-control" type="date" id="fromDate" formControlName="fromDate" required>
+                        <div class='form-text' *ngIf="eventForm.controls['fromDate'].touched">
+                            <div *ngIf="eventForm.controls['fromDate'].hasError('required')" class="error-text">From Date is required</div>
+                        </div>
                     </div>
 
 
                     <label for="toDate" class="col-sm-2 col-form-label">To Date</label>
                     <div class="col-sm-4">
                         <input class="form-control" type="date" id="toDate" formControlName="toDate" required>
+                        <div class='form-text' *ngIf="eventForm.controls['toDate'].touched ">
+                            <div *ngIf="eventForm.controls['toDate'].hasError('required')" class="error-text">To Date is required</div>
+                        </div>
                     </div>
                 </div>
 
@@ -41,6 +51,10 @@
                     <label for="eventLocation" class="col-sm-2 col-form-label">Event Location</label>
                     <div class="col-sm-10">
                         <input class="form-control" type="text" id="eventLocation" formControlName="eventLocation">
+                        <div class='form-text' *ngIf="eventForm.controls['eventLocation'].touched">
+                            <div *ngIf="eventForm.controls['eventLocation'].hasError('required')" class="error-text">Event Location is required</div>
+                            <div *ngIf="eventForm.controls['eventLocation'].hasError('maxlength')" class="error-text">Event Location too long</div>
+                        </div>
                     </div>
                 </div>
 
@@ -48,6 +62,10 @@
                 <label for="seatPickerUrl" class="col-sm-2 col-form-label">Facebook Chat URL</label>
                 <div class="col-sm-10">
                     <input class="form-control" type="text" id="chatLink" formControlName="chatLink">
+                    <div class='form-text' *ngIf="eventForm.controls['chatLink'].touched">
+                        <div *ngIf="eventForm.controls['chatLink'].hasError('required')" class="error-text">Facebook Chat URL is required</div>
+                        <div *ngIf="eventForm.controls['chatLink'].hasError('maxlength')" class="error-text">Facebook Chat URL too long</div>
+                    </div>
                 </div>
             </div>
 
@@ -73,6 +91,10 @@
                 <label for="seatPickerUrl" class="col-sm-2 col-form-label">Seat Picker URL</label>
                 <div class="col-sm-10">
                     <input class="form-control" type="text" id="seatPickerUrl" formControlName="seatPickerUrl">
+                    <div class='form-text' *ngIf="eventForm.controls['seatPickerUrl'].touched">
+                        <div *ngIf="eventForm.controls['seatPickerUrl'].hasError('required')" class="error-text">Seat Picker URL is required</div>
+                        <div *ngIf="eventForm.controls['seatPickerUrl'].hasError('maxlength')" class="error-text">Seat Picker URL too long</div>
+                    </div>
                 </div>
             </div>
 
@@ -80,6 +102,10 @@
                 <label for="seatPickerUrl" class="col-sm-2 col-form-label">Clan Page</label>
                 <div class="col-sm-10">
                     <input class="form-control" type="text" id="clanPage" formControlName="clanPage">
+                    <div class='form-text' *ngIf="eventForm.controls['clanPage'].touched">
+                        <div *ngIf="eventForm.controls['clanPage'].hasError('required')" class="error-text">Clan Page is required</div>
+                        <div *ngIf="eventForm.controls['clanPage'].hasError('maxlength')" class="error-text">Clan Page URL too long</div>
+                    </div>
                 </div>
             </div>
 
@@ -87,6 +113,10 @@
                 <label for="seatPickerUrl" class="col-sm-2 col-form-label">Clan Tracker</label>
                 <div class="col-sm-10">
                     <input class="form-control" type="text" id="clanTracker" formControlName="clanTracker">
+                    <div class='form-text' *ngIf="eventForm.controls['clanTracker'].touched">
+                        <div *ngIf="eventForm.controls['clanTracker'].hasError('required')" class="error-text">Clan Tracker URL is required</div>
+                        <div *ngIf="eventForm.controls['clanTracker'].hasError('maxlength')" class="error-text">Clan Tracker URL too long</div>
+                    </div>
                 </div>
             </div>
 
@@ -101,13 +131,22 @@
                 <label for="seatPickerUrl" class="col-sm-2 col-form-label">Hotel Name</label>
                 <div class="col-sm-10">
                     <input class="form-control" type="text" id="hotelName" formControlName="hotelName">
+                    <div class='form-text' *ngIf="eventForm.controls['hotelName'].touched">
+                        <div *ngIf="eventForm.controls['hotelName'].hasError('required')" class="error-text">Hotel Name is required</div>
+                        <div *ngIf="eventForm.controls['hotelName'].hasError('maxlength')" class="error-text">Hotel Name too long</div>
+                    </div>
                 </div>
+
             </div>
 
             <div class="form-group row">
                 <label for="seatPickerUrl" class="col-sm-2 col-form-label">Hotel Address</label>
                 <div class="col-sm-10">
                     <input class="form-control" type="text" id="hotelAddress" formControlName="hotelAddress">
+                    <div class='form-text' *ngIf="eventForm.controls['hotelAddress'].touched">
+                        <div *ngIf="eventForm.controls['hotelAddress'].hasError('required')" class="error-text">Hotel Address is required</div>
+                        <div *ngIf="eventForm.controls['hotelAddress'].hasError('maxlength')" class="error-text">Hotel Address too long</div>
+                    </div>
                 </div>
             </div>
 
@@ -115,6 +154,10 @@
                 <label for="seatPickerUrl" class="col-sm-2 col-form-label">Hotel Number</label>
                 <div class="col-sm-10">
                     <input class="form-control" type="text" id="hotelNumber" formControlName="hotelNumber">
+                    <div class='form-text' *ngIf="eventForm.controls['hotelNumber'].touched">
+                        <div *ngIf="eventForm.controls['hotelNumber'].hasError('required')" class="error-text">Hotel Number is required</div>
+                        <div *ngIf="eventForm.controls['hotelNumber'].hasError('maxlength')" class="error-text">Hotel Number too long</div>
+                    </div>
                 </div>
             </div>
 
@@ -122,12 +165,19 @@
                 <label for="fromDate" class="col-sm-2 col-form-label">Check In Time</label>
                 <div class="col-sm-4">
                     <input class="form-control" type="text" id="hotelCheckinTime" formControlName="hotelCheckinTime">
+                    <div class='form-text' *ngIf="eventForm.controls['hotelCheckinTime'].touched">
+                        <div *ngIf="eventForm.controls['hotelCheckinTime'].hasError('required')" class="error-text">Check In Time is required</div>
+                        <div *ngIf="eventForm.controls['hotelCheckinTime'].hasError('maxlength')" class="error-text">Check In Time too long</div>
+                    </div>
                 </div>
 
 
                 <label for="toDate" class="col-sm-2 col-form-label">Check In Date</label>
                 <div class="col-sm-4">
                     <input class="form-control" type="date" id="hotelCheckin" formControlName="hotelCheckin" required>
+                    <div class='form-text' *ngIf="eventForm.controls['hotelCheckin'].touched">
+                        <div *ngIf="eventForm.controls['hotelCheckin'].hasError('required')" class="error-text">Check In Date is required</div>
+                    </div>
                 </div>
             </div>
 
@@ -135,12 +185,19 @@
                 <label for="fromDate" class="col-sm-2 col-form-label">Check Out Time</label>
                 <div class="col-sm-4">
                     <input class="form-control" type="text" id="hotelCheckoutTime" formControlName="hotelCheckoutTime">
+                    <div class='form-text' *ngIf="eventForm.controls['hotelCheckoutTime'].touched">
+                        <div *ngIf="eventForm.controls['hotelCheckoutTime'].hasError('required')" class="error-text">Check Out Time is required</div>
+                        <div *ngIf="eventForm.controls['hotelCheckoutTime'].hasError('maxlength')" class="error-text">Check Out Time too long</div>
+                    </div>
                 </div>
 
 
                 <label for="toDate" class="col-sm-2 col-form-label">Check Out Date</label>
                 <div class="col-sm-4">
                     <input class="form-control" type="date" id="hotelCheckout" formControlName="hotelCheckout" required>
+                    <div class='form-text' *ngIf="eventForm.controls['hotelCheckout'].touched">
+                        <div *ngIf="eventForm.controls['hotelCheckout'].hasError('required')" class="error-text">Check Out Date is required</div>
+                    </div>
                 </div>
             </div>
 
@@ -157,6 +214,10 @@
                 <label for="name" class="col-sm-2 col-form-label">Size Chart URL</label>
                 <div class="col-sm-10">
                     <input class="form-control" type="text" id="jerseySizeChart" formControlName="jerseySizeChart">
+                    <div class='form-text' *ngIf="eventForm.controls['jerseySizeChart'].touched">
+                        <div *ngIf="eventForm.controls['jerseySizeChart'].hasError('required')" class="error-text">Size Chart URL is required</div>
+                        <div *ngIf="eventForm.controls['jerseySizeChart'].hasError('maxlength')" class="error-text">Size Chart URL too long</div>
+                    </div>
                 </div>
             </div>
 
@@ -164,6 +225,10 @@
                 <label for="name" class="col-sm-2 col-form-label">Payment Paypal.me Link</label>
                 <div class="col-sm-10">
                     <input class="form-control" type="text" id="jerseyPaymentLink" formControlName="jerseyPaymentLink">
+                    <div class='form-text' *ngIf="eventForm.controls['jerseyPaymentLink'].touched">
+                        <div *ngIf="eventForm.controls['jerseyPaymentLink'].hasError('required')" class="error-text">Paypal.me Link is required</div>
+                        <div *ngIf="eventForm.controls['jerseyPaymentLink'].hasError('maxlength')" class="error-text">Paypal.me Link too long</div>
+                    </div>
                 </div>
             </div>
 
@@ -171,6 +236,10 @@
                 <label for="name" class="col-sm-2 col-form-label">Jersey Design URL</label>
                 <div class="col-sm-10">
                     <input class="form-control" type="text" id="jerseyDesignLink" formControlName="jerseyDesignLink">
+                    <div class='form-text' *ngIf="eventForm.controls['jerseyDesignLink'].touched">
+                        <div *ngIf="eventForm.controls['jerseyDesignLink'].hasError('required')" class="error-text">Jersey Design URL is required</div>
+                        <div *ngIf="eventForm.controls['jerseyDesignLink'].hasError('maxlength')" class="error-text">Jersey Design URL too long</div>
+                    </div>
                 </div>
             </div>
 
@@ -194,6 +263,10 @@
                 <label for="name" class="col-sm-2 col-form-label">Meal Name</label>
                 <div class="col-sm-10">
                     <input class="form-control" type="text" id="mealName" formControlName="mealName">
+                    <div class='form-text' *ngIf="eventForm.controls['mealName'].touched">
+                        <div *ngIf="eventForm.controls['mealName'].hasError('required')" class="error-text">Meal Name is required</div>
+                        <div *ngIf="eventForm.controls['mealName'].hasError('maxlength')" class="error-text">Meal Name too long</div>
+                    </div>
                 </div>
             </div>
 
@@ -201,6 +274,10 @@
                 <label for="name" class="col-sm-2 col-form-label">Meal Address</label>
                 <div class="col-sm-10">
                     <input class="form-control" type="text" id="mealAddress" formControlName="mealAddress">
+                    <div class='form-text' *ngIf="eventForm.controls['mealAddress'].touched">
+                        <div *ngIf="eventForm.controls['mealAddress'].hasError('required')" class="error-text">Meal Address is required</div>
+                        <div *ngIf="eventForm.controls['mealAddress'].hasError('maxlength')" class="error-text">Meal Address too long</div>
+                    </div>
                 </div>
             </div>
 
@@ -208,12 +285,19 @@
                 <label for="fromDate" class="col-sm-2 col-form-label">Time</label>
                 <div class="col-sm-4">
                     <input class="form-control" type="text" id="mealTime" formControlName="mealTime">
+                    <div class='form-text' *ngIf="eventForm.controls['mealTime'].touched">
+                        <div *ngIf="eventForm.controls['mealTime'].hasError('required')" class="error-text">Time is required</div>
+                        <div *ngIf="eventForm.controls['mealTime'].hasError('maxlength')" class="error-text">Time too long</div>
+                    </div>
                 </div>
 
 
                 <label for="toDate" class="col-sm-2 col-form-label">Date</label>
                 <div class="col-sm-4">
                     <input class="form-control" type="date" id="mealDate" formControlName="mealDate" required>
+                    <div class='form-text' *ngIf="eventForm.controls['mealDate'].touched">
+                        <div *ngIf="eventForm.controls['mealDate'].hasError('required')" class="error-text">Date is required</div>
+                    </div>
                 </div>
             </div>
 

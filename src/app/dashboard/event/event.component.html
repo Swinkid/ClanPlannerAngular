@@ -4,7 +4,10 @@
     <div class="card-body">
 
         <h1 class="border-bottom">{{ this._event?.name }} <button class="btn btn-primary float-right" [routerLink]="['/dashboard/edit/event/', this._event?._id]"><span class="fas fa-cog"></span></button></h1>
-        <!--<app-event-stats></app-event-stats> -->
+
+        <p>
+            <strong>Facebook Chat URL: </strong> <a href="{{this._event.chatLink}}">{{this._event.chatLink}}</a>
+        </p>
 
     </div>
 

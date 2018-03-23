@@ -1,5 +1,5 @@
 
-<ul class="navbar-nav mr-auto">
+<ul class="navbar-nav mr-auto" *ngIf="this._event">
     <li class="nav-item">
         <a class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" [routerLink]="['/dashboard/events', eventId]"><i class="fas fa-users"></i> Attendance</a>
     </li>
@@ -8,22 +8,22 @@
         <a class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" [routerLink]="['/dashboard/hotel', eventId]"><i class="fas fa-bed"></i> Hotel</a>
     </li>
 
-    <li class="nav-item">
+    <li class="nav-item" *ngIf="this._event.showJersey">
         <a class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" [routerLink]="['/dashboard/jerseys', eventId]"><i class="fas fa-box"></i> Jerseys</a>
     </li>
 
-    <li class="nav-item">
+    <li class="nav-item" *ngIf="this._event.showMeal">
         <a class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" [routerLink]="['/dashboard/meal', eventId]"><i class="fas fa-utensils"></i> Meal</a>
     </li>
 
-    <li class="nav-item">
+    <li class="nav-item" *ngIf="this._event.showComps">
         <a class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" [routerLink]="['/dashboard/comps', eventId]"><i class="fas fa-trophy"></i> Competitions</a>
     </li>
 
-    <li class="nav-item">
+    <li class="nav-item" *ngIf="this._event.showQuiz">
         <a class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" [routerLink]="['/dashboard/quiz', eventId]"><i class="fas fa-beer"></i> Pub Quiz</a>
     </li>
-    <li class="nav-item">
+    <li class="nav-item" *ngIf="this._event.showSeating">
         <a class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" [routerLink]="['/dashboard/seating', eventId]"><i class="fas fa-magic"></i> Seating Plan</a>
     </li>
 

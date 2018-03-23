@@ -4,8 +4,16 @@
     <div class="card-body">
         <h1 class="border-bottom">
             {{_event?.name}} - Hotel Rooms
-            <button *ngIf="isAdmin" class="btn btn-primary float-right" [routerLink]="['/dashboard/new/booking/', this._event?._id]"><span class="far fa-plus"></span> New Booking</button>
+            <button *ngIf="isAdmin" class="btn btn-primary float-right" [routerLink]="['/dashboard/new/booking/', this._event?._id]"><span class="fas fa-plus"></span> New Booking</button>
         </h1>
+
+        <p>
+            <strong>Hotel: </strong> {{ this._event.hotelName }} <br />
+            <strong>Address: </strong> {{ this._event.hotelAddress }} <br />
+            <strong>Phone Number: </strong> {{ this._event.hotelNumber }} <br />
+            <strong>Checkin: </strong> {{ this._event.hotelCheckinTime }} - {{ this._event.hotelCheckin | date: 'dd/MM/yyyy' }} <br />
+            <strong>Checkout: </strong> {{ this._event.hotelCheckoutTime }} - {{ this._event.hotelCheckout | date: 'dd/MM/yyyy' }} <br />
+        </p>
     </div>
 
 </div>

@@ -5,6 +5,7 @@ import {UserService} from "../../services/user.service";
 import {ActivatedRoute} from "@angular/router";
 import {Meal} from "../../interfaces/meal";
 import * as _ from 'lodash';
+import {Event} from "../../interfaces/event";
 
 @Component({
     selector: 'app-meal',
