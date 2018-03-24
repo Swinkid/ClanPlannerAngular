@@ -1,0 +1,91 @@
+<form [formGroup]="bookingForm" *ngIf="bookingForm" (ngSubmit)="onSubmit(bookingForm)" novalidate>
+
+    <div class="card">
+        <div class="card-body">
+
+            <h2 *ngIf="!fetchedBooking">New booking</h2>
+            <h2 *ngIf="fetchedBooking">Edit booking</h2>
+
+            <div class="form-group row">
+
+                <label class="col-md-2">Booked By</label>
+                <select formControlName="bookedBy"  class="form-control col-md-10">
+                    <option *ngFor="let a of _attendance; let ind = index" [ngValue]="a.user._id">
+                        {{a.user.discord.username + '#' + a.user.discord.discriminator}}
+                    </option>
+                </select>
+
+
+            </div>
+
+            <div class="form-group row">
+
+                <label class="col-md-2">Total Cost</label>
+                <input type="number" class="form-control col-md-10" formControlName="totalCost">
+
+            </div>
+
+            <div class="form-group row">
+
+                <label class="col-md-2">Room Type</label>
+                <select formControlName="roomType"  class="form-control col-md-10">
+                    <option *ngFor="let type of roomType" [ngValue]="type">
+                        {{type}}
+                    </option>
+                </select>
+
+            </div>
+
+            <div formArrayName="rooms">
+
+                <div *ngFor="let room of getRooms(bookingForm); let r = index">
+
+                    <div class="row">
+                        <div class="col-md-10">
+                            <h3>Room {{ r + 1}}</h3>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-danger float-right" (click)="removeRoom(r)" *ngIf="getRooms(bookingForm).length > 1">Remove Room</button>
+                            <button type="button" class="btn btn-primary float-right" (click)="addRoom()">Add Room</button>
+                        </div>
+                    </div>
+
+                    <div [formGroupName]="r">
+
+                        <div *ngFor="let occupant of getOccupants(room); let o = index;">
+
+                            <div class="form-group row">
+
+                                <label class="col-md-2 col-form-label">Guest {{ o + 1}}</label>
+
+                                <div class="col-md-9">
+                                    <select class="form-control" name="occupant" [formControl]="occupant">
+                                        <option *ngFor="let a of _attendance" [ngValue]="a.user._id">
+                                            {{a.user.discord.username + '#' + a.user.discord.discriminator}}
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-1">
+                                    <button type="button" class="btn btn-success" (click)="addOccupant(room)"><span class="fas fa-plus"></span></button>
+                                    <button type="button" class="btn btn-danger" (click)="removeOccupant(room, o)" *ngIf="getOccupants(room).length > 1"><span class="fas fa-minus"></span></button>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="form-group row">
+                <button class="btn btn-primary" type="submit">Submit</button>
+            </div>
+
+        </div>
+    </div>
+
+</form>

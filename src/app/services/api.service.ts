@@ -81,7 +81,7 @@ export class ApiService {
     public addBooking(event, formValue){
         return this._http.post('/api/booking', {
             event,
-            booking: formValue
+            formValue
         }, { headers: {'x-access-token': this.authService.getToken()}});
     }
 

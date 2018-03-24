@@ -1,32 +1,11 @@
-
-<div class="card my-2">
-
-    <div class="card-body">
-        <h1 class="border-bottom">
-            {{_event?.name}} - Hotel Rooms
-            <button *ngIf="isAdmin" class="btn btn-primary float-right" [routerLink]="['/dashboard/new/booking/', this._event?._id]"><span class="fas fa-plus"></span> New Booking</button>
-        </h1>
-
-        <p>
-            <strong>Hotel: </strong> {{ this._event.hotelName }} <br />
-            <strong>Address: </strong> {{ this._event.hotelAddress }} <br />
-            <strong>Phone Number: </strong> {{ this._event.hotelNumber }} <br />
-            <strong>Checkin: </strong> {{ this._event.hotelCheckinTime }} - {{ this._event.hotelCheckin | date: 'dd/MM/yyyy' }} <br />
-            <strong>Checkout: </strong> {{ this._event.hotelCheckoutTime }} - {{ this._event.hotelCheckout | date: 'dd/MM/yyyy' }} <br />
-        </p>
-    </div>
-
-</div>
-
-
 <div *ngFor="let booking of bookings">
     <div class="card my-2">
         <div class="card-body">
 
             <h2>
-                {{booking.booking.bookedBy.discord.username + '#' + booking.booking.bookedBy.discord.discriminator}} (Cost: {{ booking.booking.totalCost | currency: 'GBP' : 'symbol-narrow' :'1.2-2'}})
+                {{booking.bookedBy.discord.username + '#' + booking.bookedBy.discord.discriminator}} (Cost: {{ booking.totalCost | currency: 'GBP' : 'symbol-narrow' :'1.2-2'}})
                 <button *ngIf="isAdmin"class="btn btn-danger float-right" (click)="deleteBooking(booking._id)"><span class="fas fa-trash"></span></button>
-                <button *ngIf="isAdmin" class="btn btn-primary float-right" [routerLink]="['/dashboard/edit/booking', booking._id, _event._id ]"><span class="fas fa-edit"></span></button>
+                <button *ngIf="isAdmin" class="btn btn-primary float-right" (click)="editBooking(booking._id)"><span class="fas fa-edit"></span></button>
             </h2>
 
 
@@ -39,18 +18,18 @@
                 </thead>
                 <tbody>
 
-                <tr *ngFor="let room of booking.booking.rooms; let ri = index">
+                <tr *ngFor="let room of booking.rooms; let ri = index">
                     <td>Room {{ ri + 1}}</td>
 
                     <td *ngFor="let occupant of calcBiggestRoom(booking); let oi = index">
 
-                        {{ booking.booking.rooms[ri]?.roomOccupants[oi].discord.username + '#' + booking.booking.rooms[ri]?.roomOccupants[oi].discord.discriminator}}
+                        {{ booking.rooms[ri]?.roomOccupants[oi].discord.username + '#' + booking.rooms[ri]?.roomOccupants[oi].discord.discriminator}}
 
                     </td>
                     <td>
 
-                        <strong>Room Cost:</strong> {{ (booking.booking?.totalCost / booking?.booking.rooms.length) | currency: 'GBP' : 'symbol-narrow' :'1.2-2' }} <br />
-                        <strong>Per Person Cost:</strong> {{ (booking.booking?.totalCost / booking.booking?.rooms.length) / booking.booking.rooms[ri]?.roomOccupants.length | currency: 'GBP' : 'symbol-narrow' :'1.2-2' }}
+                        <strong>Room Cost:</strong> {{ (booking.totalCost / booking?.rooms.length) | currency: 'GBP' : 'symbol-narrow' :'1.2-2' }} <br />
+                        <strong>Per Person Cost:</strong> {{ (booking.totalCost / booking?.rooms.length) / booking.rooms[ri]?.roomOccupants.length | currency: 'GBP' : 'symbol-narrow' :'1.2-2' }}
 
                     </td>
                 </tr>

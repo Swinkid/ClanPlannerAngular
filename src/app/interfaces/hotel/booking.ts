@@ -5,12 +5,9 @@ export interface Booking {
 
     _id: String,
     event: String,
-    booking: {
-        bookedBy: User,
-        totalCost: number,
-        roomType: String,
-        rooms: Room[]
-    },
-
+    bookedBy: User,
+    totalCost: Number,
+    roomType: String,
+    rooms: Room[]
 
 }

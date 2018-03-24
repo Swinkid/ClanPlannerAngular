@@ -20,9 +20,7 @@ import { EventComponent } from './event/event.component';
 import { EditComponent } from './event/edit.component';
 import { NewComponent } from './events/new/new.component';
 import { AttendeeComponent } from "./event/attendee/attendee.component";
-import { BookingFormComponent } from './hotel/booking-form.component';
 import { DisplayBookingsComponent } from './hotel/display-bookings.component';
-import { BookingComponent } from './hotel/booking.component';
 import { AuthorizeGuard} from "../guards/authorize.guard";
 import { JerseysComponent } from './jerseys/jerseys.component';
 import { AddJersyComponent } from './jerseys/add-jersy.component';
@@ -44,6 +42,8 @@ import { ProfileEditComponent } from './profile/profile-edit.component';
 import { CompComponent } from './competitions/comp.component';
 import { CompListComponent } from './competitions/comp-list.component';
 import { CompFormComponent } from './competitions/comp-form.component';
+import { HotelComponent } from './hotel/hotel.component';
+import { NewBookingComponent } from './hotel/new-booking.component';
 
 
 
@@ -59,7 +59,7 @@ const routes: Routes = [
                 { path: '', component: NavbarComponent, outlet: 'nav'}
             ]},
             { path: 'hotel/:id', children: [
-                { path: '', component: DisplayBookingsComponent },
+                { path: '', component: HotelComponent},
                 { path: '', component: NavbarComponent, outlet: 'nav'}
             ]},
             { path: 'jerseys/:id', children: [
@@ -93,17 +93,8 @@ const routes: Routes = [
                 { path: '', component: AttendeeComponent },
                 { path: '', component: NavbarComponent, outlet: 'nav'}
             ]},
-            { path: 'new/booking/:id' , canActivate: [AuthorizeGuard], children: [
-                { path: '', component: BookingFormComponent },
-                { path: '', component: NavbarComponent, outlet: 'nav'}
-            ]},
-            { path: 'edit/booking/:id/:event', canActivate: [AuthorizeGuard], children: [
-                { path: '', component: BookingComponent },
-                { path: '', component: NavbarComponent, outlet: 'nav'}
-            ]},
             { path: 'profile/:id', component: ProfileComponent },
             { path: 'profile/edit/:id', component: ProfileEditComponent },
-
 
         ]
     }
@@ -126,9 +117,7 @@ const routes: Routes = [
         EditComponent,
         NewComponent,
         AttendeeComponent,
-        BookingFormComponent,
         DisplayBookingsComponent,
-        BookingComponent,
         JerseysComponent,
         AddJersyComponent,
         ShowJerseysComponent,
@@ -149,7 +138,9 @@ const routes: Routes = [
         ProfileComponent,
         ProfileFormComponent,
         ProfileEditComponent,
-        CompComponent
+        CompComponent,
+        HotelComponent,
+        NewBookingComponent
     ],
     providers: [
         AuthService,

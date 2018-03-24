@@ -1,0 +1,23 @@
+<div class="card my-2">
+    <div class="card-body">
+
+        <h1>
+            Hotel
+            <button type="button" class="btn btn-primary float-right" *ngIf="isAdmin" (click)="newBooking()"><span class="fas fa-plus"></span> New Booking</button>
+        </h1>
+
+        <p>
+            <strong>Hotel Name: </strong> {{this._event?.hotelName }} <br />
+            <strong>Hotel Address: </strong> {{this._event?.hotelAddress }} <br />
+            <strong>Hotel Phone Number: </strong> {{this._event?.hotelNumber}} <br />
+            <strong>Checkin: </strong> {{this._event?.hotelCheckinTime}} - {{this._event?.hotelCheckin | date: 'dd/MM/yyyy' }} <br />
+            <strong>Checkout: </strong> {{this._event?.hotelCheckoutTime}} - {{this._event?.hotelCheckout | date: 'dd/MM/yyyy' }}
+        </p>
+
+    </div>
+</div>
+
+<app-new-booking *ngIf="_showForm" [_event]="_event" [_attendance]="_attendance" [_selectedBooking]="_selectedBooking" (savedForm)="submitForm($event)"></app-new-booking>
+
+<app-display-bookings *ngIf="_event" [_event]="_event" [_attendance]="_attendance" (savedForm)="submitForm($event)" (editForm)="editBooking($event)"></app-display-bookings>
+

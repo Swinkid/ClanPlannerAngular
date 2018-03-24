@@ -491,37 +491,33 @@ router.post('/booking', authenticate, isAdmin, function (req, res) {
 
 	var filteredRooms = [];
 
-	req.body.booking.rooms.forEach(function (room) {
+	req.body.formValue.rooms.forEach(function (room) {
 
-		var r = {
-			roomOccupants: []
-		};
+		var occupants = [];
 
-		room.roomOccupants.forEach(function (occupants) {
-			r.roomOccupants.push(mongoose.Types.ObjectId(xss(occupants.occupant)));
+		room.roomOccupants.forEach(function (occupant) {
+			occupants.push(mongoose.Types.ObjectId(xss(occupant)));
 		});
 
-		filteredRooms.push(r);
+		filteredRooms.push({roomOccupants: occupants});
 	});
 
-	var booking = new Booking({
-		event: xss(req.body.event),
-		booking: {
-			bookedBy : mongoose.Types.ObjectId(xss(req.body.booking.bookedBy)),
-			totalCost : xss(req.body.booking.totalCost),
-			roomType: xss(req.body.booking.bookedRoomType),
-			rooms : filteredRooms
-		}
+	var newBooking = new Booking({
+		event: mongoose.Types.ObjectId(xss(req.body.event)),
+		bookedBy: mongoose.Types.ObjectId(xss(req.body.formValue.bookedBy)),
+		totalCost: req.body.formValue.totalCost,
+		roomType: xss(req.body.formValue.roomType),
+		rooms: filteredRooms
 	});
 
-	booking.save(function (error, savedBooking) {
+	newBooking.save(function (error, savedBooking) {
 
-		if(error || !savedBooking){
-			return res.status(500).json({error: 'Internal Server Error'});
+		if(error){
+			return res.status(500).json({response: 'Internal Server Error'});
 		}
 
-		if(savedBooking){
-			return res.status(200).json({error: 'Done'});
+		if(!error){
+			return res.status(200).json({response: 'Done'});
 		}
 
 	});
@@ -530,16 +526,14 @@ router.post('/booking', authenticate, isAdmin, function (req, res) {
 
 router.get('/booking/:id', authenticate, function (req, res) {
 
-	var filteredId = req.params.id;
-
-	Booking.find({event: mongoose.Types.ObjectId(filteredId)}).populate('event').populate('booking.bookedBy').populate('booking.rooms.roomOccupants').exec(function (error, bookings) {
+	Booking.find({ event: req.params.id }).populate(['event', 'bookedBy', 'rooms.roomOccupants']).exec(function (error, bookings) {
 
 		if(error){
-			return res.status(500).json({error: 'Internal Server Error'});
+			return res.status(500).json({response: 'Internal Server Error'});
 		}
 
 		if(!bookings){
-			return res.status(500).json({error: 'Internal Server Error'});
+			return res.status(404).json({response: 'No Bookings Found'});
 		}
 
 		if(bookings){
@@ -551,91 +545,68 @@ router.get('/booking/:id', authenticate, function (req, res) {
 });
 
 router.get('/booking/edit/:id', authenticate, isAdmin, function (req, res) {
-
-	var filteredId = xss(req.params.id);
-
-	Booking.findOne({_id: filteredId}).populate(['event', 'booking.bookedBy', 'booking.rooms.roomOccupants']).exec(function (error, booking) {
+	Booking.findOne({ _id: req.params.id }).populate(['event', 'bookedBy', 'rooms.roomOccupants']).exec(function (error, bookings) {
 
 		if(error){
-			return res.status(500).json({error: 'Internal Server Error'});
+			return res.status(500).json({response: 'Internal Server Error'});
 		}
 
-		if(!booking){
-			return res.status(500).json({error: 'Internal Server Error'});
+		if(!bookings){
+			return res.status(404).json({response: 'No Booking Found'});
 		}
 
-		if(booking){
-			return res.status(200).json(booking);
+		if(bookings){
+			return res.status(200).json(bookings);
 		}
 
 	});
-
 });
 
 router.post('/booking/edit/:id', authenticate, isAdmin, function (req, res) {
 
-	var filteredId = xss(req.params.id);
-
 	var filteredRooms = [];
 
-	req.body.booking.rooms.forEach(function (room) {
+	req.body.rooms.forEach(function (room) {
 
-		var r = {
-			roomOccupants: []
-		};
+		var occupants = [];
 
-		room.roomOccupants.forEach(function (occupants) {
-			r.roomOccupants.push(xss(occupants.occupant));
+		room.roomOccupants.forEach(function (occupant) {
+			occupants.push(mongoose.Types.ObjectId(xss(occupant)));
 		});
 
-		filteredRooms.push(r);
+		filteredRooms.push({roomOccupants: occupants});
 	});
 
-	var updatedBooking = {
-		event: xss(req.body.event),
-		booking: {
-			bookedBy : xss(req.body.booking.bookedBy),
-			totalCost : xss(req.body.booking.totalCost),
-			roomType: xss(req.body.booking.bookedRoomType),
-			rooms : filteredRooms
-		}
-	};
 
-	Booking.findByIdAndUpdate(filteredId, {
+	Booking.update({_id: req.params.id}, {
 		$set: {
-			event: updatedBooking.event,
-			booking: updatedBooking.booking
+			bookedBy: mongoose.Types.ObjectId(xss(req.body.bookedBy)),
+			totalCost: req.body.totalCost,
+			roomType: xss(req.body.roomType),
+			rooms: filteredRooms
 		}
-	}, {new: true}, function (error) {
-
+	}, function (error) {
 		if(error){
+			return res.status(500).json({response: 'Internal Server Error'});
+		}
 
-			return res.status(500).json({error: 'Internal Server Error'});
-
-		} else {
-
-			return res.status(200).json({error: 'Done'});
-
+		if(!error){
+			return res.status(200).json({response: 'Ok'});
 		}
 	});
+
 });
 
 router.delete('/booking/:id', authenticate, isAdmin, function (req, res) {
 
-	var filteredId = xss(req.params.id);
-
-	Booking.remove({_id: filteredId}, function (error) {
-
+	Booking.remove({_id: req.params.id}, function (error) {
 		if(error){
-
-			return res.status(500).json({error: 'Internal Server Error'});
-
-		} else {
-
-			return res.status(200).json({error: 'Done'});
-
+			return res.status(500).json({response: 'Internal Server Error'});
 		}
 
+		if(!error){
+			return res.status(200).json({response: 'Ok'});
+		}
 	});
 
 });
