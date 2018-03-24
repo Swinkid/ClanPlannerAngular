@@ -68,6 +68,7 @@ export class SeatingPlanComponent implements OnInit {
 
     editNotify(message){
         this._selectedSeat = undefined;
+        this.showForm = false;
 
         this.apiService.getSeatById(message).subscribe(data =>{
            this._selectedSeat = data;

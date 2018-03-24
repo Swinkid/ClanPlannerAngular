@@ -80,6 +80,7 @@ export class MealComponent implements OnInit {
 
     editForm(meal){
         this._selectedMeal = undefined;
+        this.showForm = false;
 
         this.apiService.getMeal(meal).subscribe(
             data => {

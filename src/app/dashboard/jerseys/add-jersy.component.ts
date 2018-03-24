@@ -89,7 +89,6 @@ export class AddJersyComponent implements OnInit {
                 ])
             });
         }
-
     }
 
 

@@ -6,9 +6,9 @@
         <h2>Meal</h2>
 
         <p>
-            <strong>Location: </strong> {{ this._event.mealName }}<br/>
-            <strong>Address: </strong> {{ this._event.mealAddress }} <br />
-            <strong>Date: </strong> {{this._event.mealTime}} - {{this._event.mealDate | date: 'dd/MM/yyyy' }} <br />
+            <strong>Location: </strong> {{ this._event?.mealName }}<br/>
+            <strong>Address: </strong> {{ this._event?.mealAddress }} <br />
+            <strong>Date: </strong> {{this._event?.mealTime}} - {{this._event?.mealDate | date: 'dd/MM/yyyy' }} <br />
         </p>
 
     </div>

@@ -25,6 +25,8 @@ export class JerseysComponent implements OnInit {
 
     public editing : Boolean;
 
+    public showForm : Boolean;
+
 
     constructor(private apiService : ApiService, private userService : UserService, private route : ActivatedRoute) { }
 
@@ -36,6 +38,7 @@ export class JerseysComponent implements OnInit {
         if(!this.jersey && this.isUserAttending(this.userService.getUserId())){
             this.selectedUser = this.userService.getUserId();
             this.editing = false;
+            this.showForm = true;
         }
     }
 
@@ -69,14 +72,20 @@ export class JerseysComponent implements OnInit {
     }
 
     onNotify(message: String): void {
+
+        this.selectedUser = undefined;
+        this.editing = false;
+        this.showForm = false;
+
         this.selectedUser = message;
         this.editing = true;
+        this.showForm = true;
     }
 
     submittedForm(done : Boolean): void {
         this.selectedUser = undefined;
-
         this._event = undefined;
+        this.showForm = false;
         this.setEvent();
         this.setJersey();
 

@@ -4,15 +4,15 @@
         <h1>Jerseys</h1>
 
         <p>
-            <strong>Size Chart: </strong> <a href="{{this._event.jerseySizeChart}}">{{this._event.jerseySizeChart}}</a> <br />
-            <strong>Payment Link: </strong> <a href="{{this._event.jerseyPaymentLink}}">{{this._event.jerseyPaymentLink}}</a> <br />
-            <strong>Design: </strong> <a href="{{this._event.jerseyDesignLink}}">{{this._event.jerseyDesignLink}}</a> <br />
+            <strong>Size Chart: </strong> <a href="{{this._event?.jerseySizeChart}}">{{this._event?.jerseySizeChart}}</a> <br />
+            <strong>Payment Link: </strong> <a href="{{this._event?.jerseyPaymentLink}}">{{this._event?.jerseyPaymentLink}}</a> <br />
+            <strong>Design: </strong> <a href="{{this._event?.jerseyDesignLink}}">{{this._event?.jerseyDesignLink}}</a> <br />
         </p>
 
     </div>
 </div>
 
-<app-add-jersy *ngIf="_event && selectedUser" [_event]="_event" [_selectedUser]="selectedUser" [_editing]="editing" (notify)='submittedForm($event)'></app-add-jersy>
+<app-add-jersy *ngIf="_event && selectedUser && showForm" [_event]="_event" [_selectedUser]="selectedUser" [_editing]="editing" (notify)='submittedForm($event)'></app-add-jersy>
 
 <div class="card my-2">
     <div class="card-body">

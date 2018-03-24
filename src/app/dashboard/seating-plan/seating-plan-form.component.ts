@@ -28,6 +28,7 @@ export class SeatingPlanFormComponent implements OnInit {
     ngOnInit() {
         this.isAdmin = this.userService.isAdmin();
         this.initForm();
+        console.log('!');
     }
 
     initForm(){
